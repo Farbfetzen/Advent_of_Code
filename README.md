@@ -1,1 +1,1 @@
-My solutions for the puzzles from [https://adventofcode.com].
+My solutions for the puzzles from https://adventofcode.com.
