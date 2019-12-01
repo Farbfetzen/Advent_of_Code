@@ -17,11 +17,9 @@ print(total)
 # part 2
 total = 0
 for m in masses:
-    fuel = 0
     additional_fuel = calculate_fuel(m)
     while additional_fuel > 0:
-        fuel += additional_fuel
+        total += additional_fuel
         additional_fuel = calculate_fuel(additional_fuel)
-    total += fuel
 
 print(total)
