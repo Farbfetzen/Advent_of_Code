@@ -1,6 +1,3 @@
-import os
-
-
 with open("day_01_input.txt", "r") as file:
     changes = [int(i) for i in file.read().splitlines()]
 
