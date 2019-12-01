@@ -1,3 +1,6 @@
+# https://adventofcode.com/2019/day/1
+
+
 def calculate_fuel(m):
     return(max(m // 3 - 2, 0))
 
