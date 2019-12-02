@@ -37,10 +37,7 @@ for noun in range(100):
     for verb in range(100):
         program[1] = noun
         program[2] = verb
-        try:
-            result = run_intcode(program)
-        except:
-            continue
+        result = run_intcode(program)
         if result == target:
             break
     else:
