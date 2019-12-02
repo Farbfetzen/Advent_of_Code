@@ -27,8 +27,7 @@ with open("day_02_input.txt", "r") as file:
 # part 1
 program[1] = 12
 program[2] = 2
-result = run_intcode(program)
-print(result)
+print(run_intcode(program))
 
 
 # part 2
@@ -37,8 +36,7 @@ for noun in range(100):
     for verb in range(100):
         program[1] = noun
         program[2] = verb
-        result = run_intcode(program)
-        if result == target:
+        if run_intcode(program) == target:
             break
     else:
         continue
