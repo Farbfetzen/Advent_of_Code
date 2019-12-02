@@ -13,7 +13,6 @@ print(sum(changes))
 frequency = 0
 i = 0
 seen = set()
-
 while True:
     for change in changes:
         if frequency in seen:
@@ -23,5 +22,4 @@ while True:
     else:
         continue
     break
-
 print(frequency)

@@ -5,11 +5,12 @@ import collections
 import re
 
 
-claims = []
 with open("day_03_input.txt", "r") as file:
+    claims = []
+    pattern = re.compile(r"(\d+)")
     for line in file.read().splitlines():
         claim = []
-        for s in re.split(r"(\d+)", line):
+        for s in pattern.split(line):
             if s.isdigit():
                 claim.append(int(s))
         claims.append(claim)
@@ -28,7 +29,7 @@ for claim in claims:
 
 counter_1 = collections.Counter(all_coordinates_list)
 counter_2 = collections.Counter(counter_1.values())
-if (1 in counter_2):
+if 1 in counter_2:
     del counter_2[1]
 print(sum(counter_2.values()))  # part 1
 

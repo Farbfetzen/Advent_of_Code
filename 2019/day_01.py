@@ -1,8 +1,8 @@
 # https://adventofcode.com/2019/day/1
 
 
-def calculate_fuel(m):
-    return(max(m // 3 - 2, 0))
+def calculate_fuel(mass):
+    return max(mass // 3 - 2, 0)
 
 
 with open("day_01_input.txt", "r") as file:

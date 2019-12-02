@@ -19,7 +19,7 @@ print(sum_2 * sum_3)
 
 
 # part 2
-for i, ID in enumerate(IDs):
+for ID in IDs:
     for other_ID in IDs:
         count_differences = 0
         for a, b in zip(ID, other_ID):

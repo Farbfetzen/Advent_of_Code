@@ -1,23 +1,23 @@
 # https://adventofcode.com/2019/day/2
 
 
-def run_intcode(program):
-    program = program.copy()
+def run_intcode(intcode):
+    intcode = intcode.copy()
     i = 0
-    opcode = program[i]
+    opcode = intcode[i]
     while opcode != 99:
-        pos_a = program[i+1]
-        pos_b = program[i+2]
-        target_pos = program[i+3]
-        if program[i] == 1:
-            program[target_pos] = program[pos_a] + program[pos_b]
-        elif program[i] == 2:
-            program[target_pos] = program[pos_a] * program[pos_b]
+        pos_a = intcode[i+1]
+        pos_b = intcode[i+2]
+        target_pos = intcode[i+3]
+        if intcode[i] == 1:
+            intcode[target_pos] = intcode[pos_a] + intcode[pos_b]
+        elif intcode[i] == 2:
+            intcode[target_pos] = intcode[pos_a] * intcode[pos_b]
         else:
             raise ValueError("unexpected integer")
         i += 4
-        opcode = program[i]
-    return(program[0])
+        opcode = intcode[i]
+    return intcode[0]
 
 
 with open("day_02_input.txt", "r") as file:
