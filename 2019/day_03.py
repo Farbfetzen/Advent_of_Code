@@ -18,17 +18,12 @@ def construct_paths(wire_input):
         x = 0
         y = 0
         path = [(x, y)]
+        dx = {"R": 1, "L": -1, "U": 0, "D": 0}
+        dy = {"R": 0, "L": 0, "U": 1, "D": -1}
         for direction in directions:
-            if direction == "R":
-                x += 1
-            elif direction == "L":
-                x -= 1
-            elif direction == "U":
-                y += 1
-            elif direction == "D":
-                y -= 1
-            else:
-                raise ValueError("unexpected direction")
+            assert direction in "RLUD"
+            x += dx[direction]
+            y += dy[direction]
             path.append((x, y))
         paths.append(path)
     return paths
