@@ -1,31 +1,24 @@
 # https://adventofcode.com/2019/day/4
 
 
-import collections
-
-
 def check_increasing_digits(password):
-    """Return True if, going from left to right, the values never decrease."""
-    password = list(password)
-    return password == sorted(password)
+    return list(password) == sorted(password)
 
 
 def check_adjacent_pairs(password):
-    """Return True if there is a pair of values which are the same."""
-    # I could have used collections.Counter() here but this works, too.
     return any(password[i] == password[i + 1] for i in range(len(password) - 1))
 
 
 def check_adjacent_pairs_group(password):
-    """Return True if there is a pair of two adjacent values which are the same
-    but that is not part of a bigger group. Assumes that the values are sorted.
-    """
-    return 2 in collections.Counter(password).values()
+    return 2 in (password.count(digit) for digit in password)
 
 
+# part 1 test
 assert check_increasing_digits("111111") and check_adjacent_pairs("111111")
 assert not (check_increasing_digits("223450") and check_adjacent_pairs("223450"))
 assert not (check_increasing_digits("123789") and check_adjacent_pairs("123789"))
+
+# part 2 test
 assert check_increasing_digits("112233") and check_adjacent_pairs_group("112233")
 assert not (check_increasing_digits("123444") and check_adjacent_pairs_group("123444"))
 assert check_increasing_digits("111122") and check_adjacent_pairs_group("111122")
