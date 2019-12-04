@@ -23,20 +23,12 @@ def check_adjacent_pairs_group(password):
     return 2 in collections.Counter(password).values()
 
 
-def part_1(password):
-    return check_increasing_digits(password) and check_adjacent_pairs(password)
-
-
-def part_2(password):
-    return check_increasing_digits(password) and check_adjacent_pairs_group(password)
-
-
-assert part_1("111111")
-assert not part_1("223450")
-assert not part_1("123789")
-assert part_2("112233")
-assert not part_2("123444")
-assert part_2("111122")
+assert check_increasing_digits("111111") and check_adjacent_pairs("111111")
+assert not (check_increasing_digits("223450") and check_adjacent_pairs("223450"))
+assert not (check_increasing_digits("123789") and check_adjacent_pairs("123789"))
+assert check_increasing_digits("112233") and check_adjacent_pairs_group("112233")
+assert not (check_increasing_digits("123444") and check_adjacent_pairs_group("123444"))
+assert check_increasing_digits("111122") and check_adjacent_pairs_group("111122")
 
 day_04_input = "178416-676461"
 day_04_input = [int(i) for i in day_04_input.split("-")]
@@ -44,7 +36,9 @@ total_part_1 = 0
 total_part_2 = 0
 for pw in range(day_04_input[0], day_04_input[1] + 1):
     pw = str(pw)
-    total_part_1 += part_1(pw)
-    total_part_2 += part_2(pw)
+    if not check_increasing_digits(pw):
+        continue
+    total_part_1 += check_adjacent_pairs(pw)
+    total_part_2 += check_adjacent_pairs_group(pw)
 print(total_part_1)  # 1650
 print(total_part_2)  # 1129
