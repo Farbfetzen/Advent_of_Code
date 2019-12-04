@@ -5,8 +5,8 @@
 # this simple loop.
 
 passwords <- strsplit(as.character(178416:676461), "")
-total_1 = 0
-total_2 = 0
+total_1 <- 0
+total_2 <- 0
 for (pw in passwords) {
     if (is.unsorted(pw)) next
     freq <- table(pw)
