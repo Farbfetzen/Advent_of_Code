@@ -23,11 +23,12 @@ assert check_increasing_digits("112233") and check_adjacent_pairs_group("112233"
 assert not (check_increasing_digits("123444") and check_adjacent_pairs_group("123444"))
 assert check_increasing_digits("111122") and check_adjacent_pairs_group("111122")
 
-day_04_input = "178416-676461"
-day_04_input = [int(i) for i in day_04_input.split("-")]
+with open("day_04_input.txt") as file:
+    password_range = file.read()
+password_range = [int(i) for i in password_range.split("-")]
 total_part_1 = 0
 total_part_2 = 0
-for pw in range(day_04_input[0], day_04_input[1] + 1):
+for pw in range(password_range[0], password_range[1] + 1):
     pw = str(pw)
     if not check_increasing_digits(pw):
         continue
