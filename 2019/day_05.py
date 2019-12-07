@@ -1,47 +1,69 @@
 # https://adventofcode.com/2019/day/5
 
 
-def run_intcode(intcode):
+class IntcodeComputer:
     position_mode = "0"
     immediate_mode = "1"
-    i = 0
-    while True:
-        instruction = str(intcode[i])
-        instruction = instruction.zfill(5)
-        param3, param2, param1 = instruction[:3]
-        opcode = instruction[3:]
-        if opcode in "0102":
-            if param1 == position_mode:
-                a = intcode[intcode[i + 1]]
-            elif param1 == immediate_mode:
-                a = intcode[i + 1]
-            if param2 == position_mode:
-                b = intcode[intcode[i + 2]]
-            elif param2 == immediate_mode:
-                b = intcode[i + 2]
-            if opcode == "01":
-                intcode[intcode[i + 3]] = a + b
+
+    def __init__(self, intcode):
+        self.intcode = intcode
+        self.pointer = 0
+        self.params = ""
+        self.opcodes = {
+            1: self.add,
+            2: self.mult,
+            3: self.read,
+            4: self.print
+        }
+
+    def run(self):
+        while True:
+            instruction = str(self.intcode[self.pointer])
+            opcode = int(instruction[-2:])
+            self.params = instruction[-3::-1]
+            if opcode == 99:
+                break
             else:
-                intcode[intcode[i + 3]] = a * b
-            i += 4
-        elif opcode == "03":
-            intcode[intcode[i + 1]] = int(input("enter an integer: "))
-            i += 2
-        elif opcode == "04":
-            if param1 == position_mode:
-                print(intcode[intcode[i + 1]])
-            elif param1 == immediate_mode:
-                print(intcode[i + 1])
-            i += 2
-        elif opcode == "99":
-            break
-        else:
-            raise ValueError(f"unexpected opcode: {opcode}")
+                self.opcodes[opcode]()
+
+    def get_values(self, n):
+        self.params = self.params.ljust(n, "0")
+        values = []
+        for i, p in enumerate(self.params):
+            if p == self.position_mode:
+                position = self.intcode[self.pointer + i + 1]
+            elif p == self.immediate_mode:
+                position = self.pointer + i + 1
+            else:
+                raise ValueError(f"unknown parameter mode: {p}")
+            values.append(self.intcode[position])
+        return values
+
+    def add(self):
+        target_position = self.intcode[self.pointer + 3]
+        values = self.get_values(2)
+        self.intcode[target_position] = sum(values)
+        self.pointer += 4
+
+    def mult(self):
+        target_position = self.intcode[self.pointer + 3]
+        values = self.get_values(2)
+        self.intcode[target_position] = values[0] * values[1]
+        self.pointer += 4
+
+    def read(self):
+        target_position = self.intcode[self.pointer + 1]
+        self.intcode[target_position] = int(input("enter an integer: "))
+        self.pointer += 2
+
+    def print(self):
+        print(self.get_values(1)[0])
+        self.pointer += 2
 
 
 with open("day_05_input.txt", "r") as file:
     program = [int(i) for i in file.read().split(",")]
-run_intcode(program)
-
+computer = IntcodeComputer(program)
+computer.run()
 
 # Solution of part 1: 9006673
