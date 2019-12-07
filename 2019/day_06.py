@@ -24,7 +24,7 @@ def find_com(orbits, start):
     return path
 
 
-def go_to_santa(orbits):
+def jumps_to_santa(orbits):
     you_to_com = find_com(orbits, "YOU")
     san_to_com = find_com(orbits, "SAN")
     jumps = set(you_to_com).symmetric_difference(san_to_com)
@@ -58,7 +58,7 @@ K)L
 K)YOU
 I)SAN
 """
-assert go_to_santa(decode_orbits(test2)) == 4
+assert jumps_to_santa(decode_orbits(test2)) == 4
 
 
 with open("day_06_input.txt") as file:
@@ -67,4 +67,4 @@ with open("day_06_input.txt") as file:
 # part 1:
 print(sum_orbits(decode_orbits(day_06_input)))  # 253104
 # part 2:
-print(go_to_santa(decode_orbits(day_06_input)))  # 499
+print(jumps_to_santa(decode_orbits(day_06_input)))  # 499
