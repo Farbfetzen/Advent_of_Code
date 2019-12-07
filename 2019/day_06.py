@@ -1,18 +1,16 @@
-def sum_orbits(orbits):
-    total = 0
-    for o in orbits:
-        while o != "COM":
-            o = orbits[o]
-            total += 1
-    return total
-
-
 def decode_orbits(orbit_txt):
     orbits = {}
     for line in orbit_txt.split():
         a, b = line.split(")")
         orbits[b] = a
     return orbits
+
+
+def sum_orbits(orbits):
+    total = 0
+    for o in orbits:
+        total += len(find_com(orbits, o)) + 1
+    return total
 
 
 def find_com(orbits, start):
