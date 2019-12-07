@@ -1,55 +1,47 @@
 # https://adventofcode.com/2019/day/5
 
 
-# FIXME: This is not yet working.
-
 def run_intcode(intcode):
+    position_mode = "0"
+    immediate_mode = "1"
     i = 0
     while True:
         instruction = str(intcode[i])
-        print(instruction)
-        if len(instruction) == 1:
-            instruction = "000" + instruction
-        elif len(instruction) == 2:
-            instruction = "00" + instruction
-        elif len(instruction) == 3:
-            instruction = "0" + instruction
-        *parameters, op10, op1 = (int(i) for i in instruction)
-        opcode = 10 * op10 + op1
-        # print(opcode)
-        # print(parameters)
-        if opcode in [1, 2]:
-            param_1_mode = parameters[-1]
-            if param_1_mode == 0:
+        instruction = instruction.zfill(5)
+        param3, param2, param1 = instruction[:3]
+        opcode = instruction[3:]
+        if opcode in "0102":
+            if param1 == position_mode:
                 a = intcode[intcode[i + 1]]
-            elif param_1_mode == 1:
+            elif param1 == immediate_mode:
                 a = intcode[i + 1]
-            param_2_mode = parameters[-2]
-            if param_2_mode == 0:
+            if param2 == position_mode:
                 b = intcode[intcode[i + 2]]
-            elif param_2_mode == 1:
+            elif param2 == immediate_mode:
                 b = intcode[i + 2]
-            if opcode == 1:
+            if opcode == "01":
                 intcode[intcode[i + 3]] = a + b
             else:
                 intcode[intcode[i + 3]] = a * b
-            i += 3
-        elif opcode == 3:
+            i += 4
+        elif opcode == "03":
             intcode[intcode[i + 1]] = int(input("enter an integer: "))
             i += 2
-        elif opcode == 4:
-            param_mode = parameters[-1]
-            if param_mode == 0:
+        elif opcode == "04":
+            if param1 == position_mode:
                 print(intcode[intcode[i + 1]])
-            elif param_mode == 1:
+            elif param1 == immediate_mode:
                 print(intcode[i + 1])
             i += 2
-        elif opcode == 99:
+        elif opcode == "99":
             break
         else:
-            raise ValueError("unexpected opcode")
+            raise ValueError(f"unexpected opcode: {opcode}")
 
 
 with open("day_05_input.txt", "r") as file:
     program = [int(i) for i in file.read().split(",")]
 run_intcode(program)
+
+
+# Solution of part 1: 9006673
