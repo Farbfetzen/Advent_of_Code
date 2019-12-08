@@ -1,10 +1,7 @@
 # https://adventofcode.com/2019/day/8
 
-# TODO: Use numpy arrays for the layers instead of nested lists.
 
-
-import math
-import collections
+import numpy as np
 
 
 with open("day_08_input.txt") as file:
@@ -13,39 +10,19 @@ width = 25
 height = 6
 pixels_per_layer = width * height
 assert len(transmission) % pixels_per_layer == 0
-layers = []
-while transmission:
-    layers.append(transmission[:pixels_per_layer])
-    del transmission[:pixels_per_layer]
+n_layers = len(transmission) // pixels_per_layer
+layers = np.array(transmission).reshape(n_layers, pixels_per_layer)
+# each row is a layer
 
 # part 1:
-n_zero = math.inf
-n_zero_current = 0
-layer_with_fewest_0 = []
-for layer in layers:
-    n_zero_current = len([i for i in layer if i == 0])
-    if n_zero_current < n_zero:
-        n_zero = n_zero_current
-        layer_with_fewest_0 = layer
-c = collections.Counter(layer_with_fewest_0)
-print(c[1] * c[2])  # 2520
+fewest_0_layer = layers[np.count_nonzero(layers, 1).argmax(), :]
+print((fewest_0_layer == 1).sum() * (fewest_0_layer == 2).sum())  # 2520
 
 # part 2:
-visible = []
-for i in range(pixels_per_layer):
-    for layer in layers:
-        color = layer[i]
-        if color < 2:
-            visible.append(color)
-            break
-image = ""
-x = 0
-for y in range(height):
-    for pixel in (i for i in visible[x:x+width]):
-        if pixel == 0:
-            image += " "
-        elif pixel == 1:
-            image += "#"
-    image += "\n"
-    x += width
-print(image)  # LEGJY
+visible = np.apply_along_axis(lambda x: x[np.argmax(x < 2)], 0, layers)
+visible = visible.reshape(height, width).astype(str)
+visible[visible == "0"] = " "
+visible[visible == "1"] = "#"
+visible = np.apply_along_axis(lambda x: "".join(i for i in x), 1, visible)
+visible = "\n".join(visible)
+print(visible)  # LEGJY
