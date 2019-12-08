@@ -30,10 +30,9 @@ readLines("2019/day_04_input.txt") %>%
     )} %>%
     print()
 
-# And again in a ridiculously compact format:
+# And again but in a ridiculously compact format:
 as.integer(unlist(strsplit(readLines("2019/day_04_input.txt"), "-"))) %>%
     {strsplit(as.character(seq(.[1], .[2])), "")} %>%
-    {lapply(.[!vapply(., is.unsorted, TRUE)], table)} %>%
-    {apply(sapply(., function(x) c(any(x > 1), 2 %in% x)), 1, sum)} %>%
+    {apply(sapply(lapply(.[!vapply(., is.unsorted, TRUE)], table), function(x) c(any(x > 1), 2 %in% x)), 1, sum)} %>%
     print()
 
