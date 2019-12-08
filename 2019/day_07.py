@@ -17,10 +17,10 @@ def test_phase_setting(amps, phases):
     assert len(amps) == len(phases)
     signal = 0
     for amp, phase in zip(amps, phases):
-        signal = amp.run(phase, signal)
+        signal = amp.run([phase, signal])
     while not amps[-1].has_halted:
         for amp in amps:
-            signal = amp.run(signal)
+            signal = amp.run([signal], False)
     return signal
 
 
@@ -61,8 +61,6 @@ assert test_phase_setting(test_code_5, [9, 7, 8, 5, 6]) == 18216
 amplifiers = build_amps(program, feedback_mode=True)
 max_signal = 0
 for phase_settings in itertools.permutations(range(5, 10)):
-    for amplifier in amplifiers:
-        amplifier.reset()
     max_signal = max(
         test_phase_setting(amplifiers, phase_settings),
         max_signal

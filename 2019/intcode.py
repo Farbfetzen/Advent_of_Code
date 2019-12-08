@@ -7,7 +7,7 @@ class IntcodeComputer:
         self.intcode = self.original_intcode.copy()
         self.silent = silent
         self.feedback_mode = feedback_mode
-        self.inputs = []
+        self.inputs = None
         self.pointer = 0
         self.params = ""
         self.opcodes = {
@@ -23,10 +23,14 @@ class IntcodeComputer:
         self.out_value = None
         self.has_halted = False
 
-    def run(self, *inputs):
-        if not self.feedback_mode:
-            self.reset()
-        self.inputs = list(reversed(inputs))
+    def run(self, inputs=None, reset=True):
+        if reset:
+            self.intcode = self.original_intcode.copy()
+            self.pointer = 0
+            self.out_value = None
+            self.has_halted = False
+        if inputs is not None:
+            self.inputs = list(reversed(inputs))
         while True:
             instruction = str(self.intcode[self.pointer])
             opcode = int(instruction[-2:])
@@ -39,12 +43,6 @@ class IntcodeComputer:
                 if self.feedback_mode and opcode == 4:
                     break
         return self.out_value
-
-    def reset(self):
-        self.intcode = self.original_intcode.copy()
-        self.pointer = 0
-        self.out_value = None
-        self.has_halted = False
 
     def get_values(self, n):
         self.params = self.params.ljust(n, "0")
