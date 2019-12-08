@@ -24,6 +24,16 @@ def test_phase_setting(amps, phases):
     return signal
 
 
+def iterate_phases(amps, phase_range):
+    max_signal = 0
+    for phase_settings in itertools.permutations(phase_range):
+        max_signal = max(
+            test_phase_setting(amps, phase_settings),
+            max_signal
+        )
+    return max_signal
+
+
 with open("day_07_input.txt", "r") as file:
     program = [int(i) for i in file.read().split(",")]
 
@@ -39,13 +49,7 @@ test_code_3 = build_amps([3, 31, 3, 32, 1002, 32, 10, 32, 1001, 31, -2, 31,
                           1, 32, 31, 31, 4, 31, 99, 0, 0, 0])
 assert test_phase_setting(test_code_3, [1, 0, 4, 3, 2]) == 65210
 amplifiers = build_amps(program)
-max_signal = 0
-for phase_settings in itertools.permutations(range(5)):
-    max_signal = max(
-        test_phase_setting(amplifiers, phase_settings),
-        max_signal
-    )
-print(max_signal)  # 21000
+print(iterate_phases(amplifiers, range(5)))  # 21000
 
 # part 2:
 test_code_4 = build_amps([3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1,
@@ -59,10 +63,4 @@ test_code_5 = build_amps([3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007,
                           99, 0, 0, 0, 0, 10], feedback_mode=True)
 assert test_phase_setting(test_code_5, [9, 7, 8, 5, 6]) == 18216
 amplifiers = build_amps(program, feedback_mode=True)
-max_signal = 0
-for phase_settings in itertools.permutations(range(5, 10)):
-    max_signal = max(
-        test_phase_setting(amplifiers, phase_settings),
-        max_signal
-    )
-print(max_signal)  # 61379886
+print(iterate_phases(amplifiers, range(5, 10)))  # 61379886

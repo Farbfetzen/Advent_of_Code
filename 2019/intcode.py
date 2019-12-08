@@ -30,6 +30,7 @@ class IntcodeComputer:
             self.out_value = None
             self.has_halted = False
         if inputs is not None:
+            # reverse input because popping from the right end is better
             self.inputs = list(reversed(inputs))
         while True:
             instruction = str(self.intcode[self.pointer])
