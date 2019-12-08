@@ -2,8 +2,12 @@ class IntcodeComputer:
     position_mode = "0"
     immediate_mode = "1"
 
-    def __init__(self, intcode, copy=True):
-        self.intcode = intcode.copy() if copy else intcode
+    def __init__(self, intcode, silent=True, feedback_mode=False):
+        self.original_intcode = intcode.copy()
+        self.intcode = self.original_intcode.copy()
+        self.silent = silent
+        self.feedback_mode = feedback_mode
+        self.inputs = []
         self.pointer = 0
         self.params = ""
         self.opcodes = {
@@ -16,16 +20,31 @@ class IntcodeComputer:
             7: self.less_than,
             8: self.equals
         }
+        self.out_value = None
+        self.has_halted = False
 
-    def run(self):
+    def run(self, *inputs):
+        if not self.feedback_mode:
+            self.reset()
+        self.inputs = list(reversed(inputs))
         while True:
             instruction = str(self.intcode[self.pointer])
             opcode = int(instruction[-2:])
             self.params = instruction[-3::-1]
             if opcode == 99:
+                self.has_halted = True
                 break
             else:
                 self.opcodes[opcode]()
+                if self.feedback_mode and opcode == 4:
+                    break
+        return self.out_value
+
+    def reset(self):
+        self.intcode = self.original_intcode.copy()
+        self.pointer = 0
+        self.out_value = None
+        self.has_halted = False
 
     def get_values(self, n):
         self.params = self.params.ljust(n, "0")
@@ -54,17 +73,13 @@ class IntcodeComputer:
 
     def read(self):
         target_position = self.intcode[self.pointer + 1]
-        while True:
-            try:
-                value = int(input("Enter an integer: "))
-                break
-            except ValueError:
-                print("Not an integer. Try again.")
-        self.intcode[target_position] = value
+        self.intcode[target_position] = self.inputs.pop()
         self.pointer += 2
 
     def print(self):
-        print(self.get_values(1)[0])
+        self.out_value = self.get_values(1)[0]
+        if not self.silent:
+            print(self.out_value)
         self.pointer += 2
 
     def jump_if_true(self):

@@ -1,6 +1,8 @@
 # https://adventofcode.com/2019/day/2
 
 
+import itertools
+
 from intcode import IntcodeComputer
 
 
@@ -18,15 +20,9 @@ print(computer.intcode[0])  # 3101844
 
 # part 2
 target = 19690720
-for noun in range(100):
-    for verb in range(100):
-        program[1] = noun
-        program[2] = verb
-        computer = IntcodeComputer(program)
-        computer.run()
-        if computer.intcode[0] == target:
-            break
-    else:
-        continue
-    break
+for noun, verb in itertools.product(range(100), repeat=2):
+    computer.original_intcode[1:3] = [noun, verb]
+    computer.run()
+    if computer.intcode[0] == target:
+        break
 print(100 * noun + verb)  # 8478
