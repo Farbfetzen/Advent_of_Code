@@ -2,6 +2,8 @@
 
 
 import math
+import collections
+
 
 with open("day_08_input.txt") as file:
     transmission = [int(i) for i in file.read().strip()]
@@ -23,9 +25,8 @@ for layer in layers:
     if n_zero_current < n_zero:
         n_zero = n_zero_current
         layer_with_fewest_0 = layer
-n_1 = len([i for i in layer_with_fewest_0 if i == 1])
-n_2 = len([i for i in layer_with_fewest_0 if i == 2])
-print(n_1 * n_2)  # 2520
+c = collections.Counter(layer_with_fewest_0)
+print(c[1] * c[2])  # 2520
 
 # part 2:
 visible = []
