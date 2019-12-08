@@ -1,5 +1,7 @@
 # https://adventofcode.com/2019/day/8
 
+# TODO: Use numpy arrays for the layers instead of nested lists.
+
 
 import math
 import collections
