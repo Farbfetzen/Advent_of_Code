@@ -9,7 +9,7 @@ from intcode import IntcodeComputer
 def build_amps(code, feedback_mode=False, n=5):
     amps = []
     for i in range(n):
-        amps.append(IntcodeComputer(code, feedback_mode=feedback_mode))
+        amps.append(IntcodeComputer(code, True, feedback_mode))
     return amps
 
 

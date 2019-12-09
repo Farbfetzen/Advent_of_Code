@@ -2,7 +2,7 @@ class IntcodeComputer:
     position_mode = "0"
     immediate_mode = "1"
 
-    def __init__(self, intcode, silent=True, feedback_mode=False):
+    def __init__(self, intcode, silent=False, feedback_mode=False):
         self.original_intcode = intcode.copy()
         self.intcode = self.original_intcode.copy()
         self.silent = silent
