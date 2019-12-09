@@ -1,14 +1,15 @@
-class IntcodeComputer:
-    position_mode = "0"
-    immediate_mode = "1"
+from defaultlist import defaultlist
 
+
+class IntcodeComputer:
     def __init__(self, intcode, silent=False, feedback_mode=False):
-        self.original_intcode = intcode.copy()
+        self.original_intcode = defaultlist(lambda: 0) + intcode
         self.intcode = self.original_intcode.copy()
         self.silent = silent
         self.feedback_mode = feedback_mode
         self.inputs = None
         self.pointer = 0
+        self.relative_base = 0
         self.params = ""
         self.opcodes = {
             1: self.add,
@@ -18,7 +19,8 @@ class IntcodeComputer:
             5: self.jump_if_true,
             6: self.jump_if_false,
             7: self.less_than,
-            8: self.equals
+            8: self.equals,
+            9: self.adjust_relative_base
         }
         self.out_value = None
         self.has_halted = False
@@ -27,6 +29,7 @@ class IntcodeComputer:
         if reset:
             self.intcode = self.original_intcode.copy()
             self.pointer = 0
+            self.relative_base = 0
             self.out_value = None
             self.has_halted = False
         if inputs is not None:
@@ -45,66 +48,65 @@ class IntcodeComputer:
                     break
         return self.out_value
 
-    def get_values(self, n):
+    def get_indices(self, n):
         self.params = self.params.ljust(n, "0")
-        values = []
+        indices = []
         for i, p in enumerate(self.params):
-            if p == self.position_mode:
+            if p == "0":  # position_mode
                 position = self.intcode[self.pointer + i + 1]
-            elif p == self.immediate_mode:
+            elif p == "1":  # immediate_mode
                 position = self.pointer + i + 1
+            elif p == "2":  # relative_mode
+                position = self.intcode[self.pointer + i + 1] + self.relative_base
             else:
                 raise ValueError(f"unknown parameter mode: {p}")
-            values.append(self.intcode[position])
-        return values
+            indices.append(position)
+        return indices
 
     def add(self):
-        target_position = self.intcode[self.pointer + 3]
-        values = self.get_values(2)
-        self.intcode[target_position] = sum(values)
+        a, b, target = self.get_indices(3)
+        self.intcode[target] = self.intcode[a] + self.intcode[b]
         self.pointer += 4
 
     def mult(self):
-        target_position = self.intcode[self.pointer + 3]
-        values = self.get_values(2)
-        self.intcode[target_position] = values[0] * values[1]
+        a, b, target = self.get_indices(3)
+        self.intcode[target] = self.intcode[a] * self.intcode[b]
         self.pointer += 4
 
     def read(self):
-        target_position = self.intcode[self.pointer + 1]
-        self.intcode[target_position] = self.inputs.pop()
+        self.intcode[self.get_indices(1)[0]] = self.inputs.pop()
         self.pointer += 2
 
     def print(self):
-        self.out_value = self.get_values(1)[0]
+        self.out_value = self.intcode[self.get_indices(1)[0]]
         if not self.silent:
             print(self.out_value)
         self.pointer += 2
 
     def jump_if_true(self):
-        values = self.get_values(2)
-        if values[0] != 0:
-            self.pointer = values[1]
+        i, target = self.get_indices(2)
+        if self.intcode[i] != 0:
+            self.pointer = self.intcode[target]
         else:
             self.pointer += 3
 
     def jump_if_false(self):
-        values = self.get_values(2)
-        if values[0] == 0:
-            self.pointer = values[1]
+        i, target = self.get_indices(2)
+        if self.intcode[i] == 0:
+            self.pointer = self.intcode[target]
         else:
             self.pointer += 3
 
     def less_than(self):
-        values = self.get_values(2)
-        output = int(values[0] < values[1])
-        target_position = self.intcode[self.pointer + 3]
-        self.intcode[target_position] = output
+        a, b, target = self.get_indices(3)
+        self.intcode[target] = int(self.intcode[a] < self.intcode[b])
         self.pointer += 4
 
     def equals(self):
-        values = self.get_values(2)
-        output = int(values[0] == values[1])
-        target_position = self.intcode[self.pointer + 3]
-        self.intcode[target_position] = output
+        a, b, target = self.get_indices(3)
+        self.intcode[target] = int(self.intcode[a] == self.intcode[b])
         self.pointer += 4
+
+    def adjust_relative_base(self):
+        self.relative_base += self.intcode[self.get_indices(1)[0]]
+        self.pointer += 2
