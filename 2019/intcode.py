@@ -14,13 +14,14 @@ class IntcodeComputer:
         self.out_value = None
         self.has_halted = False
 
-    def run(self, inputs=None, reset=True):
-        if reset:
-            self.intcode = self.original_intcode.copy()
-            self.pointer = 0
-            self.relative_base = 0
-            self.out_value = None
-            self.has_halted = False
+    def reset(self):
+        self.intcode = self.original_intcode.copy()
+        self.pointer = 0
+        self.relative_base = 0
+        self.out_value = None
+        self.has_halted = False
+
+    def run(self, inputs=None):
         if inputs is not None:
             # reverse input because popping from the right end is better
             self.inputs = list(reversed(inputs))

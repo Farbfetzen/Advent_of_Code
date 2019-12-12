@@ -10,4 +10,5 @@ computer = IntcodeComputer(program)
 # Part 1:
 computer.run([1])  # a bunch of zeros and then 9006673
 # Part 2:
+computer.reset()
 computer.run([5])  # 3629692

@@ -8,7 +8,7 @@ from intcode import IntcodeComputer
 
 def build_amps(code, feedback_mode=False, n=5):
     amps = []
-    for i in range(n):
+    for _ in range(n):
         amps.append(IntcodeComputer(code, True, feedback_mode))
     return amps
 
@@ -17,10 +17,11 @@ def test_phase_setting(amps, phases):
     assert len(amps) == len(phases)
     signal = 0
     for amp, phase in zip(amps, phases):
+        amp.reset()
         signal = amp.run([phase, signal])
     while not amps[-1].has_halted:
         for amp in amps:
-            signal = amp.run([signal], False)
+            signal = amp.run([signal])
     return signal
 
 

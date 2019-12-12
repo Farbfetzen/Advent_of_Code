@@ -23,6 +23,7 @@ target = 19690720
 for noun, verb in itertools.product(range(100), repeat=2):
     computer.original_intcode[1] = noun
     computer.original_intcode[2] = verb
+    computer.reset()
     computer.run()
     if computer.intcode[0] == target:
         break
