@@ -1,6 +1,15 @@
 from defaultlist import defaultlist
 
 
+# FIXME: The computer should not return out_value when it halts. Only return a number via opcode 4.
+#        Let the daily scripts handle the returned None upon halting.
+#        This will probably fix the stray white pixel in day 9 part 2.
+#        It may also help avoiding future problems.
+#        This also means that every time output is expected from run() the output
+#        should be tested if it is None.
+raise Exception("Fix the computer first")
+
+
 class IntcodeComputer:
     def __init__(self, intcode, silent=False, feedback_mode=False):
         self.original_intcode = defaultlist(lambda: 0) + intcode
