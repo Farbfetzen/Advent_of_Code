@@ -26,9 +26,6 @@ x_period <- NA
 y_period <- NA
 z_period <- NA
 
-moon_pairs <- t(combn(1:4, 2))
-n_pairs <- nrow(moon_pairs)
-
 pos <- 1:3
 vel <- 4:6
 n_energy <- 1000
@@ -37,15 +34,15 @@ while (TRUE) {
     i <- i + 1
 
     # apply gravity
-    for (p in seq_len(n_pairs)) {
-        a <- moon_pairs[p, 1]
-        b <- moon_pairs[p, 2]
-        a_greater_b <- moons[a, pos] > moons[b, pos]
-        b_greater_a <- moons[b, pos] > moons[a, pos]
-        moons[a, vel][a_greater_b] <- moons[a, vel][a_greater_b] - 1
-        moons[b, vel][a_greater_b] <- moons[b, vel][a_greater_b] + 1
-        moons[a, vel][b_greater_a] <- moons[a, vel][b_greater_a] + 1
-        moons[b, vel][b_greater_a] <- moons[b, vel][b_greater_a] - 1
+    for (a in 1:3) {
+        for (b in (a+1):4) {
+            a_greater_b <- moons[a, pos] > moons[b, pos]
+            b_greater_a <- moons[b, pos] > moons[a, pos]
+            moons[a, vel][a_greater_b] <- moons[a, vel][a_greater_b] - 1
+            moons[b, vel][a_greater_b] <- moons[b, vel][a_greater_b] + 1
+            moons[a, vel][b_greater_a] <- moons[a, vel][b_greater_a] + 1
+            moons[b, vel][b_greater_a] <- moons[b, vel][b_greater_a] - 1
+        }
     }
 
     # apply velocity
