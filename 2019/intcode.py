@@ -1,95 +1,93 @@
 from defaultlist import defaultlist
 
 
-# FIXME: The computer should not return out_value when it halts. Only return a number via opcode 4.
-#        Let the daily scripts handle the returned None upon halting.
-#        This will probably fix the stray white pixel in day 9 part 2.
-#        It may also help avoiding future problems.
-#        This also means that every time output is expected from run() the output
-#        should be tested if it is None.
-raise Exception("Fix the computer first")
-
-
 class IntcodeComputer:
     def __init__(self, intcode, silent=False, feedback_mode=False):
-        self.original_intcode = defaultlist(lambda: 0) + intcode
+        self.original_intcode = defaultlist(lambda: 0)
+        self.original_intcode.extend(intcode)
         self.intcode = self.original_intcode.copy()
         self.silent = silent
         self.feedback_mode = feedback_mode
         self.inputs = None
         self.pointer = 0
         self.relative_base = 0
-        self.params = []
-        self.out_value = None
         self.has_halted = False
 
     def reset(self):
         self.intcode = self.original_intcode.copy()
         self.pointer = 0
         self.relative_base = 0
-        self.out_value = None
         self.has_halted = False
+
+    def get_next_instruction(self):
+        instruction = str(self.intcode[self.pointer])
+        opcode = int(instruction[-2:])
+        params = [int(i) for i in instruction[-3::-1]]
+        return opcode, params
 
     def run(self, inputs=None):
         if inputs is not None:
             # reverse input because popping from the right end is better
             self.inputs = list(reversed(inputs))
+        out_value = None
         while True:
-            instruction = str(self.intcode[self.pointer])
-            opcode = int(instruction[-2:])
-            self.params = [int(i) for i in instruction[-3::-1]]
-            if opcode == 99:
-                self.has_halted = True
-                break
-            elif opcode == 1:  # add
-                a, b, target = self.get_indices(3)
+            opcode, params = self.get_next_instruction()
+            if opcode == 1:  # add
+                a, b, target = self.get_indices(params, 3)
                 self.intcode[target] = self.intcode[a] + self.intcode[b]
                 self.pointer += 4
             elif opcode == 2:  # mult
-                a, b, target = self.get_indices(3)
+                a, b, target = self.get_indices(params, 3)
                 self.intcode[target] = self.intcode[a] * self.intcode[b]
                 self.pointer += 4
             elif opcode == 3:  # read
-                self.intcode[self.get_indices(1)[0]] = self.inputs.pop()
+                self.intcode[self.get_indices(params, 1)[0]] = self.inputs.pop()
                 self.pointer += 2
             elif opcode == 4:  # print or return
-                self.out_value = self.intcode[self.get_indices(1)[0]]
+                out_value = self.intcode[self.get_indices(params, 1)[0]]
                 if not self.silent:
-                    print(self.out_value)
+                    print(out_value)
                 self.pointer += 2
+                if self.get_next_instruction()[0] == 99:
+                    # Return one step early to try to avoid returning None.
+                    self.has_halted = True
+                    break
                 if self.feedback_mode:
                     break
             elif opcode == 5:  # jump if True
-                i, target = self.get_indices(2)
+                i, target = self.get_indices(params, 2)
                 if self.intcode[i] != 0:
                     self.pointer = self.intcode[target]
                 else:
                     self.pointer += 3
             elif opcode == 6:  # jump if False
-                i, target = self.get_indices(2)
+                i, target = self.get_indices(params, 2)
                 if self.intcode[i] == 0:
                     self.pointer = self.intcode[target]
                 else:
                     self.pointer += 3
             elif opcode == 7:  # less than
-                a, b, target = self.get_indices(3)
+                a, b, target = self.get_indices(params, 3)
                 self.intcode[target] = int(self.intcode[a] < self.intcode[b])
                 self.pointer += 4
             elif opcode == 8:  # equals
-                a, b, target = self.get_indices(3)
+                a, b, target = self.get_indices(params, 3)
                 self.intcode[target] = int(self.intcode[a] == self.intcode[b])
                 self.pointer += 4
             elif opcode == 9:  # change relative base
-                self.relative_base += self.intcode[self.get_indices(1)[0]]
+                self.relative_base += self.intcode[self.get_indices(params, 1)[0]]
                 self.pointer += 2
+            elif opcode == 99:
+                self.has_halted = True
+                break
             else:
                 raise ValueError(f"invalid opcode: {opcode}")
-        return self.out_value
+        return out_value
 
-    def get_indices(self, n):
-        self.params += [0] * (n - len(self.params))
+    def get_indices(self, params, n):
+        params += [0] * (n - len(params))
         indices = []
-        for i, p in enumerate(self.params):
+        for i, p in enumerate(params):
             if p == 0:  # position_mode
                 position = self.intcode[self.pointer + i + 1]
             elif p == 1:  # immediate_mode

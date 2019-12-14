@@ -19,9 +19,12 @@ def test_phase_setting(amps, phases):
     for amp, phase in zip(amps, phases):
         amp.reset()
         signal = amp.run([phase, signal])
-    while not amps[-1].has_halted:
+    while not amps[0].has_halted:
         for amp in amps:
-            signal = amp.run([signal])
+            new_signal = amp.run([signal])
+            if new_signal is None:
+                break
+            signal = new_signal
     return signal
 
 

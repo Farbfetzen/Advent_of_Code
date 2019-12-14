@@ -19,6 +19,8 @@ def paint(starting_color):
     left_or_right = (-1, 1)
     while not robot.has_halted:
         panels[(x, y)] = robot.run([panels[(x, y)]])
+        if robot.has_halted:
+            break
         d_i = (d_i + left_or_right[robot.run()]) % 4
         x += dx[d_i]
         y += dy[d_i]
@@ -47,6 +49,10 @@ for k, v in image.items():
         registration[y, x] = " "
     elif v == 1:
         registration[y, x] = "#"
+    elif v == 7:
+        registration[y, x] = "X"
+    elif v == 8:
+        registration[y, x] = "Q"
 registration = np.flip(registration, 0)
 registration = np.apply_along_axis(
     lambda line: "".join(i for i in line),
