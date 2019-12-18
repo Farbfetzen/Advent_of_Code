@@ -5,7 +5,7 @@
 # walk forward and turn left. Only works if the maze has no loops.
 # If the droid reaches the origin again then all paths have been explored.
 # Works only if the origin is in a dead end, otherwise I would need more
-# conditions to detect this.
+# conditions to detect this?
 
 
 import os
@@ -33,30 +33,35 @@ origin = (20, 20)
 position = origin
 new_position = position
 status = 0
-oxygen_system_position = None
+found_oxygen_system = False
 world = {position: "walkable"}
 path = [position]
+contains_oxygen = set()
+check_neighbors = set()  # those have oxygen but their neighbors might not
+walkable = set()
 directions = (1, 4, 2, 3)  # turn clockwise
 dx = (0, 1, 0, -1)
 dy = (-1, 0, 1, 0)
+offsets = tuple(zip(dx, dy))
 directions_i = 0
 x_min = 0
 y_min = 0
 surfaces = {}
-for x in ("wall", "walkable", "droid", "origin", "oxygen_system", "path"):
+for x in ("wall", "walkable", "droid", "origin", "path", "oxygen"):
     surfaces[x] = pg.Surface((tile_size, tile_size))
 surfaces["wall"].fill(pg.Color("grey35"))
 surfaces["walkable"].fill(pg.Color("white"))
 surfaces["droid"].fill(pg.Color("firebrick"))
 surfaces["origin"].fill(pg.Color("orange"))
-surfaces["oxygen_system"].fill(pg.Color("purple"))
-surfaces["path"].fill(pg.Color("deepskyblue"))
+surfaces["path"].fill(pg.Color("lightgreen"))
+surfaces["oxygen"].fill(pg.Color("deepskyblue"))
 background_color = pg.Color("black")
 fully_explored = False
+oxygen_minutes = 0
 running = True
 clock = pg.time.Clock()
 while running:
-    clock.tick(20000)
+    clock.tick(60)
     for event in pg.event.get():
         if event.type == pg.QUIT or \
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
@@ -67,6 +72,7 @@ while running:
                         position[1] + dy[directions_i])
         if new_position == origin:
             fully_explored = True
+            walkable = {k for k, v in world.items() if v == "walkable"}
 
         status = droid.run([directions[directions_i]])
         if status == 0:
@@ -74,20 +80,35 @@ while running:
             world[new_position] = "wall"
         elif status == 1 or status == 2:
             if new_position in world:
-                if oxygen_system_position is None:
+                if not found_oxygen_system:
                     path.pop()
             else:
-                if status == 1:
-                    world[new_position] = "walkable"
-                else:
-                    world[new_position] = "oxygen_system"
-                    oxygen_system_position = new_position
-                if oxygen_system_position is None:
+                world[new_position] = "walkable"
+                if status == 2:
+                    contains_oxygen.add(new_position)
+                    check_neighbors.add(new_position)
+                    found_oxygen_system = True
+                if not found_oxygen_system:
                     path.append(new_position)
             directions_i = (directions_i - 1) % 4
             position = new_position
         x_min = min(x_min, position[0])
         y_min = min(y_min, position[1])
+    else:
+        oxygen_minutes += 1
+        new_check_neighbors = set()
+        while check_neighbors:
+            pos = check_neighbors.pop()
+            for o in offsets:
+                neighbor = (pos[0] + o[0], pos[1] + o[1])
+                if world.get(neighbor) == "walkable" and \
+                        neighbor not in contains_oxygen and \
+                        neighbor not in new_check_neighbors:
+                    contains_oxygen.add(neighbor)
+                    new_check_neighbors.add(neighbor)
+        check_neighbors = new_check_neighbors
+        if contains_oxygen == walkable:
+            running = False
 
     window.fill(background_color)
     for pos, pos_type in world.items():
@@ -95,21 +116,28 @@ while running:
             surfaces[pos_type],
             (pos[0] * tile_size, pos[1] * tile_size)
         )
-    for p in path:
+    for pos in path:
         window.blit(
             surfaces["path"],
-            (p[0] * tile_size, p[1] * tile_size)
+            (pos[0] * tile_size, pos[1] * tile_size)
         )
     window.blit(
         surfaces["droid"],
         (position[0] * tile_size, position[1] * tile_size)
     )
+    for pos in contains_oxygen:
+        window.blit(
+            surfaces["oxygen"],
+            (pos[0] * tile_size, pos[1] * tile_size)
+        )
     window.blit(
         surfaces["origin"],
         (origin[0] * tile_size, origin[1] * tile_size)
     )
-
     pg.display.flip()
 
 # part 1:
 print(len(path))  # 330
+
+# part 2:
+print(oxygen_minutes)  # 352
