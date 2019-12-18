@@ -3,7 +3,7 @@ from defaultlist import defaultlist
 
 class IntcodeComputer:
     def __init__(self, intcode, silent=False, feedback_mode=False):
-        self.original_intcode = defaultlist(lambda: 0)
+        self.original_intcode = defaultlist(int)
         self.original_intcode.extend(intcode)
         self.intcode = self.original_intcode.copy()
         self.silent = silent
