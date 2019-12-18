@@ -48,11 +48,7 @@ for k, v in image.items():
     if v == 0:
         registration[y, x] = " "
     elif v == 1:
-        registration[y, x] = "#"
-    elif v == 7:
-        registration[y, x] = "X"
-    elif v == 8:
-        registration[y, x] = "Q"
+        registration[y, x] = "█"
 registration = np.flip(registration, 0)
 registration = np.apply_along_axis(
     lambda line: "".join(i for i in line),

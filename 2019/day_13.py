@@ -39,28 +39,27 @@ arcade.intcode[0] = 2
 tile_size = 20
 os.environ["SDL_VIDEO_CENTERED"] = "1"
 pg.init()
-screen = pg.display.set_mode((
-    x_max * tile_size + tile_size,
-    y_max * tile_size + tile_size)
-)
-colors = [
-    pg.Color("black"),        # background
-    pg.Color("gray30"),       # wall
-    pg.Color("forestgreen"),  # block
-    pg.Color("orange"),       # paddle
-    pg.Color("firebrick")     # ball
-]
 score = 0
 paddle_x = -1
 ball_x = -1
-font = pg.font.Font(None, 30)
-score_surf = font.render(str(score), False, colors[4], colors[0])
-score_rect = score_surf.get_rect(centerx=screen.get_rect().centerx)
+show = False
+if show:
+    screen = pg.display.set_mode((
+        x_max * tile_size + tile_size,
+        y_max * tile_size + tile_size)
+    )
+    colors = [
+        pg.Color("black"),        # background
+        pg.Color("gray30"),       # wall
+        pg.Color("forestgreen"),  # block
+        pg.Color("orange"),       # paddle
+        pg.Color("firebrick")     # ball
+    ]
+    font = pg.font.Font(None, 30)
+    score_surf = font.render(str(score), False, colors[4], colors[0])
+    score_rect = score_surf.get_rect(centerx=screen.get_rect().centerx)
 running = True
-clock = pg.time.Clock()
 while running:
-    clock.tick(1000)
-
     joystick_pos = 0
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -76,33 +75,33 @@ while running:
         joystick_pos = -1
 
     x = arcade.run([joystick_pos])
-    y = arcade.run([joystick_pos])
-    tile = arcade.run([joystick_pos])
-    if any([x is None, y is None, tile is None]):
+    y = arcade.run()
+    tile = arcade.run()
+    if x is None or y is None or tile is None:
         break
     if x == -1 and y == 0:
         score = tile
-        score_surf = font.render(str(score), False, colors[4], colors[0])
-        score_rect = score_surf.get_rect(centerx=screen.get_rect().centerx)
-        assert score_rect.centerx == screen.get_rect().centerx
+        if show:
+            score_surf = font.render(str(score), False, colors[4], colors[0])
+            score_rect = score_surf.get_rect(centerx=screen.get_rect().centerx)
     else:
         if tile == 3:
             paddle_x = x
         elif tile == 4:
             ball_x = x
-        pg.draw.rect(
-            screen,
-            colors[tile],
-            pg.Rect(
-                x * tile_size,
-                y * tile_size,
-                tile_size,
-                tile_size
+        if show:
+            pg.draw.rect(
+                screen,
+                colors[tile],
+                pg.Rect(
+                    x * tile_size,
+                    y * tile_size,
+                    tile_size,
+                    tile_size
+                )
             )
-        )
-
-    screen.blit(score_surf, score_rect)
-
-    pg.display.flip()
+    if show:
+        screen.blit(score_surf, score_rect)
+        pg.display.flip()
 
 print(score)  # 13989
