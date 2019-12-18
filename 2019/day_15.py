@@ -18,9 +18,9 @@ from intcode import IntcodeComputer
 
 os.environ["SDL_VIDEO_CENTERED"] = "1"
 pg.init()
-# I know from previous runs that the maze is 40 tiles wide and high,
+# I know from previous runs that the maze is 41 tiles wide and high,
 # so a tile size of 15 fits nicely into a 600 by 600 window.
-window = pg.display.set_mode((600, 600))
+window = pg.display.set_mode((615, 615))
 tile_size = 15
 
 with open("day_15_input.txt", "r") as file:
@@ -29,7 +29,7 @@ with open("day_15_input.txt", "r") as file:
 droid = IntcodeComputer(code, True, True)
 # Set the origin to its final position learned from previous runs. This
 # prevents the maze from shifting around:
-origin = (20, 20)
+origin = (21, 21)
 position = origin
 new_position = position
 status = 0
@@ -49,13 +49,13 @@ y_min = 0
 surfaces = {}
 for x in ("wall", "walkable", "droid", "origin", "path", "oxygen"):
     surfaces[x] = pg.Surface((tile_size, tile_size))
-surfaces["wall"].fill(pg.Color("grey35"))
+surfaces["wall"].fill(pg.Color("grey10"))
 surfaces["walkable"].fill(pg.Color("white"))
 surfaces["droid"].fill(pg.Color("firebrick"))
 surfaces["origin"].fill(pg.Color("orange"))
 surfaces["path"].fill(pg.Color("lightgreen"))
 surfaces["oxygen"].fill(pg.Color("deepskyblue"))
-background_color = pg.Color("black")
+background_color = pg.Color("grey50")
 fully_explored = False
 oxygen_minutes = 0
 running = True
