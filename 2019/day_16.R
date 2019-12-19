@@ -1,10 +1,7 @@
 # https://adventofcode.com/2019/day/16
 
 
-# Part 2 is messed up. Need to read more of the comments on Reddit.
-
-
-fft <- function(signal, n = 100) {
+fft_1 <- function(signal, n = 100) {
     base_pattern <- c(1, 0, -1, 0)
     output_signal <- numeric(length(signal))
     for (n_ in seq_len(n)) {
@@ -15,54 +12,33 @@ fft <- function(signal, n = 100) {
         }
         signal <- output_signal
     }
-    signal
+    signal[1:8]
 }
 
-# fft2 <- function(signal, n = 100) {
-#     base_pattern <- c(1, 0, -1, 0)
-#     output_signal <- numeric(length(signal))
-#     for (n_ in seq_len(n)) {
-#         for (i in seq_along(signal)) {
-#             pattern <- rep(base_pattern, each = i, length.out = length(signal))
-#             a <- sum(signal[pattern == 1]) - sum(signal[pattern == -1])
-#             output_signal[i] <- abs(sum(signal * pattern)) %% 10
-#             signal <- signal[-1]
-#         }
-#         signal <- output_signal
-#     }
-#     signal
-# }
+
+fft_2 <- function(signal, n = 100) {
+    # Took me a long time but then I saw the light with the help of
+    # the nice people in this thread:
+    # https://www.reddit.com/r/adventofcode/comments/ebf5cy/2019_day_16_part_2_understanding_how_to_come_up
+    # Only works if the message is in the second half of the signal.
+    offset <- as.numeric(paste(signal[1:7], collapse = ""))
+    signal <- rep(signal, 1e4)
+    len <- length(signal)
+    stopifnot(offset >= len / 2)
+    signal <- signal[len:(offset+1)]
+    for (n_ in seq_len(n)) {
+        signal <- cumsum(signal) %% 10
+    }
+    len <- length(signal)
+    signal[len:(len-7)]
+}
 
 
 signal <- readLines("2019/day_16_input.txt")
 signal <- as.numeric(strsplit(signal, "")[[1]])
 
-#part_1:
-part_1 <- fft2(signal, 100)[1:8]
-print(paste(part_1, collapse = ""))  # 74608727
+# part 1:
+cat(fft_1(signal), sep = "")  # 74608727
 
-
-library(microbenchmark)
-microbenchmark(
-    fft(rep(signal, 1)),
-    fft2(rep(signal, 1)),
-    check = "identical",
-    times = 5
-)
-
-t <- c(0.7, 2.7, 5.8, 10, 15.7)
-x <- 1:5
-plot(x, t)
-mod <- lm(t~x)
-abline(mod)
-predict(mod, data.frame(x = 1e4))
-
-# part_2 <- fft(rep(signal, 1e4), 1)
-
-
-microbenchmark(
-    sum(signal[pattern == 1]) - sum(signal[pattern == -1]),
-    sum(signal * pattern),
-    check = "identical"
-)
-
+# part 2:
+cat(fft_2(signal), sep = "")  # 57920757
