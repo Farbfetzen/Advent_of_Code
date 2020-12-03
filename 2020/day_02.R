@@ -4,20 +4,20 @@
 library(stringr)
 
 
-input = strsplit(readLines("2020/day_02_input.txt"), " ")
-low_high = strsplit(sapply(input, function(x) x[1]), "-")
-low = as.integer(sapply(low_high, function(x) x[1]))
-high = as.integer(sapply(low_high, function(x) x[2]))
-char = sub(":", "", sapply(input, function(x) x[2][1]))
-password = sapply(input, function(x) x[3])
+input <- strsplit(readLines("2020/day_02_input.txt"), " ")
+low_high <- strsplit(sapply(input, function(x) x[1]), "-")
+low <- as.integer(sapply(low_high, function(x) x[1]))
+high <- as.integer(sapply(low_high, function(x) x[2]))
+char <- sub(":", "", sapply(input, function(x) x[2][1]))
+password <- sapply(input, function(x) x[3])
 
 
 # part 1
-count = str_count(password, char)
+count <- str_count(password, char)
 sum(low <= count & count <= high)  # 434
 
 
 # part 2
-a = substr(password, low, low) == char
-b = substr(password, high, high) == char
+a <- substr(password, low, low) == char
+b <- substr(password, high, high) == char
 sum(xor(a, b))  # 509

@@ -3,8 +3,8 @@
 
 part_1 <- function(data) {
     for (i in seq_along(data)) {
-        x = data[i]
-        y = 2020 - x
+        x <- data[i]
+        y <- 2020 - x
         if (y %in% tail(data, -i)) {
             return(x * y)
         }
@@ -13,12 +13,12 @@ part_1 <- function(data) {
 
 
 part_2 <- function(data) {
-    n = length(data)
+    n <- length(data)
     for (i in seq_len(n)) {
-        x = data[i]
+        x <- data[i]
         for (j in seq(i + 1, n)) {
-            y = data[j]
-            z = 2020 - x - y
+            y <- data[j]
+            z <- 2020 - x - y
             if (z %in% tail(data, -j)) {
                 return(x * y * z)
             }
@@ -27,6 +27,6 @@ part_2 <- function(data) {
 }
 
 
-expenses = as.integer(readLines("2020/day_01_input.txt"))
+expenses <- as.integer(readLines("2020/day_01_input.txt"))
 print(part_1(expenses))  # 436404
 print(part_2(expenses))  # 274879808
