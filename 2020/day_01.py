@@ -1,3 +1,6 @@
+# https://adventofcode.com/2020/day/1
+
+
 def part_1(data):
     for i, x in enumerate(data):
         y = 2020 - x
