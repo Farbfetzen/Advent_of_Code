@@ -8,11 +8,11 @@ def convert_input(data_str):
     data = []
     for line in data_str.splitlines():
         entry = line.split()
-        rules = entry[0].split("-")
+        i, j = entry[0].split("-")
         data.append(PasswordEntry(
-            int(rules[0]),
-            int(rules[1]),
-            entry[1].replace(":", ""),
+            int(i),
+            int(j),
+            entry[1][0],
             entry[2]
         ))
     return data
@@ -26,14 +26,9 @@ def part_1(data):
 def part_2(data):
     sum_ = 0
     for entry in data:
-        i = entry.min - 1
-        j = entry.max - 1
-        n = len(entry.password)
-        if i > n or j > n:
-            continue
-        letter_in_pos_i = entry.password[i] == entry.letter
-        letter_in_pos_j = entry.password[j] == entry.letter
-        if letter_in_pos_i != letter_in_pos_j:
+        a = entry.password[entry.min - 1] == entry.letter
+        b = entry.password[entry.max - 1] == entry.letter
+        if a ^ b:
             sum_ += 1
     return sum_
 
