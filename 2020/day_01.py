@@ -2,22 +2,29 @@
 
 
 def part_1(data):
-    for i, x in enumerate(data):
+    # Add numbers to the set after checking to avoid possible error
+    # if the data contains 1010.
+    data_set = set()
+    for x in data:
         y = 2020 - x
-        if y in data[(i+1):]:
+        if y in data_set:
             return x * y
+        data_set.add(x)
 
 
 def part_2(data):
+    data_set = set()
     for i, x in enumerate(data):
         for j, y in enumerate(data[(i+1):]):
             z = 2020 - x - y
-            if z in data[(i+j):]:
+            if z in data_set:
                 return x * y * z
+            data_set.add(x)
+            data_set.add(y)
 
 
 test_data = (1721, 979, 366, 299, 675, 1456)
-assert part_1(test_data) == 514579
+assert part_1(set(test_data)) == 514579
 assert part_2(test_data) == 241861950
 
 
