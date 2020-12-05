@@ -11,15 +11,14 @@ def convert_input(input_str):
 def check_slope(data, slope):
     width = len(data[0])
     height = len(data)
-    x = 0
-    y = 0
     right, down = slope
+    x = right % width
+    y = down
     n_trees = 0
-    n_steps = height // down - 1
-    for _ in range(n_steps):
+    while y < height:
+        n_trees += data[y][x]
         x = (x + right) % width
         y += down
-        n_trees += data[y][x]
     return n_trees
 
 
