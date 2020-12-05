@@ -3,98 +3,128 @@ from defaultlist import defaultlist
 
 class IntcodeComputer:
     def __init__(self, intcode, silent=False, feedback_mode=False):
-        self.original_intcode = defaultlist(int)
-        self.original_intcode.extend(intcode)
-        self.intcode = self.original_intcode.copy()
+        self.intcode = defaultlist(int)
+        self.intcode.extend(intcode)
+        self.original_intcode = self.intcode.copy()
         self.silent = silent
         self.feedback_mode = feedback_mode
         self.inputs = None
         self.pointer = 0
         self.relative_base = 0
         self.has_halted = False
+        self.is_paused = False
+        self.out_value = None
+        self.get_position = (
+            self.get_position_in_position_mode,
+            self.get_position_in_immediate_mode,
+            self.get_position_in_relative_mode
+        )
+        self.opcode_methods = {
+            1: self.add,
+            2: self.multiply,
+            3: self.read,
+            4: self.print_and_or_pause,
+            5: self.jump_if_true,
+            6: self.jump_if_false,
+            7: self.less_than,
+            8: self.equals,
+            9: self.change_relative_base,
+            99: self.halt
+        }
 
     def reset(self):
         self.intcode = self.original_intcode.copy()
         self.pointer = 0
         self.relative_base = 0
         self.has_halted = False
+        self.is_paused = False
+        self.out_value = None
 
     def get_next_instruction(self):
         instruction = str(self.intcode[self.pointer])
         opcode = int(instruction[-2:])
-        params = [int(i) for i in instruction[-3::-1]]
-        return opcode, params
+        parameters = [int(i) for i in instruction[-3::-1]]
+        return opcode, parameters
 
     def run(self, inputs=None):
         if inputs is not None:
-            # reverse input because popping from the right end is better
+            # Reverse input because popping from the end is better.
             self.inputs = list(reversed(inputs))
-        out_value = None
-        while True:
-            opcode, params = self.get_next_instruction()
-            if opcode == 1:  # add
-                a, b, target = self.get_indices(params, 3)
-                self.intcode[target] = self.intcode[a] + self.intcode[b]
-                self.pointer += 4
-            elif opcode == 2:  # mult
-                a, b, target = self.get_indices(params, 3)
-                self.intcode[target] = self.intcode[a] * self.intcode[b]
-                self.pointer += 4
-            elif opcode == 3:  # read
-                self.intcode[self.get_indices(params, 1)[0]] = self.inputs.pop()
-                self.pointer += 2
-            elif opcode == 4:  # print or return
-                out_value = self.intcode[self.get_indices(params, 1)[0]]
-                if not self.silent:
-                    print(out_value)
-                self.pointer += 2
-                if self.get_next_instruction()[0] == 99:
-                    # Return one step early to try to avoid returning None.
-                    self.has_halted = True
-                    break
-                if self.feedback_mode:
-                    break
-            elif opcode == 5:  # jump if True
-                i, target = self.get_indices(params, 2)
-                if self.intcode[i] != 0:
-                    self.pointer = self.intcode[target]
-                else:
-                    self.pointer += 3
-            elif opcode == 6:  # jump if False
-                i, target = self.get_indices(params, 2)
-                if self.intcode[i] == 0:
-                    self.pointer = self.intcode[target]
-                else:
-                    self.pointer += 3
-            elif opcode == 7:  # less than
-                a, b, target = self.get_indices(params, 3)
-                self.intcode[target] = int(self.intcode[a] < self.intcode[b])
-                self.pointer += 4
-            elif opcode == 8:  # equals
-                a, b, target = self.get_indices(params, 3)
-                self.intcode[target] = int(self.intcode[a] == self.intcode[b])
-                self.pointer += 4
-            elif opcode == 9:  # change relative base
-                self.relative_base += self.intcode[self.get_indices(params, 1)[0]]
-                self.pointer += 2
-            elif opcode == 99:
-                self.has_halted = True
-                break
-            else:
-                raise ValueError(f"invalid opcode: {opcode}")
-        return out_value
+        self.out_value = None
+        self.is_paused = False
+        while not (self.has_halted or self.is_paused):
+            opcode, parameters = self.get_next_instruction()
+            self.opcode_methods[opcode](parameters)
+        return self.out_value
 
-    def get_indices(self, params, n):
-        params += [0] * (n - len(params))
-        indices = []
-        for i, p in enumerate(params):
-            if p == 0:  # position_mode
-                position = self.intcode[self.pointer + i + 1]
-            elif p == 1:  # immediate_mode
-                position = self.pointer + i + 1
-            elif p == 2:  # relative_mode
-                position = self.intcode[self.pointer + i + 1] + self.relative_base
-            else:
-                raise ValueError(f"unknown parameter mode: {p}")
-            indices.append(position)
-        return indices
+    def get_positions(self, parameters, n):
+        parameters += [0] * (n - len(parameters))
+        positions = []
+        for pos, param in enumerate(parameters):
+            positions.append(self.get_position[param](pos))
+        return positions
+
+    def get_position_in_position_mode(self, position):
+        return self.intcode[self.pointer + position + 1]
+
+    def get_position_in_immediate_mode(self, position):
+        return self.pointer + position + 1
+
+    def get_position_in_relative_mode(self, position):
+        return self.intcode[self.pointer + position + 1] + self.relative_base
+
+    def add(self, parameters):
+        a, b, target = self.get_positions(parameters, 3)
+        self.intcode[target] = self.intcode[a] + self.intcode[b]
+        self.pointer += 4
+
+    def multiply(self, parameters):
+        a, b, target = self.get_positions(parameters, 3)
+        self.intcode[target] = self.intcode[a] * self.intcode[b]
+        self.pointer += 4
+
+    def read(self, parameters):
+        position = self.get_positions(parameters, 1)[0]
+        self.intcode[position] = self.inputs.pop()
+        self.pointer += 2
+
+    def print_and_or_pause(self, parameters):
+        position = self.get_positions(parameters, 1)[0]
+        self.out_value = self.intcode[position]
+        if not self.silent:
+            print(self.out_value)
+        if self.feedback_mode:
+            self.is_paused = True
+        self.pointer += 2
+
+    def jump_if_true(self, parameters):
+        position, target = self.get_positions(parameters, 2)
+        if self.intcode[position]:
+            self.pointer = self.intcode[target]
+        else:
+            self.pointer += 3
+
+    def jump_if_false(self, parameters):
+        position, target = self.get_positions(parameters, 2)
+        if self.intcode[position] == 0:
+            self.pointer = self.intcode[target]
+        else:
+            self.pointer += 3
+
+    def less_than(self, parameters):
+        a, b, target = self.get_positions(parameters, 3)
+        self.intcode[target] = int(self.intcode[a] < self.intcode[b])
+        self.pointer += 4
+
+    def equals(self, parameters):
+        a, b, target = self.get_positions(parameters, 3)
+        self.intcode[target] = int(self.intcode[a] == self.intcode[b])
+        self.pointer += 4
+
+    def change_relative_base(self, parameters):
+        position = self.get_positions(parameters, 1)[0]
+        self.relative_base += self.intcode[position]
+        self.pointer += 2
+
+    def halt(self, parameters):
+        self.has_halted = True
