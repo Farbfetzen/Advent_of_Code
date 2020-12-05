@@ -5,7 +5,7 @@ import collections
 import os
 
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
-import pygame as pg
+import pygame
 
 from intcode import IntcodeComputer
 
@@ -37,36 +37,34 @@ arcade.reset()
 arcade.intcode[0] = 2
 
 tile_size = 20
-os.environ["SDL_VIDEO_CENTERED"] = "1"
-pg.init()
+pygame.init()
 score = 0
 paddle_x = -1
 ball_x = -1
-show = False
+show = False  # Keep False for faster testing.
 if show:
-    screen = pg.display.set_mode((
+    screen = pygame.display.set_mode((
         x_max * tile_size + tile_size,
         y_max * tile_size + tile_size)
     )
     colors = [
-        pg.Color("black"),        # background
-        pg.Color("gray30"),       # wall
-        pg.Color("forestgreen"),  # block
-        pg.Color("orange"),       # paddle
-        pg.Color("firebrick")     # ball
+        pygame.Color("black"),        # background
+        pygame.Color("gray30"),       # wall
+        pygame.Color("forestgreen"),  # block
+        pygame.Color("orange"),       # paddle
+        pygame.Color("firebrick")     # ball
     ]
-    font = pg.font.Font(None, 30)
+    font = pygame.font.Font(None, 30)
     score_surf = font.render(str(score), False, colors[4], colors[0])
     score_rect = score_surf.get_rect(centerx=screen.get_rect().centerx)
 running = True
 while running:
     joystick_pos = 0
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
             running = False
-        elif event.type == pg.KEYDOWN:
-            if event.key == pg.K_ESCAPE:
-                running = False
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            running = False
 
     # let the game play automatically
     if ball_x > paddle_x:
@@ -90,10 +88,10 @@ while running:
         elif tile == 4:
             ball_x = x
         if show:
-            pg.draw.rect(
+            pygame.draw.rect(
                 screen,
                 colors[tile],
-                pg.Rect(
+                pygame.Rect(
                     x * tile_size,
                     y * tile_size,
                     tile_size,
@@ -102,6 +100,6 @@ while running:
             )
     if show:
         screen.blit(score_surf, score_rect)
-        pg.display.flip()
+        pygame.display.flip()
 
 print(score)  # 13989
