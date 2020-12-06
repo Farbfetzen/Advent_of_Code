@@ -37,13 +37,13 @@ arcade.reset()
 arcade.intcode[0] = 2
 
 tile_size = 20
-pygame.init()
 score = 0
 paddle_x = -1
 ball_x = -1
-show = False  # Keep False for faster testing.
+show = False  # False for faster testing.
 if show:
-    screen = pygame.display.set_mode((
+    pygame.init()
+    display = pygame.display.set_mode((
         x_max * tile_size + tile_size,
         y_max * tile_size + tile_size)
     )
@@ -56,15 +56,16 @@ if show:
     ]
     font = pygame.font.Font(None, 30)
     score_surf = font.render(str(score), False, colors[4], colors[0])
-    score_rect = score_surf.get_rect(centerx=screen.get_rect().centerx)
+    score_rect = score_surf.get_rect(centerx=display.get_rect().centerx)
 running = True
 while running:
     joystick_pos = 0
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            running = False
+    if show:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
 
     # let the game play automatically
     if ball_x > paddle_x:
@@ -81,7 +82,7 @@ while running:
         score = tile
         if show:
             score_surf = font.render(str(score), False, colors[4], colors[0])
-            score_rect = score_surf.get_rect(centerx=screen.get_rect().centerx)
+            score_rect = score_surf.get_rect(centerx=display.get_rect().centerx)
     else:
         if tile == 3:
             paddle_x = x
@@ -89,7 +90,7 @@ while running:
             ball_x = x
         if show:
             pygame.draw.rect(
-                screen,
+                display,
                 colors[tile],
                 pygame.Rect(
                     x * tile_size,
@@ -99,7 +100,8 @@ while running:
                 )
             )
     if show:
-        screen.blit(score_surf, score_rect)
+        display.blit(score_surf, score_rect)
         pygame.display.flip()
+pygame.quit()
 
 print(score)  # 13989

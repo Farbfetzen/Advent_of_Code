@@ -11,22 +11,15 @@
 import os
 
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
-import pygame as pg
+import pygame
 
 from intcode import IntcodeComputer
 
 
-os.environ["SDL_VIDEO_CENTERED"] = "1"
-pg.init()
-# I know from previous runs that the maze is 41 tiles wide and high,
-# so a tile size of 15 fits nicely into a 600 by 600 window.
-window = pg.display.set_mode((615, 615))
-tile_size = 15
-
 with open("day_15_input.txt", "r") as file:
     code = [int(i) for i in file.read().split(",")]
-
 droid = IntcodeComputer(code, True, True)
+
 # Set the origin to its final position learned from previous runs. This
 # prevents the maze from shifting around:
 origin = (21, 21)
@@ -46,26 +39,35 @@ offsets = tuple(zip(dx, dy))
 directions_i = 0
 x_min = 0
 y_min = 0
-surfaces = {}
-for x in ("wall", "walkable", "droid", "origin", "path", "oxygen"):
-    surfaces[x] = pg.Surface((tile_size, tile_size))
-surfaces["wall"].fill(pg.Color("grey10"))
-surfaces["walkable"].fill(pg.Color("white"))
-surfaces["droid"].fill(pg.Color("firebrick"))
-surfaces["origin"].fill(pg.Color("orange"))
-surfaces["path"].fill(pg.Color("lightgreen"))
-surfaces["oxygen"].fill(pg.Color("deepskyblue"))
-background_color = pg.Color("grey50")
 fully_explored = False
 oxygen_minutes = 0
+
+show = False  # False for faster testing.
+if show:
+    pygame.init()
+    # I know from previous runs that the maze is 41 tiles wide and high,
+    # so a tile size of 15 fits nicely into a 600 by 600 window.
+    display = pygame.display.set_mode((615, 615))
+    tile_size = 15
+    colors = {
+        "wall": pygame.Color("grey10"),
+        "walkable": pygame.Color("white"),
+        "droid": pygame.Color("firebrick"),
+        "origin": pygame.Color("orange"),
+        "path": pygame.Color("lightgreen"),
+        "oxygen": pygame.Color("deepskyblue"),
+        "background": pygame.Color("grey50")
+    }
+    display.fill(colors["background"])
+
 running = True
-clock = pg.time.Clock()
 while running:
-    clock.tick(60)
-    for event in pg.event.get():
-        if event.type == pg.QUIT or \
-                event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-            running = False
+    if show:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
 
     if not fully_explored:
         new_position = (position[0] + dx[directions_i],
@@ -110,31 +112,37 @@ while running:
         if contains_oxygen == walkable:
             running = False
 
-    window.fill(background_color)
-    for pos, pos_type in world.items():
-        window.blit(
-            surfaces[pos_type],
-            (pos[0] * tile_size, pos[1] * tile_size)
+    if show:
+        for pos, pos_type in world.items():
+            pygame.draw.rect(
+                display,
+                colors[pos_type],
+                (pos[0] * tile_size, pos[1] * tile_size, tile_size, tile_size)
+            )
+        for pos in path:
+            pygame.draw.rect(
+                display,
+                colors["path"],
+                (pos[0] * tile_size, pos[1] * tile_size, tile_size, tile_size)
+            )
+        pygame.draw.rect(
+            display,
+            colors["droid"],
+            (position[0] * tile_size, position[1] * tile_size, tile_size, tile_size)
         )
-    for pos in path:
-        window.blit(
-            surfaces["path"],
-            (pos[0] * tile_size, pos[1] * tile_size)
+        for pos in contains_oxygen:
+            pygame.draw.rect(
+                display,
+                colors["oxygen"],
+                (pos[0] * tile_size, pos[1] * tile_size, tile_size, tile_size)
+            )
+        pygame.draw.rect(
+            display,
+            colors["origin"],
+            (origin[0] * tile_size, origin[1] * tile_size, tile_size, tile_size)
         )
-    window.blit(
-        surfaces["droid"],
-        (position[0] * tile_size, position[1] * tile_size)
-    )
-    for pos in contains_oxygen:
-        window.blit(
-            surfaces["oxygen"],
-            (pos[0] * tile_size, pos[1] * tile_size)
-        )
-    window.blit(
-        surfaces["origin"],
-        (origin[0] * tile_size, origin[1] * tile_size)
-    )
-    pg.display.flip()
+        pygame.display.flip()
+pygame.quit()
 
 # part 1:
 print(len(path))  # 330
