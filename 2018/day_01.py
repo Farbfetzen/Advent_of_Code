@@ -1,7 +1,7 @@
 # https://adventofcode.com/2018/day/1
 
 
-with open("day_01_input.txt", "r") as file:
+with open("day_01_input.txt") as file:
     changes = [int(i) for i in file.read().splitlines()]
 
 

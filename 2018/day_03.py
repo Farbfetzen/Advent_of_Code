@@ -5,7 +5,7 @@ import collections
 import re
 
 
-with open("day_03_input.txt", "r") as file:
+with open("day_03_input.txt") as file:
     claims = []
     pattern = re.compile(r"(\d+)")
     for line in file.read().splitlines():

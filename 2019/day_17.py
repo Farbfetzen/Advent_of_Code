@@ -6,7 +6,7 @@ import math
 from intcode import IntcodeComputer
 
 
-with open("day_17_input.txt", "r") as file:
+with open("day_17_input.txt") as file:
     code = [int(i) for i in file.read().split(",")]
 
 scaffold_mapper = IntcodeComputer(code, True, True)

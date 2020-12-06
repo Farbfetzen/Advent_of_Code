@@ -71,7 +71,7 @@ assert part_1(test2) == 135
 assert part_2(test2) == 410
 
 
-with open("day_03_input.txt", "r") as file:
+with open("day_03_input.txt") as file:
     day_03_input = file.read()
 
 print(part_1(day_03_input))  # 489

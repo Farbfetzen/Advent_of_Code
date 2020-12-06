@@ -15,7 +15,7 @@ assert get_seat_id("FFFBBBFRRR") == 119
 assert get_seat_id("BBFFBBFRLL") == 820
 
 
-with open("day_05_input.txt", "r") as file:
+with open("day_05_input.txt") as file:
     passes = file.read().splitlines()
 
 ids = [get_seat_id(p) for p in passes]

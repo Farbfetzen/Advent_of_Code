@@ -44,7 +44,7 @@ assert part_1(test_input) == 2
 assert part_2(test_input) == 1
 
 
-with open("day_02_input.txt", "r") as file:
+with open("day_02_input.txt") as file:
     password_entries = convert_input(file.read())
 
 print(part_1(password_entries))  # 434

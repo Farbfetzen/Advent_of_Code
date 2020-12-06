@@ -5,7 +5,7 @@ def calculate_fuel(mass):
     return max(mass // 3 - 2, 0)
 
 
-with open("day_01_input.txt", "r") as file:
+with open("day_01_input.txt") as file:
     masses = [int(i) for i in file.read().splitlines()]
 
 
@@ -14,7 +14,7 @@ total = 0
 for m in masses:
     total += calculate_fuel(m)
 
-print(total)
+print(total)  # 3223398
 
 
 # part 2
@@ -25,4 +25,4 @@ for m in masses:
         total += additional_fuel
         additional_fuel = calculate_fuel(additional_fuel)
 
-print(total)
+print(total)  # 4832253

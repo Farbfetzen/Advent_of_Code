@@ -4,7 +4,7 @@
 import collections
 
 
-with open("day_02_input.txt", "r") as file:
+with open("day_02_input.txt") as file:
     IDs = file.read().splitlines()
 
 

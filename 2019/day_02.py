@@ -6,7 +6,7 @@ import itertools
 from intcode import IntcodeComputer
 
 
-with open("day_02_input.txt", "r") as file:
+with open("day_02_input.txt") as file:
     program = [int(i) for i in file.read().split(",")]
 
 

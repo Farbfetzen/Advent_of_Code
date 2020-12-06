@@ -27,7 +27,7 @@ def paint(starting_color):
     return panels
 
 
-with open("day_11_input.txt", "r") as file:
+with open("day_11_input.txt") as file:
     program = [int(i) for i in file.read().split(",")]
 robot = IntcodeComputer(program, True, True)
 

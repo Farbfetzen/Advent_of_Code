@@ -4,7 +4,7 @@
 from intcode import IntcodeComputer
 
 
-with open("day_05_input.txt", "r") as file:
+with open("day_05_input.txt") as file:
     program = [int(i) for i in file.read().split(",")]
 computer = IntcodeComputer(program)
 # Part 1:

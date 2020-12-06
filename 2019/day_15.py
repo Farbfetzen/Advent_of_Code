@@ -16,7 +16,7 @@ import pygame
 from intcode import IntcodeComputer
 
 
-with open("day_15_input.txt", "r") as file:
+with open("day_15_input.txt") as file:
     code = [int(i) for i in file.read().split(",")]
 droid = IntcodeComputer(code, True, True)
 

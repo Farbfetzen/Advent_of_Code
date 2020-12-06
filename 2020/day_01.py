@@ -28,7 +28,7 @@ assert part_1(set(test_data)) == 514579
 assert part_2(test_data) == 241861950
 
 
-with open("day_01_input.txt", "r") as file:
+with open("day_01_input.txt") as file:
     expenses = [int(i) for i in file.read().splitlines()]
 
 print(part_1(expenses))  # 436404

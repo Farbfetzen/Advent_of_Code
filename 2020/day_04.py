@@ -57,7 +57,7 @@ def part_2(passports):
     return n_valid
 
 
-with open("day_04_input.txt", "r") as file:
+with open("day_04_input.txt") as file:
     passports = []
     for passport_str in file.read().split("\n\n"):
         passport = {}

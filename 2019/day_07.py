@@ -35,7 +35,7 @@ def iterate_phases(amps, phase_range):
     return max_signal
 
 
-with open("day_07_input.txt", "r") as file:
+with open("day_07_input.txt") as file:
     program = [int(i) for i in file.read().split(",")]
 
 # part 1:

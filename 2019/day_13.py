@@ -10,7 +10,7 @@ import pygame
 from intcode import IntcodeComputer
 
 
-with open("day_13_input.txt", "r") as file:
+with open("day_13_input.txt") as file:
     game_code = [int(i) for i in file.read().split(",")]
 arcade = IntcodeComputer(game_code, True, True)
 

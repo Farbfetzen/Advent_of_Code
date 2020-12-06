@@ -37,7 +37,7 @@ test_input = convert_input("""..##.......
 assert check_slope(test_input, (3, 1)) == 7
 
 
-with open("day_03_input.txt", "r") as file:
+with open("day_03_input.txt") as file:
     tree_map = convert_input(file.read())
 
 # part 1:
