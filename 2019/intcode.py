@@ -1,10 +1,9 @@
-from defaultlist import defaultlist
+from collections import defaultdict
 
 
 class IntcodeComputer:
     def __init__(self, intcode, silent=False, feedback_mode=False):
-        self.intcode = defaultlist(int)
-        self.intcode.extend(intcode)
+        self.intcode = defaultdict(int, {i: x for i, x in enumerate(intcode)})
         self.original_intcode = self.intcode.copy()
         self.silent = silent
         self.feedback_mode = feedback_mode
@@ -59,10 +58,8 @@ class IntcodeComputer:
 
     def get_positions(self, parameters, n):
         parameters += [0] * (n - len(parameters))
-        positions = []
-        for pos, param in enumerate(parameters):
-            positions.append(self.get_position[param](pos))
-        return positions
+        return [self.get_position[param](pos)
+                for pos, param in enumerate(parameters)]
 
     def get_position_in_position_mode(self, position):
         return self.intcode[self.pointer + position + 1]
