@@ -1,11 +1,10 @@
 # https://adventofcode.com/2020/day/6
 
+# Unnecessarily compressed solution because why not.
 
-# Minified solution because why not.
 
-with open("day_06_input.txt") as file:
-    groups = [[set(person) for person in group.splitlines()]
-              for group in file.read().split("\n\n")]
+groups = [[set(person) for person in group.splitlines()]
+          for group in open("day_06_input.txt").read().split("\n\n")]
 
 # part 1
 print(sum(len(set.union(*group)) for group in groups))  # 6686
