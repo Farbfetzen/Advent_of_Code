@@ -33,6 +33,7 @@ EXPECTED = """3101844
 13989
 330
 352
+8520
 """.splitlines()
 
 
@@ -49,6 +50,7 @@ with redirect_stdout(f):
     import day_11
     import day_13
     import day_15
+    import day_17
 out = f.getvalue().splitlines()
 
 
