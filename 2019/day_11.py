@@ -51,7 +51,7 @@ for k, v in image.items():
         registration[y, x] = "█"
 registration = np.flip(registration, 0)
 registration = np.apply_along_axis(
-    lambda line: "".join(i for i in line),
+    lambda line: "".join(line),
     1,
     registration
 )
