@@ -3,10 +3,9 @@
 
 class HandheldGameConsole:
     def __init__(self, instructions):
-        self.instructions = []
-        for instruction in instructions:
-            action, value = instruction.split()
-            self.instructions.append([action, int(value)])
+        if isinstance(instructions, str):
+            instructions = self.parse_input(instructions)
+        self.instructions = instructions
         self.accumulator = 0
         self.pointer = 0  # index of the next instruction to be executed
         self.seen_pointers = {self.pointer}
@@ -17,6 +16,14 @@ class HandheldGameConsole:
             "jmp": self.jmp,
             "nop": self.nop
         }
+
+    @staticmethod
+    def parse_input(instruction_str):
+        instructions = []
+        for instruction in instruction_str.splitlines():
+            operation, value = instruction.split()
+            instructions.append((operation, int(value)))
+        return instructions
 
     def acc(self, n):
         self.accumulator += n
@@ -39,8 +46,8 @@ class HandheldGameConsole:
 
     def step(self):
         """Execute only one operation."""
-        op, arg = self.instructions[self.pointer]
-        self.operations[op](arg)
+        operation, value = self.instructions[self.pointer]
+        self.operations[operation](value)
         self.check_pointer()
 
     def run(self):
@@ -56,15 +63,16 @@ def part_1(instructions):
 
 
 def part_2(instructions):
-    for i, intruction in enumerate(instructions):
-        operation = intruction[:3]
-        modified_instructions = instructions.copy()
+    instructions = HandheldGameConsole.parse_input(instructions)
+    for i, (operation, value) in enumerate(instructions):
         if operation == "jmp":
-            modified_instructions[i] = intruction.replace("jmp", "nop")
+            modified = ("nop", value)
         elif operation == "nop":
-            modified_instructions[i] = intruction.replace("nop", "jmp")
+            modified = ("jmp", value)
         else:
             continue
+        modified_instructions = instructions.copy()
+        modified_instructions[i] = modified
         game_console = HandheldGameConsole(modified_instructions)
         game_console.run()
         if game_console.has_halted:
@@ -80,11 +88,11 @@ acc -99
 acc +1
 jmp -4
 acc +6
-""".splitlines()
+"""
 assert part_1(test_input) == 5
 assert part_2(test_input) == 8
 
 with open("day_08_input.txt") as file:
-    challenge_input = file.read().splitlines()
+    challenge_input = file.read()
 print(part_1(challenge_input))  # 1262
 print(part_2(challenge_input))  # 1643
