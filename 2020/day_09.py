@@ -1,28 +1,25 @@
 # https://adventofcode.com/2020/day/9
 
 
+def valid(preamble, n):
+    for i, a in enumerate(preamble[:-1]):
+        for b in preamble[(i + 1):]:
+            if a + b == n:
+                return True
+    return False
+
+
 def part_1(numbers, pre_len):
     for i, n in enumerate(numbers[pre_len:]):
-        preamble = numbers[i:(pre_len + i)]
-        found_match = False
-        for j, a in enumerate(preamble[:-1]):
-            for b in preamble[(j + 1):]:
-                if a + b == n:
-                    found_match = True
-                    break
-            if found_match:
-                break
-        if not found_match:
+        if not valid(numbers[i:(pre_len + i)], n):
             return n
 
 
 def part_2(numbers, target):
-    for i, a in enumerate(numbers):
-        numbers_slice = [a]
-        sum_ = a
-        for b in numbers[(i + 1):]:
-            sum_ += b
-            numbers_slice.append(b)
+    for i in range(len(numbers)):
+        for j in range(i + 2, len(numbers)):
+            numbers_slice = numbers[i:j]
+            sum_ = sum(numbers_slice)
             if sum_ == target:
                 return min(numbers_slice) + max(numbers_slice)
             if sum_ > target:
