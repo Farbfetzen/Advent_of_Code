@@ -13,9 +13,8 @@ def part_2(adapters):
     # Requires that part_1() ran before because the adapters must be sorted
     # and they must include 0.
     possibilities = {adapters[-1]: 1}
-    for i, a in reversed(list(enumerate(adapters[:-1]))):
-        choices = [b for b in adapters[(i + 1):(i + 4)] if b - a <= 3]
-        possibilities[a] = sum(possibilities[c] for c in choices)
+    for a in reversed(adapters[:-1]):
+        possibilities[a] = sum(possibilities.get(x, 0) for x in (a+1, a+2, a+3))
     return possibilities[0]
 
 
