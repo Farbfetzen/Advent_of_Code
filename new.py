@@ -37,7 +37,6 @@ script_content = f'''\
 import collections
 import math
 import numpy
-import pygame
 from pprint import pprint
 
 
