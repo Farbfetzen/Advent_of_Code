@@ -24,7 +24,7 @@ def part_2(data):
 
 
 test_data = (1721, 979, 366, 299, 675, 1456)
-assert part_1(set(test_data)) == 514579
+assert part_1(test_data) == 514579
 assert part_2(test_data) == 241861950
 
 
