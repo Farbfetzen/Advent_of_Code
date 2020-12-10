@@ -16,15 +16,11 @@ def part_1(adapters):
 
 
 def part_2(adapters):
-    adapters.sort()
+    # Requires that part_1() ran before because the adapters must be sorted
+    # and they must include 0.
     possibilities = {adapters[-1]: 1}
     for i, a in reversed(list(enumerate(adapters[:-1]))):
-        choices = []
-        for b in adapters[(i + 1):]:
-            if b - a <= 3:
-                choices.append(b)
-            else:
-                break
+        choices = [b for b in adapters[(i + 1):(i + 4)] if b - a <= 3]
         possibilities[a] = sum(possibilities[c] for c in choices)
     return possibilities[0]
 
