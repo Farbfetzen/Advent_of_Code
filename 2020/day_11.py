@@ -34,32 +34,27 @@ def part_1(seats):
 
 
 def part_2(seats):
-    i = 0
+    height, width = seats.shape
+    directions = ((1, 0), (1, -1), (0, -1), (-1, -1),
+                  (-1, 0), (-1, 1), (0, 1), (1, 1))
     while True:
-        i += 1
         new_seats = seats.copy()
         for y, row in enumerate(seats):
             for x, char in enumerate(row):
                 if char == ".":
                     continue
-                topleft = seats[y::-1, x::-1]
-                top = topleft[1:, 0]
-                left = topleft[0, 1:]
-                topleft = numpy.diagonal(topleft)[1:]
-                bottomright = seats[y:, x:]
-                bottom = bottomright[1:, 0]
-                right = bottomright[0, 1:]
-                bottomright = numpy.diagonal(bottomright)[1:]
-                topright = numpy.diagonal(seats[y::-1, x:])[1:]
-                bottomleft = numpy.diagonal(seats[y:, x::-1])[1:]
                 n_occupied = 0
-                for view_direction in (left, right, top, bottom,
-                                       topleft, topright,
-                                       bottomleft, bottomright):
-
-                    nonempty = view_direction[view_direction != "."]
-                    if nonempty.size > 0 and nonempty[0] == "#":
-                        n_occupied += 1
+                for dx, dy in directions:
+                    x_ = x + dx
+                    y_ = y + dy
+                    while x_ in range(width) and y_ in range(height):
+                        neighbor = seats[y_, x_]
+                        if neighbor == ".":
+                            x_ += dx
+                            y_ += dy
+                            continue
+                        n_occupied += neighbor == "#"
+                        break
                 if char == "L":
                     if n_occupied == 0:
                         new_seats[y, x] = "#"
