@@ -29,12 +29,11 @@ base_path = f"day_{day:02}"
 script_path = os.path.join(year, base_path + ".py")
 relative_input_path = base_path + "_input.txt"
 input_path = os.path.join(year, relative_input_path)
-if os.path.exists(script_path) or os.path.exists(input_path):
-    raise OSError("One or both files already exist.")
-if not os.path.exists(year):
-    os.mkdir(year)
 challenge_url = f"https://adventofcode.com/{year}/day/{day}"
 input_url = challenge_url + "/input"
+
+if not os.path.exists(year):
+    os.mkdir(year)
 
 script_content = f'''# {challenge_url}\n\n
 import collections
@@ -54,27 +53,34 @@ with open("{relative_input_path}") as file:
 # print(part_1(challenge_input))  #
 # print(part_2(challenge_input))  #
 '''
-print("Writing script.")
-with open(script_path, "w") as file:
-    file.write(script_content)
+if os.path.exists(script_path):
+    print("Skipping script generation because the file already exists.")
+else:
+    print("Writing script file.")
+    with open(script_path, "w") as file:
+        file.write(script_content)
 
-# Remember that the session cookie expires after a month. You can get
-# the current one from the website while being logged in.
-# Right click -> Inspect Element -> Storage tab
-with open("config.json") as file:
-    config = json.load(file)
-cookie = config["session_cookie"]
-print("Downloading input.")
-req = requests.get(input_url, cookies={"session": cookie}, timeout=5)
-if not req.ok:
-    print("Error! Got status:", req.status_code)
-    print(req.text)
+if os.path.exists(input_path):
+    print("Skipping input file generation because the file already exists.")
+else:
+    print("Downloading input.")
+    # Remember that the session cookie expires after a month. You can get
+    # the current one from the website while being logged in.
+    # Right click -> Inspect Element -> Storage tab
+    with open("config.json") as file:
+        config = json.load(file)
+    cookie = config["session_cookie"]
 
-with open(input_path, "w") as file:
-    if req.ok:
-        print("Writing input.")
-        file.write(req.text)
-    # else the file remains empty and the input should be pasted manually
+    req = requests.get(input_url, cookies={"session": cookie}, timeout=5)
+    if not req.ok:
+        print("Error! Got status:", req.status_code)
+        print(req.text)
+
+    print("Writing input file.")
+    with open(input_path, "w") as file:
+        if req.ok:
+            file.write(req.text)
+        # else the file remains empty and the input should be pasted manually
 
 print("Done. Have fun!\n")
 
