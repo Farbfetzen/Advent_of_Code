@@ -163,7 +163,9 @@ if __name__ == "__main__":
         "330",
         "352",
         "8520",
-        "926819"
+        "926819",
+        "173",
+        "6671097"
     )
 
     # Redirect print() output to a string.
@@ -181,6 +183,7 @@ if __name__ == "__main__":
         import day_13
         import day_15
         import day_17
+        import day_19
     out = f.getvalue().splitlines()
 
     ok = True
