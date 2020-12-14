@@ -33,11 +33,12 @@ def part_2(program):
         else:
             address, value = (int(x) for x in re.findall(r"(\d+)", line))
             address = address | mask_to_1
-            address = list(bin(address)[2:].zfill(36))
+            toggle_list = [0] * 36
             for bits in itertools.product("01", repeat=len(float_positions)):
                 for b, i in zip(bits, float_positions):
-                    address[i] = b
-                memory[int("".join(address), 2)] = value
+                    toggle_list[i] = b
+                mask_toggle = int("".join(str(x) for x in toggle_list), 2)
+                memory[address ^ mask_toggle] = value
     return sum(memory.values())
 
 
