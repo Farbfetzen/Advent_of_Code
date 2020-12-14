@@ -6,17 +6,23 @@ import math
 from intcode import IntcodeComputer
 
 
+def run_droid(instructions=None):
+    output = [droid.run(instructions)]
+    while not droid.has_halted:
+        try:
+            output.append(droid.run())
+        except (AttributeError, IndexError):
+            break
+    return "".join(x for x in output if x is not None)
+
+
 with open("day_17_input.txt") as file:
     code = [int(i) for i in file.read().split(",")]
 
-scaffold_mapper = IntcodeComputer(code, True, True)
-chars = ""
-while not scaffold_mapper.has_halted:
-    char = scaffold_mapper.run()
-    if char is not None:
-        chars += chr(int(char))
-# print(chars)
-scaffold = chars.strip().splitlines()
+droid = IntcodeComputer(code, True, True, ascii_mode=True)
+scaffold = run_droid()
+# print(scaffold)
+scaffold = scaffold.strip().splitlines()
 
 
 # part 1
@@ -36,6 +42,9 @@ print(sum(alignments))  # 8520
 
 
 # part 2
+droid.reset()
+droid.intcode[0] = 2
+
 # Manually constructed path. Not sure how I would do this automatically.
 # A     R, 6, L, 8, R, 8,
 # A     R, 6, L, 8, R, 8,
@@ -48,108 +57,28 @@ print(sum(alignments))  # 8520
 # A     R, 6, L, 8, R, 8,
 # C     L, 8, R, 6, L, 10, L, 10
 
+main_routine = "A,A,B,C,B,C,B,C,A,C"
+A = "R,6,L,8,R,8"
+B = "R,4,R,6,R,6,R,4,R,4"
+C = "L,8,R,6,L,10,L,10"
+video_feed = "n"  # or "y" but I did not implement a display.
 
-def to_ascii(instructions):
-    return [ord(instr) for instr in instructions]
-
-
-main_routine = to_ascii("A,A,B,C,B,C,B,C,A,C\n")
-A = to_ascii("R,6,L,8,R,8\n")
-B = to_ascii("R,4,R,6,R,6,R,4,R,4\n")
-C = to_ascii("L,8,R,6,L,10,L,10\n")
-video_feed = to_ascii("n\n")  # or "y\n" but I did not implement a display.
-
-# print(main_routine)
-# print(A)
-# print(B)
-# print(C)
-# print(video_feed)
-
-code[0] = 2
-robot = IntcodeComputer(code, True, True)
-
-
-def run_robot(instructions=None):
-    # This is kind of messy. I don't know why some exceptions occur so I just
-    # use try...except and break on exception. Debugging the
-    # intcode computer is annoying and this works anyway so who cares.
-    output = []
-    if instructions is not None:
-        output.append(robot.run(instructions))
-    while not robot.has_halted:
-        try:
-            output.append(robot.run())
-        except (AttributeError, IndexError):
-            break
-    return "".join(chr(x) for x in output if x is not None)
-
-
-output = run_robot()
+output = run_droid()
 # print(output)  # The map and then "Main:"
 
-output = run_robot(main_routine)
+output = run_droid(main_routine)
 # print(output)  # prints "Function A:"
 
-output = run_robot(A)
+output = run_droid(A)
 # print(output)  # prints "Function B:"
 
-output = run_robot(B)
+output = run_droid(B)
 # print(output)  # prints "Function C:"
 
-output = run_robot(C)
+output = run_droid(C)
 # print(output)  # prints "Continuous video feed?"
 
-output = run_robot(video_feed)
-# print(output)  # prints the final state of the map and "󢑣"
+output = run_droid(video_feed)
+# print(output)  # prints the final state of the map and the solution number
 
 print(ord(output[-1]))  # 926819
-
-
-# my scaffold:
-# ............###########..........................
-# ............#.........#..........................
-# ............#.........#..........................
-# ............#.........#..........................
-# ............#.........#..........................
-# ............#.........#..........................
-# ............#.........#########..................
-# ............#.................#..................
-# ......#########...............#..................
-# ......#.....#.#...............#..................
-# ......#.....#.#...............#..................
-# ......#.......#...............#..................
-# ......#.......#...............#..................
-# ......#.......#...............#..................
-# ......#.......#########.......#########..........
-# ......#...............#...............#..........
-# ^######...........#######.............#..........
-# ..................#...#.#.............#..........
-# ..................#...#.#.............#..........
-# ..................#...#.#.............#..........
-# ..................#.#####.............###########
-# ..................#.#.#.........................#
-# ..................#####.........................#
-# ....................#...........................#
-# ....................#...........................#
-# ....................#...........................#
-# ....................#...........................#
-# ....................#...........................#
-# ..............#######...........................#
-# ..............#.................................#
-# ..............#...........................#######
-# ..............#...........................#......
-# ..............#...........................#......
-# ..............#...........................#......
-# ..............#...........................#......
-# ..............#...........................#......
-# ..............#...#####.................#####....
-# ..............#...#...#.................#.#.#....
-# ..............###########.............#####.#....
-# ..................#...#.#.............#.#...#....
-# ..................#...#########.......#.#...#....
-# ..................#.....#.....#.......#.#...#....
-# ..................#######.....#.......#######....
-# ..............................#.........#........
-# ..............................#.........#........
-# ..............................#.........#........
-# ..............................###########........

@@ -1,45 +1,29 @@
 # https://adventofcode.com/2019/day/21
 
 
-# TODO: Include an ascii mode in the IntcodeComputer.
-
-
 from intcode import IntcodeComputer
 
 
 with open("day_21_input.txt") as file:
     code = [int(i) for i in file.read().split(",")]
-droid = IntcodeComputer(code, silent=True, feedback_mode=True)
+droid = IntcodeComputer(code, silent=True, feedback_mode=True, ascii_mode=True)
 
 
 def run_droid(instructions=None):
-    # Same hack as in day 17. I still don't know why it keeps breaking.
-    output = []
-    if instructions is not None:
-        instructions = [ord(instr) for instr in instructions]
-        if instructions[-1] != 10:  # missing newline
-            instructions.append(10)
-        output.append(chr(droid.run(instructions)))
+    output = [droid.run(instructions)]
     while not droid.has_halted:
         try:
-            next_output = droid.run()
+            output.append(droid.run())
         except (AttributeError, IndexError):
             break
-        if next_output is not None:
-            if next_output <= int(0x10ffff):  # max value for chr()
-                next_output = chr(next_output)
-            else:
-                next_output = str(next_output)
-            output.append(next_output)
-    return "".join(x for x in output)
+    return "".join(x for x in output if x is not None)
 
 
-def to_ascii(instructions):
-    return [ord(instr) for instr in instructions]
-
+# Catch the output and print only the final numbers.
 
 # part 1
-print(run_droid())  # Droid asks for input.
+droid_output = run_droid()
+# print(droid_output)  # Droid asks for input.
 # Jump if there is a hole at A or B or C but only if there is ground at D.
 springscript_1 = """\
 NOT B J
@@ -50,12 +34,15 @@ OR T J
 AND D J
 WALK
 """
-print(run_droid(springscript_1))  # 19362259
+droid_output = run_droid(springscript_1)
+# print(droid_output)
+print(droid_output.splitlines()[-1])  # 19362259
 
 
 # part 2
 droid.reset()
-print(run_droid())
+droid_output = run_droid()
+# print(droid_output)
 # Same as in part 1 but there must also be ground at H.
 springscript_2 = """\
 NOT B J
@@ -68,4 +55,6 @@ OR H T
 AND T J
 RUN
 """
-print(run_droid(springscript_2))  # 1141066762
+droid_output = run_droid(springscript_2)
+# print(droid_output)
+print(droid_output.splitlines()[-1])  # 1141066762

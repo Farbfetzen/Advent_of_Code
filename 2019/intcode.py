@@ -2,11 +2,13 @@ from collections import defaultdict
 
 
 class IntcodeComputer:
-    def __init__(self, intcode, silent=False, feedback_mode=False):
+    def __init__(self, intcode, silent=False,
+                 feedback_mode=False, ascii_mode=False):
         self.intcode = defaultdict(int, {i: x for i, x in enumerate(intcode)})
         self.original_intcode = self.intcode.copy()
         self.silent = silent
         self.feedback_mode = feedback_mode
+        self.ascii_mode = ascii_mode
         self.inputs = None
         self.pointer = 0
         self.relative_base = 0
@@ -47,6 +49,11 @@ class IntcodeComputer:
 
     def run(self, inputs=None):
         if inputs is not None:
+            if self.ascii_mode:
+                inputs = [ord(inp) for inp in inputs]
+                ascii_newline = ord("\n")
+                if inputs[-1] != ascii_newline:
+                    inputs.append(ascii_newline)
             # Reverse input because popping from the end is better.
             self.inputs = list(reversed(inputs))
         self.out_value = None
@@ -54,6 +61,11 @@ class IntcodeComputer:
         while not (self.has_halted or self.is_paused):
             opcode, parameters = self.get_next_instruction()
             self.opcode_methods[opcode](parameters)
+        if self.ascii_mode and self.out_value is not None:
+            if self.out_value <= int(0x10ffff):  # max value for chr()
+                self.out_value = chr(self.out_value)
+            else:
+                self.out_value = str(self.out_value)
         return self.out_value
 
     def get_positions(self, parameters, n):
@@ -166,17 +178,7 @@ if __name__ == "__main__":
         "926819",
         "173",
         "6671097",
-        "Input instructions:",
-        "",
-        "",
-        "Walking...",
-        "",
         "19362259",
-        "Input instructions:",
-        "",
-        "",
-        "Running...",
-        "",
         "1141066762",
     )
 
