@@ -29,15 +29,14 @@ def part_2(program):
         if line[:4] == "mask":
             mask = line[7:]
             mask_to_1 = int("".join(m if m == "1" else "0" for m in mask), 2)
-            float_positions = [m.start() for m in re.finditer('X', mask)]
+            float_positions = [i for i, x in enumerate(reversed(mask)) if x == "X"]
         else:
             address, value = (int(x) for x in re.findall(r"(\d+)", line))
             address = address | mask_to_1
-            toggle_list = [0] * 36
-            for bits in itertools.product("01", repeat=len(float_positions)):
+            for bits in itertools.product((0, 1), repeat=len(float_positions)):
+                mask_toggle = 0
                 for b, i in zip(bits, float_positions):
-                    toggle_list[i] = b
-                mask_toggle = int("".join(str(x) for x in toggle_list), 2)
+                    mask_toggle = mask_toggle ^ (b << i)
                 memory[address ^ mask_toggle] = value
     return sum(memory.values())
 
