@@ -1,7 +1,6 @@
 # https://adventofcode.com/2019/day/20
 
 
-from pprint import pprint
 import math
 
 
@@ -48,7 +47,7 @@ def map_maze(maze):
                             break
                     break
         if label:
-            side = 1 if x in x_outside or y in y_outside else -1
+            side = -1 if x in x_outside or y in y_outside else 1
             portals[(x, y)] = (label, side)
     walkable -= portals.keys()
     return walkable, portals
@@ -78,17 +77,19 @@ def map_connections(maze):
 
 
 def part_1(connections):
+    """Use BFS to find all paths and return the shortest."""
     shortest_distance = math.inf
-    queue = [([("AA", 1)], -1)]
+    queue = [([("AA", -1)], -1)]
     while queue:
+        # Sort reversed by distance to pop the shortest distance first.
+        queue.sort(key=lambda x: x[1], reverse=True)
         path, distance = queue.pop()
         last_portal = path[-1]
+        if last_portal[0] == "ZZ":
+            return distance
         distance += 1
         for other_portal, other_distance in connections[last_portal].items():
-            if other_portal == ("ZZ", 1):
-                shortest_distance = min(shortest_distance, distance + other_distance)
-                # print(path + [other_portal], distance + other_distance)
-            elif other_portal not in path:
+            if other_portal not in path:
                 label, side = other_portal
                 queue.append((
                     path + [other_portal, (label, -side)],
@@ -98,10 +99,35 @@ def part_1(connections):
 
 
 def part_2(connections):
-    # How to detect if there is no path?
-    # How to prevent going infinitely deep? I guess python will complain about recursion limit.
+    """Walk through the maze using BFS and return the first path found."""
+    # How to detect if there is no path? It could potentially go
+    # infinitely many levels deep.
 
-    return 0
+    # last portal, level, distance
+    queue = [(("AA", -1), 0, -1)]
+    while queue:
+        # Sort reversed by distance to pop the shortest distance first.
+        queue.sort(key=lambda x: x[2], reverse=True)
+        last_portal, level, distance = queue.pop()
+        if last_portal[0] == "ZZ":
+            return distance
+        distance += 1
+        for other_portal, other_distance in connections[last_portal].items():
+            label, side = other_portal
+            new_level = level + side
+            # - Prevent going in the same portal on the same level,
+            #   because it may be that e.g. ("BC", 1) has a walking
+            #   connection to ("BC", -1). Going that route would not make sense.
+            # - Do not try to enter "AA".
+            # - Outer portals except "ZZ" are only open on level > 0.
+            if (label != last_portal[0]
+                    and label != "AA"
+                    and (label == "ZZ") == (new_level == -1)):
+                queue.append((
+                    (label, -side),
+                    new_level,
+                    distance + other_distance
+                ))
 
 
 test_input_1 = """\
@@ -127,7 +153,7 @@ FG..#########.....#
 """.splitlines()
 test_1_connections = map_connections(test_input_1)
 assert part_1(test_1_connections) == 23
-# assert part_2(test_1_connections) == 26
+assert part_2(test_1_connections) == 26
 
 test_input_2 = """\
                    A
@@ -170,7 +196,7 @@ YN......#               VT..#....QG
 """.splitlines()
 test_2_connections = map_connections(test_input_2)
 assert part_1(test_2_connections) == 58
-# assert part_2(test_input_2) is None  # no path
+# No path in part 2.
 
 test_input_3 = """\
              Z L X W       C                 
@@ -212,11 +238,11 @@ RE....#.#                           #......RF
                A A D   M                     
 """.splitlines()
 test_3_connections = map_connections(test_input_3)
-# assert part_2(test_3_connections) == 396
+assert part_2(test_3_connections) == 396
 
 
 with open("day_20_input.txt") as file:
     challenge_input = file.read().splitlines()
 challenge_connections = map_connections(challenge_input)
 print(part_1(challenge_connections))  # 422
-print(part_2(challenge_connections))  #
+print(part_2(challenge_connections))  # 5040  (takes about a minute)
