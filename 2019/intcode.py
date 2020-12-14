@@ -165,7 +165,19 @@ if __name__ == "__main__":
         "8520",
         "926819",
         "173",
-        "6671097"
+        "6671097",
+        "Input instructions:",
+        "",
+        "",
+        "Walking...",
+        "",
+        "19362259",
+        "Input instructions:",
+        "",
+        "",
+        "Running...",
+        "",
+        "1141066762",
     )
 
     # Redirect print() output to a string.
@@ -184,6 +196,7 @@ if __name__ == "__main__":
         import day_15
         import day_17
         import day_19
+        import day_21
     out = f.getvalue().splitlines()
 
     ok = True
