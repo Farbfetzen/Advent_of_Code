@@ -14,7 +14,7 @@ class IntcodeComputer:
         self.relative_base = 0
         self.has_halted = False
         self.is_paused = False
-        self.out_value = None
+        self.output = None
         self.get_position = (
             self.get_position_in_position_mode,
             self.get_position_in_immediate_mode,
@@ -39,7 +39,7 @@ class IntcodeComputer:
         self.relative_base = 0
         self.has_halted = False
         self.is_paused = False
-        self.out_value = None
+        self.output = None
 
     def get_next_instruction(self):
         instruction = str(self.intcode[self.pointer])
@@ -56,17 +56,30 @@ class IntcodeComputer:
                     inputs.append(ascii_newline)
             # Reverse input because popping from the end is better.
             self.inputs = list(reversed(inputs))
-        self.out_value = None
+        self.output = None
         self.is_paused = False
         while not (self.has_halted or self.is_paused):
             opcode, parameters = self.get_next_instruction()
             self.opcode_methods[opcode](parameters)
-        if self.ascii_mode and self.out_value is not None:
-            if self.out_value <= int(0x10ffff):  # max value for chr()
-                self.out_value = chr(self.out_value)
+        if self.ascii_mode and self.output is not None:
+            if self.output <= 0x10ffff:  # max value for chr()
+                self.output = chr(self.output)
             else:
-                self.out_value = str(self.out_value)
-        return self.out_value
+                self.output = str(self.output)
+        return self.output
+
+    def run_ascii(self, instructions=None):
+        # Catch all the output into one string.
+        # This is a bit hacky with the try...except... but I can't be bothered
+        # to figure out where the errors come from.
+        # This will also remain a method separate from self.run().
+        output = [self.run(instructions)]
+        while not self.has_halted:
+            try:
+                output.append(self.run())
+            except (AttributeError, IndexError):
+                break
+        return "".join(x for x in output if x is not None)
 
     def get_positions(self, parameters, n):
         parameters += [0] * (n - len(parameters))
@@ -99,9 +112,9 @@ class IntcodeComputer:
 
     def print_and_or_pause(self, parameters):
         position = self.get_positions(parameters, 1)[0]
-        self.out_value = self.intcode[position]
+        self.output = self.intcode[position]
         if not self.silent:
-            print(self.out_value)
+            print(self.output)
         if self.feedback_mode:
             self.is_paused = True
         self.pointer += 2

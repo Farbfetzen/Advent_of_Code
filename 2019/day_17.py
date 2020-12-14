@@ -6,21 +6,11 @@ import math
 from intcode import IntcodeComputer
 
 
-def run_droid(instructions=None):
-    output = [droid.run(instructions)]
-    while not droid.has_halted:
-        try:
-            output.append(droid.run())
-        except (AttributeError, IndexError):
-            break
-    return "".join(x for x in output if x is not None)
-
-
 with open("day_17_input.txt") as file:
     code = [int(i) for i in file.read().split(",")]
 
 droid = IntcodeComputer(code, True, True, ascii_mode=True)
-scaffold = run_droid()
+scaffold = droid.run_ascii()
 # print(scaffold)
 scaffold = scaffold.strip().splitlines()
 
@@ -63,22 +53,22 @@ B = "R,4,R,6,R,6,R,4,R,4"
 C = "L,8,R,6,L,10,L,10"
 video_feed = "n"  # or "y" but I did not implement a display.
 
-output = run_droid()
+output = droid.run_ascii()
 # print(output)  # The map and then "Main:"
 
-output = run_droid(main_routine)
+output = droid.run_ascii(main_routine)
 # print(output)  # prints "Function A:"
 
-output = run_droid(A)
+output = droid.run_ascii(A)
 # print(output)  # prints "Function B:"
 
-output = run_droid(B)
+output = droid.run_ascii(B)
 # print(output)  # prints "Function C:"
 
-output = run_droid(C)
+output = droid.run_ascii(C)
 # print(output)  # prints "Continuous video feed?"
 
-output = run_droid(video_feed)
+output = droid.run_ascii(video_feed)
 # print(output)  # prints the final state of the map and the solution number
 
 print(ord(output[-1]))  # 926819
