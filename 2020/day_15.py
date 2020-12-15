@@ -1,24 +1,21 @@
 # https://adventofcode.com/2020/day/15
 
 
-from collections import deque
+from collections import defaultdict, deque
 
 
 def play(numbers, end_turn):
-    memory = {}
+    memory = defaultdict(lambda: deque([], maxlen=2))
     for turn, n in enumerate(numbers, start=1):
-        memory[n] = deque([turn], maxlen=2)
-    last_num = numbers[-1]
+        memory[n].append(turn)
+    last_num = n
     for turn in range(turn+1, end_turn+1):
         last_seen = memory[last_num]
         if len(last_seen) == 1:
             last_num = 0
         else:
             last_num = last_seen[1] - last_seen[0]
-        if last_num in memory:
-            memory[last_num].append(turn)
-        else:
-            memory[last_num] = deque([turn], maxlen=2)
+        memory[last_num].append(turn)
     print(f"Output for {numbers} on turn {turn} = {last_num}.",
           f"The memory has length {len(memory)}.")
     return last_num
