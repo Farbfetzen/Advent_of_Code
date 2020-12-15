@@ -1,13 +1,11 @@
 # https://adventofcode.com/2020/day/14
 
-
-import collections
 import itertools
 import re
 
 
 def part_1(program):
-    memory = collections.defaultdict(int)
+    memory = {}
     mask_to_0 = 0
     mask_to_1 = 0
     for line in program:
@@ -22,7 +20,7 @@ def part_1(program):
 
 
 def part_2(program):
-    memory = collections.defaultdict(int)
+    memory = {}
     mask_to_1 = 0
     float_positions = []
     for line in program:
