@@ -22,20 +22,20 @@ def part_1(program):
 def part_2(program):
     memory = {}
     mask_to_1 = 0
-    float_positions = []
+    mask_float = ""
+    n_floats = 0
     for line in program:
         if line[:4] == "mask":
             mask = line[7:]
             mask_to_1 = int("".join(m if m == "1" else "0" for m in mask), 2)
-            float_positions = [i for i, x in enumerate(reversed(mask)) if x == "X"]
+            n_floats = mask.count("X")
+            mask_float = "".join("{}" if m == "X" else "0" for m in mask)
         else:
             address, value = (int(x) for x in re.findall(r"(\d+)", line))
             address = address | mask_to_1
-            for bits in itertools.product((0, 1), repeat=len(float_positions)):
-                mask_toggle = 0
-                for b, i in zip(bits, float_positions):
-                    mask_toggle = mask_toggle ^ (b << i)
-                memory[address ^ mask_toggle] = value
+            for bits in itertools.product("01", repeat=n_floats):
+                modified_mask = mask_float.format(*bits)
+                memory[address ^ int(modified_mask, 2)] = value
     return sum(memory.values())
 
 
