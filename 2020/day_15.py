@@ -1,8 +1,12 @@
 # https://adventofcode.com/2020/day/15
 
 
+import array
+
+
 def play(numbers, end_turn):
-    memory = [0] * end_turn
+    # Using an array of unsigned ints gives a small speed boost.
+    memory = array.array("I", [0] * end_turn)
     for turn, last_num in enumerate(numbers, start=1):
         last_seen = memory[last_num]
         memory[last_num] = turn
