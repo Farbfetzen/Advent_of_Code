@@ -8,6 +8,16 @@ DIRECTIONS = list(itertools.product((-1, 0, 1), repeat=4))
 DIRECTIONS.remove((0, 0, 0, 0))
 
 
+def parse_input(input_txt):
+    initial_state = {}
+    z = w = 0
+    for y, row in enumerate(input_txt.splitlines()):
+        for x, char in enumerate(row):
+            if char == "#":
+                initial_state[(x, y, z, w)] = True
+    return initial_state
+
+
 def check_neighbors(x, y, z, w, value, old_state, new_state, _3d,
                     neighbors_to_check_around=None):
     n_neighbors = 0
@@ -22,14 +32,7 @@ def check_neighbors(x, y, z, w, value, old_state, new_state, _3d,
         new_state[(x, y, z, w)] = True
 
 
-def run_reactor(input_txt, _3d=True):
-    initial_state = {}
-    z = w = 0
-    for y, row in enumerate(input_txt.splitlines()):
-        for x, char in enumerate(row):
-            if char == "#":
-                initial_state[(x, y, z, w)] = True
-
+def run_reactor(initial_state, _3d=True):
     reactor_state = initial_state.copy()
     for _ in range(6):
         new_state = {}
@@ -50,10 +53,10 @@ test_input = """\
 ..#
 ###
 """
+test_input = parse_input(test_input)
 assert run_reactor(test_input) == 112
 assert run_reactor(test_input, False) == 848
 
-with open("day_17_input.txt") as file:
-    challenge_input = file.read()
+challenge_input = parse_input(open("day_17_input.txt").read())
 print(run_reactor(challenge_input))  # 232
 print(run_reactor(challenge_input, False))  # 1620
