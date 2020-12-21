@@ -59,6 +59,8 @@ def part_2(rules, messages):
     #   2. left + right:  42, x * 42, x * 31
     #   3. right + left:  x * 42, 42, 31
     #   4. right + right: x * 42, y * 42, y * 31
+    #   They have in common that the left part is all 42, the right part
+    #   is all 31 and the number of 31 is less than the number of 42.
     #
     # - Remember: Solve the challenge for the rules given, not any
     #   general rules! Start by resolving only rules 31 and 42.
@@ -88,40 +90,13 @@ def part_2(rules, messages):
         words = [m[0+i:word_len+i] for i in range(0, len(m), word_len)]
         n_words = len(words)
 
-        if n_words < 3 or words[0] not in r42:
-            continue
-
-        # variant 1: 42, 42, 31
-        if n_words == 3 and words[1] in r42 and words[2] in r31:
-            sum_valid += 1
-            continue
-
-        # variant 2: 42, x * 42, x * 31
-        # Split the word list in two, ignoring the first word which has
-        # already been checked. Then the left half of the tail must all be
-        # in 42 and the right half must all be in 31. Boths halfs must be
-        # the same length.
-        if n_words % 2 == 1:
-            middle_i = (n_words + 1) // 2
-            if (all(word in r42 for word in words[1:middle_i])
-                    and all(word in r31 for word in words[middle_i:])):
-                sum_valid += 1
-                continue
-
-        # variant 3: x * 42, 42, 31
-        if words[-1] in r31 and all(word in r42 for word in words[1:-1]):
-            sum_valid += 1
-            continue
-
-        # variant 4: x * 42, y * 42, y * 31
         n_31 = 0
         for word in reversed(words):
             if word in r31:
                 n_31 += 1
             else:
                 break
-        if (0 < n_31 < n_words / 2
-                and all(word in r42 for word in words[1:-n_31])):
+        if 0 < n_31 < n_words / 2 and all(word in r42 for word in words[:-n_31]):
             sum_valid += 1
 
     return sum_valid
