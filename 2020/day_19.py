@@ -1,7 +1,6 @@
 # https://adventofcode.com/2020/day/19
 
 
-from pprint import pprint
 import itertools
 
 
@@ -44,26 +43,88 @@ def part_2(rules, messages):
     rules[8] = [[42], [42, 8]]
     # 11: 42 31 | 42 11 31
     rules[11] = [[42, 31], [42, 11, 31]]
-    pprint(rules)
 
-    # Do I get this right?
-    # 8 returns these:
-    # (42), (42, 42), (42, 42, 42), ...
-    # and 11 returns these:
-    # (42, 31), (42, 42, 31, 31), (42, 42, 42, 31, 31, 31), ...
+    # - Rule 8 returns these:
+    #   (42), (42, 42), (42, 42, 42), ...
+    #   And rule 11 returns these:
+    #   (42, 31), (42, 42, 31, 31), (42, 42, 42, 31, 31, 31), ...
+    #
+    # - The loopy part comes in the second half of the rules. That means
+    #   [42] or [42, 31] are already resolved when it is reached.
+    #
+    # - In the test rules and challenge rules rule 0 points directly
+    #   to 8 and 11 IN THIS ORDER. That means every valid rule must follow
+    #   one of these patterns:
+    #   1. left + left:   42, 42, 31
+    #   2. left + right:  42, x * 42, x * 31
+    #   3. right + left:  x * 42, 42, 31
+    #   4. right + right: x * 42, y * 42, y * 31
+    #
+    # - Remember: Solve the challenge for the rules given, not any
+    #   general rules! Start by resolving only rules 31 and 42.
+    #   Then check the patterns.
+    #
+    # - Complication: 42 and 31 have many possibilities.
+    #   But: both are always 5 characters long. I can split each message
+    #   into 5-character words.
 
-    # Could I just check if a rule points to itself (i in option) and
-    # then limit the recursion depth depending on the length of
-    # the longest message? I don't think that would work because then "a"
-    # or "b" would never be reached.
+    # share the cache both searches:
+    rule_cache = {}
 
-    # The loopy part comes in the second half of the rule. That means
-    # [42] or [42, 31] are already resolved when it is reached.
+    r31 = set(resolve_rules(rules, rule_cache, 31))
+    # print(r31)
+    len_31 = {len(x) for x in r31}
 
-    # Observation: In the test rules and challenge rules 0 points directly
-    # to 8 and 11 in this order. And only 8 and 11 point to 42 and 31.
+    r42 = set(resolve_rules(rules, rule_cache, 42))
+    # print(r42)
+    len_42 = {len(x) for x in r42}
 
-    return 0
+    len_both = len_31 | len_42
+    assert len(len_both) == 1
+    word_len = len_both.pop()
+
+    sum_valid = 0
+    for m in messages:
+        words = [m[0+i:word_len+i] for i in range(0, len(m), word_len)]
+        n_words = len(words)
+
+        if n_words < 3 or words[0] not in r42:
+            continue
+
+        # variant 1: 42, 42, 31
+        if n_words == 3 and words[1] in r42 and words[2] in r31:
+            sum_valid += 1
+            continue
+
+        # variant 2: 42, x * 42, x * 31
+        # Split the word list in two, ignoring the first word which has
+        # already been checked. Then the left half of the tail must all be
+        # in 42 and the right half must all be in 31. Boths halfs must be
+        # the same length.
+        if n_words % 2 == 1:
+            middle_i = (n_words + 1) // 2
+            if (all(word in r42 for word in words[1:middle_i])
+                    and all(word in r31 for word in words[middle_i:])):
+                sum_valid += 1
+                continue
+
+        # variant 3: x * 42, 42, 31
+        if words[-1] in r31 and all(word in r42 for word in words[1:-1]):
+            sum_valid += 1
+            continue
+
+        # variant 4: x * 42, y * 42, y * 31
+        n_31 = 0
+        for word in reversed(words):
+            if word in r31:
+                n_31 += 1
+            else:
+                break
+        if (0 < n_31 < n_words / 2
+                and all(word in r42 for word in words[1:-n_31])):
+            sum_valid += 1
+
+    return sum_valid
 
 
 test_input_1 = """\
@@ -139,4 +200,4 @@ assert part_2(*test_input_2) == 12
 with open("day_19_input.txt") as file:
     challenge_input = parse_input(file.read())
 print(part_1(*challenge_input))  # 248
-# print(part_2(challenge_input))  #
+print(part_2(*challenge_input))  # 381
