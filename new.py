@@ -37,6 +37,7 @@ if not os.path.exists(year):
 
 script_content = f'''# {challenge_url}\n\n
 import collections
+import itertools
 import math
 import numpy
 from pprint import pprint\n\n
