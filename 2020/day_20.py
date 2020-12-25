@@ -81,11 +81,10 @@ def part_2(tiles):
 
     # first row of whole image
     tile_map = [[tile]]
-    seen = {tile.id}
     sidelength = int(math.sqrt(len(tiles)))
     for i in range(1, sidelength):
         for neighbor in tile.neighbors:
-            if neighbor.id not in seen and tile.right in neighbor.shared_borders:
+            if tile.right in neighbor.shared_borders:
                 break
         for j in range(8):
             if neighbor.left == tile.right:
@@ -94,7 +93,6 @@ def part_2(tiles):
             if j == 4:
                 neighbor.flip()
         tile_map[0].append(neighbor)
-        seen.add(neighbor.id)
         tile = neighbor
 
     # all other rows
@@ -103,7 +101,7 @@ def part_2(tiles):
         for x in range(sidelength):
             tile = tile_map[y-1][x]
             for neighbor in tile.neighbors:
-                if neighbor.id not in seen and tile.bottom in neighbor.shared_borders:
+                if tile.bottom in neighbor.shared_borders:
                     break
             for j in range(8):
                 if neighbor.top == tile.bottom:
@@ -112,7 +110,6 @@ def part_2(tiles):
                 if j == 4:
                     neighbor.flip()
             row.append(neighbor)
-            seen.add(neighbor.id)
         tile_map.append(row)
 
     size = tile.content.shape[0] - 2
