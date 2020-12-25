@@ -74,8 +74,7 @@ def part_2(tiles):
             break
     # Rotate until the shared borders are bottom and right.
     for _ in range(4):
-        if (tile.right in tile.shared_borders
-                and tile.bottom in tile.shared_borders):
+        if {tile.right, tile.bottom}.issubset(tile.shared_borders):
             break
         tile.rotate()
 
