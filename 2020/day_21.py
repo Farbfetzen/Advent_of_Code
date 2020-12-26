@@ -45,7 +45,7 @@ def part_2(allergen_ingredients):
                     done.add(ingredient)
                     for a, i in allergen_ingredients.items():
                         if a != allergen:
-                            i.difference_update(ingredients)
+                            i.discard(ingredient)
             else:
                 finished = False
     result = [(k, *v) for k, v in allergen_ingredients.items()]
