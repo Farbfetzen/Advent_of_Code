@@ -34,23 +34,23 @@ def part_1(decks):
                 return calculate_score(decks[1])
 
 
-def play_recursive(decks, top_level=False):
+def part_2(decks, return_index=False):
     cache = set()
     winner_game = None
     while winner_game is None:
         d = (tuple(decks[0]), tuple(decks[1]))
         if d in cache:
-            return 0  # player 1 (= index 0) wins
-        else:
-            cache.add(d)
+            winner_game = 0  # player 1 (= index 0) wins
+            break
+        cache.add(d)
         p0 = decks[0].popleft()
         p1 = decks[1].popleft()
         if p0 <= len(decks[0]) and p1 <= len(decks[1]):
-            new_deck = [
-                deque(islice(decks[0], 0, p0)),
-                deque(islice(decks[1], 0, p1))
-            ]
-            winner_round = play_recursive(new_deck)
+            winner_round = part_2(
+                (deque(islice(decks[0], 0, p0)),
+                 deque(islice(decks[1], 0, p1))),
+                True
+            )
         elif p0 > p1:
             winner_round = 0
         else:
@@ -64,15 +64,10 @@ def play_recursive(decks, top_level=False):
             if len(decks[0]) == 0:
                 winner_game = 1
 
-    if top_level:
-        return decks[winner_game]
-    else:
+    if return_index:
         return winner_game
-
-
-def part_2(decks):
-    winner = play_recursive(deepcopy(decks), True)
-    return calculate_score(winner)
+    else:
+        return calculate_score(decks[winner_game])
 
 
 test_input = """\
