@@ -13,7 +13,7 @@ def part_2(adapters):
     # Requires that part_1() ran before because the adapters must be sorted
     # and they must include 0.
     possibilities = {adapters[-1]: 1}
-    for a in reversed(adapters[:-1]):
+    for a in adapters[-2::-1]:
         possibilities[a] = sum(possibilities.get(x, 0) for x in (a+1, a+2, a+3))
     return possibilities[0]
 
