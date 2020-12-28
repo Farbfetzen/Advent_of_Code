@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 """Creates a script with some boilerplate code and downloads the input
 for a given day. The optional arguments are 'year' and 'day' with the
 current year and day as default values.
-Example: python new.py 2020 7
+Example: ./new.py 2020 7
 """
 
 
