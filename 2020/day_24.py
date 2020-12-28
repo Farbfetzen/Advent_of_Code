@@ -1,14 +1,11 @@
 # https://adventofcode.com/2020/day/24
 
 
-import collections
-
-
 # Using axial coordinates:
 # https://www.redblobgames.com/grids/hexagons/#coordinates-axial
 # Where x runs left to right and y runs north-west to south-east.
 # The hexagons are layed out such that the top and bottom are pointy.
-# I use complex coordinates so movement is simply the sum of directions.
+# I use complex numbers so movement is simply the sum of directions.
 DIRECTIONS = {
     "e": 1+0j,
     "se": 0+1j,
@@ -34,28 +31,27 @@ def parse_input(input_txt):
 
 
 def part_1(positions):
-    hexmap = collections.defaultdict(bool)
+    hexmap = set()
     for position in positions:
-        hexmap[position] = not hexmap[position]
-    return sum(hexmap.values()), hexmap
+        hexmap.symmetric_difference_update({position})
+    return len(hexmap), hexmap
 
 
 def check_neighbors(position, old_state, new_state,
                     neighbors_to_check_around=None):
-    n_neighbors = 0
-    for direction in DIRECTIONS.values():
-        neighbor_position = position + direction
-        n_neighbors += old_state.get(neighbor_position, 0)
-        if neighbors_to_check_around is not None:
-            neighbors_to_check_around.add(neighbor_position)
-    value = old_state.get(position, 0)
+    neighbor_positions = {position + direction for direction in DIRECTIONS.values()}
+    n_neighbors = len(neighbor_positions & old_state)
+    value = position in old_state
     if value and n_neighbors in (1, 2) or not value and n_neighbors == 2:
-        new_state[position] = True
+        new_state.add(position)
+    if neighbors_to_check_around is not None:
+        neighbors_to_check_around.update(neighbor_positions)
 
 
 def part_2(hexmap):
+    # hexmap stores only the black tiles as a set.
     for _ in range(100):
-        new_hexmap = {}
+        new_hexmap = set()
         neighbors_to_check_around = set()
         for position in hexmap:
             check_neighbors(position, hexmap, new_hexmap,
@@ -64,7 +60,7 @@ def part_2(hexmap):
         for position in neighbors_to_check_around:
             check_neighbors(position, hexmap, new_hexmap)
         hexmap = new_hexmap
-    return sum(hexmap.values())
+    return len(hexmap)
 
 
 with open("day_24_sample.txt") as file:
