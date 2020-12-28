@@ -8,47 +8,43 @@ import collections
 # https://www.redblobgames.com/grids/hexagons/#coordinates-axial
 # Where x runs left to right and y runs north-west to south-east.
 # The hexagons are layed out such that the top and bottom are pointy.
+# I use complex coordinates so movement is simply the sum of directions.
 DIRECTIONS = {
-    "e": (1, 0),
-    "se": (0, 1),
-    "sw": (-1, 1),
-    "w": (-1, 0),
-    "nw": (0, -1),
-    "ne": (1, -1)
+    "e": 1+0j,
+    "se": 0+1j,
+    "sw": -1+1j,
+    "w": -1+0j,
+    "nw": 0-1j,
+    "ne": 1-1j
 }
 
 
 def parse_input(input_txt):
-    paths = []
+    positions = []
     for line in input_txt.splitlines():
-        steps = []
+        position = 0
         line = list(reversed(line))
         while line:
             direction = line.pop()
             if direction not in "ew":
                 direction += line.pop()
-            steps.append(DIRECTIONS[direction])
-        paths.append(steps)
-    return paths
+            position += DIRECTIONS[direction]
+        positions.append(position)
+    return positions
 
 
-def part_1(paths):
+def part_1(positions):
     hexmap = collections.defaultdict(bool)
-    for path in paths:
-        tile = (0, 0)
-        for step in path:
-            tile = (tile[0] + step[0], tile[1] + step[1])
-        # Only the last tile in a path gets flipped.
-        hexmap[tile] = not hexmap[tile]
+    for position in positions:
+        hexmap[position] = not hexmap[position]
     return sum(hexmap.values()), hexmap
 
 
 def check_neighbors(position, old_state, new_state,
                     neighbors_to_check_around=None):
-    x, y = position
     n_neighbors = 0
-    for dx, dy in DIRECTIONS.values():
-        neighbor_position = (x + dx, y + dy)
+    for direction in DIRECTIONS.values():
+        neighbor_position = position + direction
         n_neighbors += old_state.get(neighbor_position, 0)
         if neighbors_to_check_around is not None:
             neighbors_to_check_around.add(neighbor_position)
@@ -72,14 +68,14 @@ def part_2(hexmap):
 
 
 with open("day_24_sample.txt") as file:
-    test_input = parse_input(file.read())
-sum_black, tile_map = part_1(test_input)
+    test_positions = parse_input(file.read())
+sum_black, test_tiles = part_1(test_positions)
 assert sum_black == 10
-assert part_2(tile_map) == 2208
+assert part_2(test_tiles) == 2208
 
 
 with open("day_24_input.txt") as file:
-    challenge_input = parse_input(file.read())
-sum_black, tile_map = part_1(challenge_input)
+    challenge_positions = parse_input(file.read())
+sum_black, challenge_tiles = part_1(challenge_positions)
 print(sum_black)  # 528
-print(part_2(tile_map))  # 4200
+print(part_2(challenge_tiles))  # 4200
