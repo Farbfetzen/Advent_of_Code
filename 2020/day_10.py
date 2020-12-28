@@ -4,9 +4,9 @@
 def part_1(adapters):
     adapters.append(0)
     adapters.sort()
+    adapters.append(adapters[-1] + 3)
     differences = [adapters[i + 1] - x for i, x in enumerate(adapters[:-1])]
-    # +1 for the difference to the device
-    return differences.count(1) * (differences.count(3) + 1)
+    return differences.count(1) * (differences.count(3))
 
 
 def part_2(adapters):
