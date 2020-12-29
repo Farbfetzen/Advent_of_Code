@@ -53,32 +53,20 @@ def part_2(rules):
     return count_contents(rules, "shiny gold")
 
 
-test_rules = """light red bags contain 1 bright white bag, 2 muted yellow bags.
-dark orange bags contain 3 bright white bags, 4 muted yellow bags.
-bright white bags contain 1 shiny gold bag.
-muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
-shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.
-dark olive bags contain 3 faded blue bags, 4 dotted black bags.
-vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
-faded blue bags contain no other bags.
-dotted black bags contain no other bags.""".splitlines()
-test_rules_dict = parse_rules(test_rules)
+with open("day_07_sample.txt") as file:
+    test_input = file.read().split("\n\n")
+
+test_rules_1 = test_input[0].splitlines()
+test_rules_dict = parse_rules(test_rules_1)
 assert part_1(test_rules_dict) == 4
 assert part_2(test_rules_dict) == 32
 
-test_rules_2 = """shiny gold bags contain 2 dark red bags.
-dark red bags contain 2 dark orange bags.
-dark orange bags contain 2 dark yellow bags.
-dark yellow bags contain 2 dark green bags.
-dark green bags contain 2 dark blue bags.
-dark blue bags contain 2 dark violet bags.
-dark violet bags contain no other bags.""".splitlines()
+test_rules_2 = test_input[1].splitlines()
 test_rules_2_dict = parse_rules(test_rules_2)
 assert part_2(test_rules_2_dict) == 126
 
 
 with open("day_07_input.txt") as file:
     bag_rules = parse_rules(file.read().splitlines())
-
 print(part_1(bag_rules))  # 348
 print(part_2(bag_rules))  # 18885

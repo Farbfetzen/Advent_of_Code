@@ -138,45 +138,13 @@ def part_2(maze):
     return min(info.values())
 
 
-test_input_1 = """#########
-#b.A.@.a#
-#########
-""".splitlines()
-test_input_2 = """########################
-#f.D.E.e.C.b.A.@.a.B.c.#
-######################.#
-#d.....................#
-########################
-""".splitlines()
-test_input_3 = """########################
-#...............b.C.D.f#
-#.######################
-#.....@.a.B.c.d.A.e.F.g#
-########################
-""".splitlines()
-test_input_4 = """#################
-#i.G..c...e..H.p#
-########.########
-#j.A..b...f..D.o#
-########@########
-#k.E..a...g..B.n#
-########.########
-#l.F..d...h..C.m#
-#################
-""".splitlines()
-test_input_5 = """########################
-#@..............ac.GI.b#
-###d#e#f################
-###A#B#C################
-###g#h#i################
-########################
-""".splitlines()
-
-assert part_1(test_input_1) == 8
-assert part_1(test_input_2) == 86
-assert part_1(test_input_3) == 132
-assert part_1(test_input_4) == 136
-assert part_1(test_input_5) == 81
+with open("day_18_sample.txt") as file:
+    test_inputs = file.read().split("\n\n")
+assert part_1(test_inputs[0].splitlines()) == 8
+assert part_1(test_inputs[1].splitlines()) == 86
+assert part_1(test_inputs[2].splitlines()) == 132
+assert part_1(test_inputs[3].splitlines()) == 136
+assert part_1(test_inputs[4].splitlines()) == 81
 
 with open("day_18_input.txt") as file:
     challenge_input = file.read().splitlines()

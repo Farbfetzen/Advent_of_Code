@@ -32,33 +32,11 @@ def jumps_to_santa(orbits):
     return len(jumps)
 
 
-test1 = """COM)B
-B)C
-C)D
-D)E
-E)F
-B)G
-G)H
-D)I
-E)J
-J)K
-K)L
-"""
+with open("day_06_sample.txt") as file:
+    test_inputs = file.read().split("\n\n")
+test1 = test_inputs[0]
 assert sum_orbits(decode_orbits(test1)) == 42
-test2 = """COM)B
-B)C
-C)D
-D)E
-E)F
-B)G
-G)H
-D)I
-E)J
-J)K
-K)L
-K)YOU
-I)SAN
-"""
+test2 = test_inputs[1]
 assert jumps_to_santa(decode_orbits(test2)) == 4
 
 

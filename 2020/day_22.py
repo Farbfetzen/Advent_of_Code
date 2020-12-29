@@ -70,22 +70,8 @@ def part_2(decks, return_index=False):
         return calculate_score(decks[winner_game])
 
 
-test_input = """\
-Player 1:
-9
-2
-6
-3
-1
-
-Player 2:
-5
-8
-4
-7
-10
-"""
-test_decks = parse_input(test_input)
+with open("day_22_sample.txt") as file:
+    test_decks = parse_input(file.read())
 assert part_1(test_decks) == 306
 assert part_2(test_decks) == 291
 
