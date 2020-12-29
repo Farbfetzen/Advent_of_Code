@@ -1,1 +1,1 @@
-My solutions for the puzzles from https://adventofcode.com.
+My solutions to [Advent of Code](https://adventofcode.com), an Advent calendar of small programming puzzles.
