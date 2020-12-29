@@ -4,7 +4,6 @@
 # Using axial coordinates:
 # https://www.redblobgames.com/grids/hexagons/#coordinates-axial
 # Where x runs left to right and y runs north-west to south-east.
-# The hexagons are layed out such that the top and bottom are pointy.
 # I use complex numbers so movement is simply the sum of directions.
 DIRECTIONS = {
     "e": 1+0j,
@@ -38,26 +37,25 @@ def part_1(positions):
 
 
 def check_neighbors(position, old_state, new_state,
-                    neighbors_to_check_around=None):
+                    candidates=None):
     neighbor_positions = {position + direction for direction in DIRECTIONS.values()}
     n_neighbors = len(neighbor_positions & old_state)
-    value = position in old_state
-    if value and n_neighbors in (1, 2) or not value and n_neighbors == 2:
+    active = position in old_state
+    if active and n_neighbors in {1, 2} or not active and n_neighbors == 2:
         new_state.add(position)
-    if neighbors_to_check_around is not None:
-        neighbors_to_check_around.update(neighbor_positions)
+    if candidates is not None:
+        candidates.update(neighbor_positions)
 
 
 def part_2(hexmap):
     # hexmap stores only the black tiles as a set.
     for _ in range(100):
         new_hexmap = set()
-        neighbors_to_check_around = set()
+        candidates = set()
         for position in hexmap:
-            check_neighbors(position, hexmap, new_hexmap,
-                            neighbors_to_check_around)
+            check_neighbors(position, hexmap, new_hexmap, candidates)
         # Check the neighbors of the active cells:
-        for position in neighbors_to_check_around:
+        for position in candidates:
             check_neighbors(position, hexmap, new_hexmap)
         hexmap = new_hexmap
     return len(hexmap)
