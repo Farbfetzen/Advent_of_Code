@@ -1,26 +1,25 @@
 public class Day15 {
+
     public static void main(String[] args) {
-        // TODO: Read the values from the input file.
-        int[] challengeInput = {14, 8, 16, 0, 1, 17};
-        play(challengeInput, 2020);
-        play(challengeInput, 300_000_00);
+        final int[] challengeInput = {14, 8, 16, 0, 1, 17};
+        play(challengeInput, 2020);        // part 1: 240
+        play(challengeInput, 300_000_00);  // part 2: 505
     }
 
-    public static void play(int[] startNumbers, int endTurn) {
-        int[] memory = new int[endTurn];
-        int lastNum = 0;
+    public static void play(final int[] startNumbers, final int endTurn) {
+        final int[] memory = new int[endTurn];
+        int turn = 0;
         int lastSeen = 0;
-        int turn = 1;
-        for (; turn <= startNumbers.length; turn++) {
-            lastNum = startNumbers[turn - 1];
-            lastSeen = memory[lastNum];
-            memory[lastNum] = turn;
+        for (int sn : startNumbers) {
+            lastSeen = memory[sn];
+            memory[sn] = ++turn;
         }
-        for (; turn <= endTurn; turn++) {
-            lastNum = lastSeen == 0 ? 0 : turn - lastSeen - 1;
-            lastSeen = memory[lastNum];
-            memory[lastNum] = turn;
+        int num = 0;
+        while (turn < endTurn) {
+            num = lastSeen == 0 ? 0 : turn - lastSeen;
+            lastSeen = memory[num];
+            memory[num] = ++turn;
         }
-        System.out.println(lastNum);
+        System.out.println(num);
     }
 }
