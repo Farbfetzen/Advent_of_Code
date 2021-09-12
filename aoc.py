@@ -3,7 +3,7 @@
 """Creates a script with some boilerplate code and downloads the input
 for a given day. The optional arguments are 'year' and 'day' with the
 current year and day as default values.
-Example: ./new.py 2020 7
+Example: ./aoc.py 2020 7
 """
 
 
