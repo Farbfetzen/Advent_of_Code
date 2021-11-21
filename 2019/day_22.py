@@ -61,11 +61,11 @@ def part_2(instructions):
 
 
 with open("day_22_sample.txt") as file:
-    test_inputs = file.read().split("\n\n")
-assert test_run(10, parse_input(test_inputs[0])) == [0, 3, 6, 9, 2, 5, 8, 1, 4, 7]
-assert test_run(10, parse_input(test_inputs[1])) == [3, 0, 7, 4, 1, 8, 5, 2, 9, 6]
-assert test_run(10, parse_input(test_inputs[2])) == [6, 3, 0, 7, 4, 1, 8, 5, 2, 9]
-assert test_run(10, parse_input(test_inputs[3])) == [9, 2, 5, 8, 1, 4, 7, 0, 3, 6]
+    sample_inputs = file.read().split("\n\n")
+assert test_run(10, parse_input(sample_inputs[0])) == [0, 3, 6, 9, 2, 5, 8, 1, 4, 7]
+assert test_run(10, parse_input(sample_inputs[1])) == [3, 0, 7, 4, 1, 8, 5, 2, 9, 6]
+assert test_run(10, parse_input(sample_inputs[2])) == [6, 3, 0, 7, 4, 1, 8, 5, 2, 9]
+assert test_run(10, parse_input(sample_inputs[3])) == [9, 2, 5, 8, 1, 4, 7, 0, 3, 6]
 
 
 with open("day_22_input.txt") as file:
