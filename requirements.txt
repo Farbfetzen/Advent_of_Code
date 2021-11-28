@@ -1,5 +1,5 @@
-matplotlib
-numpy
-pygame
-requests
-sympy
+matplotlib~=3.5.0
+numpy~=1.21.4
+pygame~=2.1.0
+requests~=2.26.0
+sympy~=1.9
