@@ -4,6 +4,11 @@
 import re
 
 
+def get_data(filename):
+    with open(filename) as file:
+        return parse_input(file.read())
+
+
 def parse_input(input_txt):
     rules, my_ticket, other_tickets = input_txt.split("\n\n")
     rules_dict = {}
@@ -70,24 +75,11 @@ def part_2(data):
     return result
 
 
-test_input_1 = """\
-class: 1-3 or 5-7
-row: 6-11 or 33-44
-seat: 13-40 or 45-50
+sample_data = get_data("day_16_sample.txt")
+challenge_data = get_data("day_16_input.txt")
 
-your ticket:
-7,1,14
+if __name__ == "__main__":
+    assert part_1(sample_data) == 71
 
-nearby tickets:
-7,3,47
-40,4,50
-55,2,20
-38,6,12
-"""
-assert part_1(parse_input(test_input_1)) == 71
-# No test case for part 2 this time.
-
-with open("day_16_input.txt") as file:
-    challenge_data = parse_input(file.read())
-print(part_1(challenge_data))  # 27802
-print(part_2(challenge_data))  # 279139880759
+    print(part_1(challenge_data))  # 27802
+    print(part_2(challenge_data))  # 279139880759

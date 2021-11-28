@@ -50,6 +50,12 @@ class Tile:
         return "".join(self.content[:, -1])
 
 
+def get_data(filename):
+    with open(filename) as file:
+        data = file.read().split("\n\n")
+    return [Tile(t) for t in data]
+
+
 def part_1(tiles):
     for i, tile in enumerate(tiles[:-1]):
         for other in tiles[i + 1:]:
@@ -67,6 +73,7 @@ def part_1(tiles):
     return corner_product
 
 
+# noinspection PyUnboundLocalVariable
 def part_2(tiles):
     # Find a corner tile for the top left corner.
     for tile in tiles:
@@ -153,14 +160,12 @@ def part_2(tiles):
     return len(all_rough_water_pos)
 
 
-with open("day_20_sample.txt") as file:
-    test_input = file.read().split("\n\n")
-test_tiles = [Tile(data) for data in test_input]
-assert part_1(test_tiles) == 20899048083289
-assert part_2(test_tiles) == 273
+sample_data = get_data("day_20_sample.txt")
+challenge_data = get_data("day_20_input.txt")
 
-with open("day_20_input.txt") as file:
-    challenge_input = file.read().split("\n\n")
-challenge_tiles = [Tile(data) for data in challenge_input]
-print(part_1(challenge_tiles))  # 27798062994017
-print(part_2(challenge_tiles))  # 2366
+if __name__ == "__main__":
+    assert part_1(sample_data) == 20899048083289
+    assert part_2(sample_data) == 273
+
+    print(part_1(challenge_data))  # 27798062994017
+    print(part_2(challenge_data))  # 2366

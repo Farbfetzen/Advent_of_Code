@@ -1,10 +1,15 @@
 # https://adventofcode.com/2020/day/11
 
-
 # Both parts are too slow for my taste. Maybe I'll improve this sometime.
 
 
 import numpy
+
+
+def get_data(filename):
+    with open(filename) as file:
+        data = file.read().splitlines()
+    return numpy.array([list(line) for line in data])
 
 
 def part_1(seats):
@@ -65,24 +70,12 @@ def part_2(seats):
         seats = new_seats
 
 
-test_input = """\
-L.LL.LL.LL
-LLLLLLL.LL
-L.L.L..L..
-LLLL.LL.LL
-L.LL.LL.LL
-L.LLLLL.LL
-..L.L.....
-LLLLLLLLLL
-L.LLLLLL.L
-L.LLLLL.LL
-""".splitlines()
-test_input = numpy.array([list(line) for line in test_input])
-assert part_1(test_input) == 37
-assert part_2(test_input) == 26
+sample_data = get_data("day_11_sample.txt")
+challenge_data = get_data("day_11_input.txt")
 
-with open("day_11_input.txt") as file:
-    challenge_input = file.read().splitlines()
-challenge_input = numpy.array([list(line) for line in challenge_input])
-print(part_1(challenge_input))  # 2299
-print(part_2(challenge_input))  # 2047
+if __name__ == "__main__":
+    assert part_1(sample_data) == 37
+    assert part_2(sample_data) == 26
+
+    print(part_1(challenge_data))  # 2299
+    print(part_2(challenge_data))  # 2047

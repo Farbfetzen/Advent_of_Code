@@ -1,12 +1,19 @@
 # https://adventofcode.com/2020/day/18
 
 
-def parse_input(input_str):
-    data = []
-    for line in input_str.splitlines():
-        data.append([int(x) if x.isdigit() else x
-                     for x in list(line.replace(" ", ""))])
-    return data
+def get_data(filename, sample=False):
+    with open(filename) as file:
+        data = file.read()
+    if sample:
+        return [parse_data(line.splitlines()) for line in data.split("\n\n")]
+    return parse_data(data.splitlines())
+
+
+def parse_data(data):
+    parsed_data = []
+    for line in data:
+        parsed_data.append([int(x) if x.isdigit() else x for x in line.replace(" ", "")])
+    return parsed_data
 
 
 def evaluate(expressions, i=0):
@@ -66,28 +73,23 @@ def part_2(homework):
     return sum(evaluate(add_parentheses(line)) for line in homework)
 
 
-test_input_1 = parse_input("1 + 2 * 3 + 4 * 5 + 6")
-test_input_2 = parse_input("1 + (2 * 3) + (4 * (5 + 6))")
-test_input_3 = parse_input("2 * 3 + (4 * 5)")
-test_input_4 = parse_input("5 + (8 * 3 + 9 + 3 * 4 * 3)")
-test_input_5 = parse_input("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))")
-test_input_6 = parse_input("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2")
+sample_data = get_data("day_18_sample.txt", sample=True)
+challenge_data = get_data("day_18_input.txt")
 
-assert part_1(test_input_1) == 71
-assert part_1(test_input_2) == 51
-assert part_1(test_input_3) == 26
-assert part_1(test_input_4) == 437
-assert part_1(test_input_5) == 12240
-assert part_1(test_input_6) == 13632
+if __name__ == "__main__":
+    assert part_1(sample_data[0]) == 71
+    assert part_1(sample_data[1]) == 51
+    assert part_1(sample_data[2]) == 26
+    assert part_1(sample_data[3]) == 437
+    assert part_1(sample_data[4]) == 12240
+    assert part_1(sample_data[5]) == 13632
 
-assert part_2(test_input_1) == 231
-assert part_2(test_input_2) == 51
-assert part_2(test_input_3) == 46
-assert part_2(test_input_4) == 1445
-assert part_2(test_input_5) == 669060
-assert part_2(test_input_6) == 23340
+    assert part_2(sample_data[0]) == 231
+    assert part_2(sample_data[1]) == 51
+    assert part_2(sample_data[2]) == 46
+    assert part_2(sample_data[3]) == 1445
+    assert part_2(sample_data[4]) == 669060
+    assert part_2(sample_data[5]) == 23340
 
-with open("day_18_input.txt") as file:
-    challenge_input = parse_input(file.read())
-print(part_1(challenge_input))  # 25190263477788
-print(part_2(challenge_input))  # 297139939002972
+    print(part_1(challenge_data))  # 25190263477788
+    print(part_2(challenge_data))  # 297139939002972

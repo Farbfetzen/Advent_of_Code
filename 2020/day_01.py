@@ -1,35 +1,39 @@
 # https://adventofcode.com/2020/day/1
 
 
-def part_1(data):
+def get_data(filename):
+    with open(filename) as file:
+        return [int(i) for i in file.read().splitlines()]
+
+
+def part_1(expenses):
     # Add numbers to the set after checking to avoid possible error
     # if the data contains 1010.
-    data_set = set()
-    for x in data:
+    seen = set()
+    for x in expenses:
         y = 2020 - x
-        if y in data_set:
+        if y in seen:
             return x * y
-        data_set.add(x)
+        seen.add(x)
 
 
-def part_2(data):
-    data_set = set()
-    for i, x in enumerate(data):
-        for j, y in enumerate(data[(i+1):]):
+def part_2(expenses):
+    seen = set()
+    for i, x in enumerate(expenses):
+        for j, y in enumerate(expenses[(i + 1):]):
             z = 2020 - x - y
-            if z in data_set:
+            if z in seen:
                 return x * y * z
-            data_set.add(x)
-            data_set.add(y)
+            seen.add(x)
+            seen.add(y)
 
 
-test_data = (1721, 979, 366, 299, 675, 1456)
-assert part_1(test_data) == 514579
-assert part_2(test_data) == 241861950
+sample_data = get_data("day_01_sample.txt")
+challenge_data = get_data("day_01_input.txt")
 
+if __name__ == "__main__":
+    assert part_1(sample_data) == 514579
+    assert part_2(sample_data) == 241861950
 
-with open("day_01_input.txt") as file:
-    expenses = [int(i) for i in file.read().splitlines()]
-
-print(part_1(expenses))  # 436404
-print(part_2(expenses))  # 274879808
+    print(part_1(challenge_data))  # 436404
+    print(part_2(challenge_data))  # 274879808

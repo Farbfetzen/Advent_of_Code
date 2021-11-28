@@ -4,6 +4,15 @@ import itertools
 import re
 
 
+def get_data(filename):
+    with open(filename) as file:
+        data = file.read().split("\n\n")
+    data = [block.splitlines() for block in data]
+    if len(data) == 1:
+        return data[0]
+    return data
+
+
 def part_1(program):
     memory = {}
     mask_to_0 = 0
@@ -39,23 +48,12 @@ def part_2(program):
     return sum(memory.values())
 
 
-test_input_1 = """\
-mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X
-mem[8] = 11
-mem[7] = 101
-mem[8] = 0
-""".splitlines()
-assert part_1(test_input_1) == 165
+sample_data = get_data("day_14_sample.txt")
+challenge_data = get_data("day_14_input.txt")
 
-test_input_2 = """\
-mask = 000000000000000000000000000000X1001X
-mem[42] = 100
-mask = 00000000000000000000000000000000X0XX
-mem[26] = 1
-""".splitlines()
-assert part_2(test_input_2) == 208
+if __name__ == "__main__":
+    assert part_1(sample_data[0]) == 165
+    assert part_2(sample_data[1]) == 208
 
-with open("day_14_input.txt") as file:
-    challenge_input = file.read().splitlines()
-print(part_1(challenge_input))  # 4297467072083
-print(part_2(challenge_input))  # 5030603328768
+    print(part_1(challenge_data))  # 4297467072083
+    print(part_2(challenge_data))  # 5030603328768

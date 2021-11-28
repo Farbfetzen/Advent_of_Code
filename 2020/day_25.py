@@ -1,5 +1,12 @@
 # https://adventofcode.com/2020/day/25
 
+# No part 2 on the 25th.
+
+
+def get_data(filename):
+    with open(filename) as file:
+        return [int(x) for x in file.read().splitlines()]
+
 
 def part_1(public_keys):
     value = 1
@@ -23,14 +30,10 @@ def part_1(public_keys):
     return value
 
 
-test_input = """\
-5764801
-17807724
-""".splitlines()
-test_input = (int(test_input[0]), int(test_input[1]))
-assert part_1(test_input) == 14897079
+sample_data = get_data("day_25_sample.txt")
+challenge_data = get_data("day_25_input.txt")
 
-with open("day_25_input.txt") as file:
-    challenge_input = file.read().splitlines()
-challenge_input = (int(challenge_input[0]), int(challenge_input[1]))
-print(part_1(challenge_input))  # 16902792
+if __name__ == "__main__":
+    assert part_1(sample_data) == 14897079
+
+    print(part_1(challenge_data))  # 16902792

@@ -1,6 +1,11 @@
 # https://adventofcode.com/2020/day/9
 
 
+def get_data(filename):
+    with open(filename) as file:
+        return [int(i) for i in file.readlines()]
+
+
 def valid(preamble, n):
     for i, a in enumerate(preamble[:-1]):
         for b in preamble[(i + 1):]:
@@ -26,13 +31,13 @@ def part_2(numbers, target):
                 break
 
 
-test_input = [35, 20, 15, 25, 47, 40, 62, 55, 65, 95, 102, 117, 150, 182,
-              127, 219, 299, 277, 309, 576]
-assert part_1(test_input, 5) == 127
-assert part_2(test_input, 127) == 62
+sample_data = get_data("day_09_sample.txt")
+challenge_data = get_data("day_09_input.txt")
 
-with open("day_09_input.txt") as file:
-    challenge_input = [int(i) for i in file.readlines()]
-invalid_number = part_1(challenge_input, 25)
-print(invalid_number)  # 21806024
-print(part_2(challenge_input, invalid_number))  # 2986195
+if __name__ == "__main__":
+    assert part_1(sample_data, 5) == 127
+    assert part_2(sample_data, 127) == 62
+
+    invalid_number = part_1(challenge_data, 25)
+    print(invalid_number)  # 21806024
+    print(part_2(challenge_data, invalid_number))  # 2986195

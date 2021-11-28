@@ -4,6 +4,16 @@
 REQUIRED = ("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")  # no "cid"
 
 
+def get_data(filename):
+    with open(filename) as file:
+        data = file.read().split("\n\n")
+    passports = []
+    for entry in data:
+        passport = {k: v for k, v in (field.split(":") for field in entry.split())}
+        passports.append(passport)
+    return passports
+
+
 def part_1(passports):
     n_valid = 0
     for passport in passports:
@@ -13,6 +23,8 @@ def part_1(passports):
 
 
 def part_2(passports):
+    valid_hcl = "0123456789abcdef"
+    valid_ecl = ("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
     n_valid = 0
     for passport in passports:
         if not all(req in passport for req in REQUIRED):
@@ -39,13 +51,11 @@ def part_2(passports):
             continue
 
         hcl = passport["hcl"]
-        valid_hcl = "0123456789abcdef"
         if (hcl[0] != "#"
                 or len(hcl) != 7
                 or any(x not in valid_hcl for x in hcl[1:])):
             continue
 
-        valid_ecl = ("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
         if not passport["ecl"] in valid_ecl:
             continue
 
@@ -54,17 +64,15 @@ def part_2(passports):
             continue
 
         n_valid += 1
+
     return n_valid
 
 
-with open("day_04_input.txt") as file:
-    passports = []
-    for passport_str in file.read().split("\n\n"):
-        passport = {}
-        for field in passport_str.split():
-            k, v = field.split(":")
-            passport[k] = v
-        passports.append(passport)
+sample_data = get_data("day_04_sample.txt")
+challenge_data = get_data("day_04_input.txt")
 
-print(part_1(passports))  # 208
-print(part_2(passports))  # 167
+if __name__ == "__main__":
+    assert part_1(sample_data) == 2
+
+    print(part_1(challenge_data))  # 208
+    print(part_2(challenge_data))  # 167

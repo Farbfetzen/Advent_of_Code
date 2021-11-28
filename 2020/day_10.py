@@ -1,6 +1,12 @@
 # https://adventofcode.com/2020/day/10
 
 
+def get_data(filename):
+    with open(filename) as file:
+        data = file.read().split("\n\n")
+    return [[int(x) for x in block.splitlines()] for block in data]
+
+
 def part_1(adapters):
     adapters.append(0)
     adapters.sort()
@@ -18,15 +24,14 @@ def part_2(adapters):
     return possibilities[0]
 
 
-test_input_1 = [16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4]
-assert part_1(test_input_1) == 7 * 5
-assert part_2(test_input_1) == 8
-test_input_2 = [28, 33, 18, 42, 31, 14, 46, 20, 48, 47, 24, 23, 49, 45, 19, 38,
-                39, 11, 1, 32, 25, 35, 8, 17, 7, 9, 4, 2, 34, 10, 3]
-assert part_1(test_input_2) == 22 * 10
-assert part_2(test_input_2) == 19208
+sample_data = get_data("day_10_sample.txt")
+challenge_data = get_data("day_10_input.txt")[0]
 
-with open("day_10_input.txt") as file:
-    challenge_input = [int(x) for x in file.read().splitlines()]
-print(part_1(challenge_input))  # 2760
-print(part_2(challenge_input))  # 13816758796288
+if __name__ == "__main__":
+    assert part_1(sample_data[0]) == 35
+    assert part_2(sample_data[0]) == 8
+    assert part_1(sample_data[1]) == 220
+    assert part_2(sample_data[1]) == 19208
+
+    print(part_1(challenge_data))  # 2760
+    print(part_2(challenge_data))  # 13816758796288
