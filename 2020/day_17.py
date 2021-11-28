@@ -8,6 +8,11 @@ from itertools import product
 from operator import add
 
 
+def get_data(filename):
+    with open(filename) as file:
+        return file.read().splitlines()
+
+
 def check_neighbors(position, old_state, new_state, directions,
                     candidates=None):
     neighbor_positions = {tuple(map(add, position, direction))
@@ -45,19 +50,16 @@ def run_reactor(input_list, n_dim):
     return len(reactor_state)
 
 
-test_input = """\
-.#.
-..#
-###
-""".splitlines()
-assert run_reactor(test_input, 3) == 112
-assert run_reactor(test_input, 4) == 848
+sample_data = get_data("day_17_sample.txt")
+challenge_data = get_data("day_17_input.txt")
 
-with open("day_17_input.txt") as file:
-    challenge_input = file.read().splitlines()
-print(run_reactor(challenge_input, 3))  # 232
-print(run_reactor(challenge_input, 4))  # 1620
+if __name__ == "__main__":
+    assert run_reactor(sample_data, 3) == 112
+    assert run_reactor(sample_data, 4) == 848
 
-# Not required but I was curious:
-print(run_reactor(challenge_input, 2))  # 30
-print(run_reactor(challenge_input, 5))  # 10632 (takes about a minute)
+    print(run_reactor(challenge_data, 3))  # 232
+    print(run_reactor(challenge_data, 4))  # 1620
+
+    # Not required but I was curious:
+    # print(run_reactor(challenge_input, 2))  # 30
+    # print(run_reactor(challenge_input, 5))  # 10632 (takes about a minute)

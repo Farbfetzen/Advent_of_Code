@@ -4,10 +4,15 @@
 import collections
 
 
-def part_1(input_txt):
+def get_data(filename):
+    with open(filename) as file:
+        return file.read().splitlines()
+
+
+def part_1(input_):
     allergen_ingredients = {}
     ingredient_counter = collections.defaultdict(int)
-    for line in input_txt.splitlines():
+    for line in input_:
         i = line.index("(")
         ingredients = set(line[:i-1].split())
         allergens = line[i+10:-1].split(", ")
@@ -53,18 +58,14 @@ def part_2(allergen_ingredients):
     return ",".join(x[1] for x in result)
 
 
-test_input = """\
-mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
-trh fvjkl sbzzf mxmxvkd (contains dairy)
-sqjhc fvjkl (contains soy)
-sqjhc mxmxvkd sbzzf (contains fish)
-"""
-sum_safe, allergen_map = part_1(test_input)
-assert sum_safe == 5
-assert part_2(allergen_map) == "mxmxvkd,sqjhc,fvjkl"
+sample_data = get_data("day_21_sample.txt")
+challenge_data = get_data("day_21_input.txt")
 
-with open("day_21_input.txt") as file:
-    challenge_input = file.read()
-sum_safe, allergen_map = part_1(challenge_input)
-print(sum_safe)  # 2061 is too high!
-print(part_2(allergen_map))  # cdqvp,dglm,zhqjs,rbpg,xvtrfz,tgmzqjz,mfqgx,rffqhl
+if __name__ == "__main__":
+    sum_safe, allergen_map = part_1(sample_data)
+    assert sum_safe == 5
+    assert part_2(allergen_map) == "mxmxvkd,sqjhc,fvjkl"
+
+    sum_safe, allergen_map = part_1(challenge_data)
+    print(sum_safe)  # 2061
+    print(part_2(allergen_map))  # cdqvp,dglm,zhqjs,rbpg,xvtrfz,tgmzqjz,mfqgx,rffqhl

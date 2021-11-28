@@ -15,6 +15,11 @@ DIRECTIONS = {
 }
 
 
+def get_data(filename):
+    with open(filename) as file:
+        return parse_input(file.read())
+
+
 def parse_input(input_txt):
     positions = []
     for line in input_txt.splitlines():
@@ -61,15 +66,14 @@ def part_2(hexmap):
     return len(hexmap)
 
 
-with open("day_24_sample.txt") as file:
-    test_positions = parse_input(file.read())
-sum_black, test_tiles = part_1(test_positions)
-assert sum_black == 10
-assert part_2(test_tiles) == 2208
+sample_data = get_data("day_24_sample.txt")
+challenge_data = get_data("day_24_input.txt")
 
+if __name__ == "__main__":
+    sum_black, test_tiles = part_1(sample_data)
+    assert sum_black == 10
+    assert part_2(test_tiles) == 2208
 
-with open("day_24_input.txt") as file:
-    challenge_positions = parse_input(file.read())
-sum_black, challenge_tiles = part_1(challenge_positions)
-print(sum_black)  # 528
-print(part_2(challenge_tiles))  # 4200
+    sum_black, challenge_tiles = part_1(challenge_data)
+    print(sum_black)  # 528
+    print(part_2(challenge_tiles))  # 4200

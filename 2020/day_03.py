@@ -4,8 +4,10 @@
 import math
 
 
-def convert_input(input_str):
-    return [[x == "#" for x in line] for line in input_str.splitlines()]
+def get_data(filename):
+    with open(filename) as file:
+        data = file.read()
+    return [[x == "#" for x in line] for line in data.splitlines()]
 
 
 def check_slope(data, slope):
@@ -22,27 +24,21 @@ def check_slope(data, slope):
     return n_trees
 
 
-test_input = convert_input("""..##.......
-#...#...#..
-.#....#..#.
-..#.#...#.#
-.#...##..#.
-..#.##.....
-.#.#.#....#
-.#........#
-#.##...#...
-#...##....#
-.#..#...#.#
-""")
-assert check_slope(test_input, (3, 1)) == 7
+def part_1(map_of_trees):
+    return check_slope(map_of_trees, (3, 1))
 
 
-with open("day_03_input.txt") as file:
-    tree_map = convert_input(file.read())
+def part_2(map_of_trees):
+    slopes = ((1, 1), (3, 1), (5, 1), (7, 1), (1, 2))
+    n_trees = (check_slope(map_of_trees, slope) for slope in slopes)
+    return math.prod(n_trees)
 
-# part 1:
-print(check_slope(tree_map, (3, 1)))  # 211
 
-# part 2:
-slopes = ((1, 1), (3, 1), (5, 1), (7, 1), (1, 2))
-print(math.prod(check_slope(tree_map, slope) for slope in slopes))  # 3584591857
+sample_data = get_data("day_03_sample.txt")
+challenge_data = get_data("day_03_input.txt")
+
+if __name__ == "__main__":
+    assert part_1(sample_data) == 7
+
+    print(part_1(challenge_data))  # 211
+    print(part_2(challenge_data))  # 3584591857

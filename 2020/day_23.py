@@ -1,6 +1,12 @@
 # https://adventofcode.com/2020/day/23
 
 
+def get_data(filename):
+    with open(filename) as file:
+        data = file.read().strip()
+    return [int(x) for x in list(data)]
+
+
 def play(cups, n_moves, n_cups):
     """The list next_cup acts as a linked list
     where next_cup[c] points to the right neighbor of c."""
@@ -43,12 +49,12 @@ def part_2(cups):
     return str(a * b)
 
 
-test_input = [int(x) for x in list("389125467")]
-play(test_input, 10, 15)
-assert part_1(test_input) == "67384529"
-assert part_2(test_input) == "149245887792"
+sample_data = get_data("day_23_sample.txt")
+challenge_data = get_data("day_23_input.txt")
 
-with open("day_23_input.txt") as file:
-    challenge_input = [int(x) for x in list(file.read().strip())]
-print(part_1(challenge_input))  # 24798635
-print(part_2(challenge_input))  # 12757828710
+if __name__ == "__main__":
+    assert part_1(sample_data) == "67384529"
+    assert part_2(sample_data) == "149245887792"
+
+    print(part_1(challenge_data))  # 24798635
+    print(part_2(challenge_data))  # 12757828710

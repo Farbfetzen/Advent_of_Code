@@ -6,6 +6,11 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 from pygame import Vector2
 
 
+def get_data(filename):
+    with open(filename) as file:
+        return file.read().splitlines()
+
+
 def navigate(instructions, part=1):
     position = Vector2(0, 0)
     # "direction_or_waypoint" is either the ship direction in part 1
@@ -36,18 +41,12 @@ def navigate(instructions, part=1):
     return int(abs(position.x) + abs(position.y))
 
 
-test_input = """\
-F10
-N3
-F7
-R90
-F11
-""".splitlines()
-assert navigate(test_input, part=1) == 25
-assert navigate(test_input, part=2) == 286
+sample_data = get_data("day_12_sample.txt")
+challenge_data = get_data("day_12_input.txt")
 
+if __name__ == "__main__":
+    assert navigate(sample_data, part=1) == 25
+    assert navigate(sample_data, part=2) == 286
 
-with open("day_12_input.txt") as file:
-    challenge_input = file.read().splitlines()
-print(navigate(challenge_input, part=1))  # 362
-print(navigate(challenge_input, part=2))  # 29895
+    print(navigate(challenge_data, part=1))  # 362
+    print(navigate(challenge_data, part=2))  # 29895

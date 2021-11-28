@@ -3,8 +3,6 @@
 
 class HandheldGameConsole:
     def __init__(self, instructions):
-        if isinstance(instructions, str):
-            instructions = self.parse_input(instructions)
         self.instructions = instructions
         self.accumulator = 0
         self.pointer = 0  # index of the next instruction to be executed
@@ -16,14 +14,6 @@ class HandheldGameConsole:
             "jmp": self.jmp,
             "nop": self.nop
         }
-
-    @staticmethod
-    def parse_input(instruction_str):
-        instructions = []
-        for instruction in instruction_str.splitlines():
-            operation, value = instruction.split()
-            instructions.append((operation, int(value)))
-        return instructions
 
     def acc(self, n):
         self.accumulator += n
@@ -56,6 +46,11 @@ class HandheldGameConsole:
             self.step()
 
 
+def get_data(filename):
+    with open(filename) as file:
+        return [(op, int(val)) for op, val in (line.split() for line in file.read().splitlines())]
+
+
 def part_1(instructions):
     game_console = HandheldGameConsole(instructions)
     game_console.run()
@@ -63,7 +58,6 @@ def part_1(instructions):
 
 
 def part_2(instructions):
-    instructions = HandheldGameConsole.parse_input(instructions)
     for i, (operation, value) in enumerate(instructions):
         if operation == "jmp":
             modified = ("nop", value)
@@ -79,20 +73,12 @@ def part_2(instructions):
             return game_console.accumulator
 
 
-test_input = """nop +0
-acc +1
-jmp +4
-acc +3
-jmp -3
-acc -99
-acc +1
-jmp -4
-acc +6
-"""
-assert part_1(test_input) == 5
-assert part_2(test_input) == 8
+sample_data = get_data("day_08_sample.txt")
+challenge_data = get_data("day_08_input.txt")
 
-with open("day_08_input.txt") as file:
-    challenge_input = file.read()
-print(part_1(challenge_input))  # 1262
-print(part_2(challenge_input))  # 1643
+if __name__ == "__main__":
+    assert part_1(sample_data) == 5
+    assert part_2(sample_data) == 8
+
+    print(part_1(challenge_data))  # 1262
+    print(part_2(challenge_data))  # 1643

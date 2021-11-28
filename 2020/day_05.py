@@ -1,6 +1,13 @@
 # https://adventofcode.com/2020/day/5
 
 
+def get_data():
+    with open("day_05_input.txt") as file:
+        data = file.read().splitlines()
+    data.sort()
+    return [get_seat_id(p) for p in data]
+
+
 def get_seat_id(boarding_pass):
     # No need to separate rows from columns because the "row * 8" is
     # automatically handled if I treat the boarding pass as a 10 digit
@@ -9,23 +16,23 @@ def get_seat_id(boarding_pass):
     return int(binary_pass, 2)
 
 
-assert get_seat_id("FBFBBFFRLR") == 357
-assert get_seat_id("BFFFBBFRRR") == 567
-assert get_seat_id("FFFBBBFRRR") == 119
-assert get_seat_id("BBFFBBFRLL") == 820
+def part_1(ids):
+    return max(ids)
 
 
-with open("day_05_input.txt") as file:
-    passes = file.read().splitlines()
+def part_2(ids):
+    for i, id_ in enumerate(ids):
+        if ids[i + 1] - id_ == 2:
+            return id_ + 1
 
-ids = [get_seat_id(p) for p in passes]
 
-# part 1
-print(max(ids))  # 848
+challenge_data = get_data()
 
-# part 2
-ids.sort()
-for i, id_ in enumerate(ids):
-    if ids[i + 1] - id_ == 2:
-        print(id_ + 1)  # 682
-        break
+if __name__ == "__main__":
+    assert get_seat_id("FBFBBFFRLR") == 357
+    assert get_seat_id("BFFFBBFRRR") == 567
+    assert get_seat_id("FFFBBBFRRR") == 119
+    assert get_seat_id("BBFFBBFRLL") == 820
+
+    print(part_1(challenge_data))  # 848
+    print(part_2(challenge_data))  # 682

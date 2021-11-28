@@ -4,8 +4,16 @@
 import itertools
 
 
-def parse_input(input_txt):
-    raw_rules, messages = (x.splitlines() for x in input_txt.split("\n\n"))
+def get_data(filename, sample=False):
+    with open(filename) as file:
+        data = file.read()
+    if sample:
+        return [parse_data(data) for data in data.split("\n\n\n")]
+    return parse_data(data)
+
+
+def parse_data(data):
+    raw_rules, messages = (x.splitlines() for x in data.split("\n\n"))
     rules = {}
     for rule in raw_rules:
         i, v = rule.split(":")
@@ -77,22 +85,16 @@ def part_2(rules, messages):
     return sum_valid
 
 
-with open("day_19_sample.txt") as file:
-    test_inputs = file.read().split("\n\n\n")
+sample_data = get_data("day_19_sample.txt", True)
+challenge_data = get_data("day_19_input.txt")
 
-test_input_1 = test_inputs[0]
-assert part_1(*parse_input(test_input_1)) == 2
+if __name__ == "__main__":
+    assert part_1(*sample_data[0]) == 2
+    assert part_1(*sample_data[1]) == 3
+    assert part_2(*sample_data[1]) == 12
 
-test_input_2 = test_inputs[1]
-test_input_2 = parse_input(test_input_2)
-assert part_1(*test_input_2) == 3
-assert part_2(*test_input_2) == 12
-
-
-with open("day_19_input.txt") as file:
-    challenge_input = parse_input(file.read())
-print(part_1(*challenge_input))  # 248
-print(part_2(*challenge_input))  # 381
+    print(part_1(*challenge_data))  # 248
+    print(part_2(*challenge_data))  # 381
 
 
 # Explanation for part 2:

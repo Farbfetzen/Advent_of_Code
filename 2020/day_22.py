@@ -2,13 +2,18 @@
 
 
 from collections import deque
-from itertools import islice
 from copy import deepcopy
+from itertools import islice
 
 
-def parse_input(input_txt):
+def get_data(filename):
+    with open(filename) as file:
+        return parse_input(file.read())
+
+
+def parse_input(input_):
     decks = []
-    for deck in input_txt.split("\n\n"):
+    for deck in input_.split("\n\n"):
         deck = [int(card) for card in deck.splitlines()[1:]]
         decks.append(deque(deck))
     decks = tuple(decks)
@@ -70,12 +75,12 @@ def part_2(decks, return_index=False):
         return calculate_score(decks[winner_game])
 
 
-with open("day_22_sample.txt") as file:
-    test_decks = parse_input(file.read())
-assert part_1(test_decks) == 306
-assert part_2(test_decks) == 291
+sample_data = get_data("day_22_sample.txt")
+challenge_data = get_data("day_22_input.txt")
 
-with open("day_22_input.txt") as file:
-    challenge_decks = parse_input(file.read())
-print(part_1(challenge_decks))  # 30138
-print(part_2(challenge_decks))  # 31587
+if __name__ == "__main__":
+    assert part_1(sample_data) == 306
+    assert part_2(sample_data) == 291
+
+    print(part_1(challenge_data))  # 30138
+    print(part_2(challenge_data))  # 31587

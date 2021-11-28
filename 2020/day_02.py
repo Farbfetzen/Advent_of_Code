@@ -4,48 +4,50 @@
 from collections import namedtuple
 
 
-PasswordEntry = namedtuple("password_entry", "min,max,letter,password")
+PasswordEntry = namedtuple("password_data", "min,max,letter,password")
 
 
-def convert_input(data_str):
-    data = []
-    for line in data_str.splitlines():
+def get_data(filename):
+    with open(filename) as file:
+        data = file.read().strip().splitlines()
+    converted_data = []
+    for line in data:
         entry = line.split()
         i, j = entry[0].split("-")
-        data.append(PasswordEntry(
+        converted_data.append(PasswordEntry(
             int(i),
             int(j),
             entry[1][0],
             entry[2]
         ))
-    return data
+    return converted_data
 
 
-def part_1(data):
-    return sum(entry.min <= entry.password.count(entry.letter) <= entry.max
-               for entry in data)
+def part_1(password_data):
+    sum_valid = 0
+    for password_entry in password_data:
+        letter_count = password_entry.password.count(password_entry.letter)
+        if password_entry.min <= letter_count <= password_entry.max:
+            sum_valid += 1
+    return sum_valid
 
 
-def part_2(data):
-    sum_ = 0
-    for entry in data:
-        a = entry.password[entry.min - 1] == entry.letter
-        b = entry.password[entry.max - 1] == entry.letter
-        if a ^ b:
-            sum_ += 1
-    return sum_
+def part_2(password_data):
+    sum_valid = 0
+    for password_entry in password_data:
+        a = password_entry.password[password_entry.min - 1] == password_entry.letter
+        b = password_entry.password[password_entry.max - 1] == password_entry.letter
+        if a != b:
+            sum_valid += 1
+    return sum_valid
 
 
-test_input = convert_input("""1-3 a: abcde
-1-3 b: cdefg
-2-9 c: ccccccccc
-""")
-assert part_1(test_input) == 2
-assert part_2(test_input) == 1
+sample_data = get_data("day_02_sample.txt")
+challenge_data = get_data("day_02_input.txt")
 
+if __name__ == "__main__":
+    assert part_1(sample_data) == 2
+    assert part_2(sample_data) == 1
 
-with open("day_02_input.txt") as file:
-    password_entries = convert_input(file.read())
-
-print(part_1(password_entries))  # 434
-print(part_2(password_entries))  # 509
+    print(part_1(challenge_data))  # 434
+    print(part_2(challenge_data))  # 509
