@@ -31,37 +31,37 @@ base_path = f"day_{day:02}"
 script_path = os.path.join(year, base_path + ".py")
 relative_input_path = base_path + "_input.txt"
 input_path = os.path.join(year, relative_input_path)
+sample_path = input_path.replace("input", "sample")
 challenge_url = f"https://adventofcode.com/{year}/day/{day}"
 input_url = challenge_url + "/input"
+test_path = os.path.join(year, f"test_{year}.py")
 
 if not os.path.exists(year):
     os.mkdir(year)
 
-script_content = f'''# {challenge_url}\n\n
-import collections
-import itertools
-import math
-import numpy
-from pprint import pprint\n\n
+script_template = f'''# {challenge_url}\n\n
+def get_data(filename):
+    with open(filename) as file:
+        return file.read().splitlines()\n\n
 def part_1(foo):
-    return 0\n\n
-def part_2(foo):
-    return 0\n\n
-test_input = """\\
-""".splitlines()
-# assert part_1(test_input) ==
-# assert part_2(test_input) ==\n\n
-with open("{relative_input_path}") as file:
-    challenge_input = file.read().splitlines()
-# print(part_1(challenge_input))  #
-# print(part_2(challenge_input))  #
+    pass\n\n
+# def part_2(foo):
+#     pass\n\n
+sample_data = get_data("{base_path}_sample.txt")
+challenge_data = get_data("{base_path}_input.txt")\n
+if __name__ == "__main__":
+    assert part_1(sample_data)
+    # assert part_2(sample_data)\n
+    print(part_1(challenge_data))
+    # print(part_2(challenge_data))\n
 '''
+
 if os.path.exists(script_path):
     print("Skipping script generation because the file already exists.")
 else:
     print("Writing script file.")
     with open(script_path, "w") as file:
-        file.write(script_content)
+        file.write(script_template)
 
 if os.path.exists(input_path):
     print("Skipping input file generation because the file already exists.")
@@ -74,20 +74,28 @@ else:
         config = json.load(file)
     cookie = config["session_cookie"]
 
-    req = requests.get(input_url, cookies={"session": cookie}, timeout=5)
-    if not req.ok:
-        print("Error! Got status:", req.status_code)
-        print(req.text)
+    response = requests.get(input_url, cookies={"session": cookie}, timeout=5)
+    if not response.ok:
+        print("Error! Got status:", response.status_code)
+        print(response.text)
 
     print("Writing input file.")
     with open(input_path, "w") as file:
-        if req.ok:
-            file.write(req.text)
-        # else the file remains empty and the input should be pasted manually
+        if response.ok:
+            file.write(response.text)
+        # Else the file remains empty and the input should be pasted manually.
+
+if os.path.exists(sample_path):
+    print("Skipping sample file generation because the file already exists.")
+else:
+    print("Writing sample file.")
+    open(sample_path, "w").close()
 
 print("Done. Have fun!\n")
 
-# Print links to the files that should be clickable in the console.
+# These links should be clickable in the console.
 print(f"file://{os.path.abspath(script_path)}")
 print(f"file://{os.path.abspath(input_path)}")
+print(f"file://{os.path.abspath(sample_path)}")
+print(f"file://{os.path.abspath(test_path)}")
 print(challenge_url)
