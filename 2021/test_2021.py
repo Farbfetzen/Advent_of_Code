@@ -2,6 +2,7 @@ import unittest
 
 import day_01
 import day_02
+import day_03
 
 
 class Test2021(unittest.TestCase):
@@ -19,6 +20,13 @@ class Test2021(unittest.TestCase):
 
         self.assertEqual(day_02.part_1(day_02.challenge_data), 2073315)
         self.assertEqual(day_02.part_2(day_02.challenge_data), 1840311528)
+        
+    def test_03(self):
+        self.assertEqual(day_03.part_1(day_03.sample_data), 198)
+        self.assertEqual(day_03.part_2(day_03.sample_data), 230)
+
+        self.assertEqual(day_03.part_1(day_03.challenge_data), 693486)
+        self.assertEqual(day_03.part_2(day_03.challenge_data), 3379326)
 
 
 if __name__ == "__main__":
