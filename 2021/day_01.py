@@ -3,20 +3,17 @@
 
 def get_data(filename):
     with open(filename) as file:
-        return [int(i) for i in file.readlines()]
+        return [int(i) for i in file.read().splitlines()]
 
 
 def part_1(depths):
-    sum_increases = 0
-    for i, d in enumerate(depths[1:], 1):
-        previous = depths[i - 1]
-        if d > previous:
-            sum_increases += 1
-    return sum_increases
+    return sum(x < y for x, y in zip(depths, depths[1:]))
 
 
 def part_2(depths):
-    return part_1([sum(w) for w in zip(depths, depths[1:], depths[2:])])
+    # Shortcut: I only need to compare the values that are 3 steps apart because
+    # a + b + c < b + c + d can be canceled down to a < d.
+    return sum(x < y for x, y in zip(depths, depths[3:]))
 
 
 sample_data = get_data("day_01_sample.txt")
