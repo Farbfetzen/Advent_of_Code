@@ -15,11 +15,13 @@ class Test2021(unittest.TestCase):
         self.assertEqual(day_01.part_2(day_01.challenge_data), 1797)
 
     def test_02(self):
-        self.assertEqual(day_02.part_1(day_02.sample_data), 150)
-        self.assertEqual(day_02.part_2(day_02.sample_data), 900)
+        hda_sample = day_02.follow_course(day_02.sample_data)
+        self.assertEqual(day_02.part_1(*hda_sample), 150)
+        self.assertEqual(day_02.part_2(*hda_sample), 900)
 
-        self.assertEqual(day_02.part_1(day_02.challenge_data), 2073315)
-        self.assertEqual(day_02.part_2(day_02.challenge_data), 1840311528)
+        hda_challenge = day_02.follow_course(day_02.challenge_data)
+        self.assertEqual(day_02.part_1(*hda_challenge), 2073315)
+        self.assertEqual(day_02.part_2(*hda_challenge), 1840311528)
         
     def test_03(self):
         self.assertEqual(day_03.part_1(day_03.sample_data), 198)

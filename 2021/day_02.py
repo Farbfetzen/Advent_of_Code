@@ -7,20 +7,8 @@ def get_data(filename):
     return [(direction, int(n)) for direction, n in (line.split() for line in lines)]
 
 
-def part_1(course):
-    horizontal_position = 0
-    depth = 0
-    for direction, n in course:
-        if direction == "forward":
-            horizontal_position += n
-        elif direction == "up":
-            depth -= n
-        elif direction == "down":
-            depth += n
-    return horizontal_position * depth
-
-
-def part_2(course):
+def follow_course(course):
+    """Both parts can be done in one pass because aim in part 2 is just depth from part 1."""
     horizontal_position = 0
     depth = 0
     aim = 0
@@ -32,6 +20,14 @@ def part_2(course):
             aim -= n
         elif direction == "down":
             aim += n
+    return horizontal_position, depth, aim
+
+
+def part_1(horizontal_position, _, aim):
+    return horizontal_position * aim
+
+
+def part_2(horizontal_position, depth, _):
     return horizontal_position * depth
 
 
@@ -39,8 +35,10 @@ sample_data = get_data("day_02_sample.txt")
 challenge_data = get_data("day_02_input.txt")
 
 if __name__ == "__main__":
-    assert part_1(sample_data) == 150
-    assert part_2(sample_data) == 900
+    hda_sample = follow_course(sample_data)
+    assert part_1(*hda_sample) == 150
+    assert part_2(*hda_sample) == 900
 
-    print(part_1(challenge_data))  # 2073315
-    print(part_2(challenge_data))  # 1840311528
+    hda_challenge = follow_course(challenge_data)
+    print(part_1(*hda_challenge))  # 2073315
+    print(part_2(*hda_challenge))  # 1840311528
