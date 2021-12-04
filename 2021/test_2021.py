@@ -32,11 +32,13 @@ class Test2021(unittest.TestCase):
         self.assertEqual(day_03.part_2(day_03.challenge_data), 3379326)
 
     def test_04(self):
-        self.assertEqual(day_04.part_1(*day_04.sample_data), 4512)
-        self.assertEqual(day_04.part_2(*day_04.sample_data), 1924)
+        sample_part_1, sample_part_2 = day_04.play(*day_04.sample_data)
+        self.assertEqual(sample_part_1, 4512)
+        self.assertEqual(sample_part_2, 1924)
 
-        self.assertEqual(day_04.part_1(*day_04.challenge_data), 23177)
-        self.assertEqual(day_04.part_2(*day_04.challenge_data), 6804)
+        challenge_part_1, challenge_part_2 = day_04.play(*day_04.challenge_data)
+        self.assertEqual(challenge_part_1, 23177)
+        self.assertEqual(challenge_part_2, 6804)
 
 
 if __name__ == "__main__":
