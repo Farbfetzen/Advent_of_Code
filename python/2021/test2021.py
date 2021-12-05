@@ -4,6 +4,7 @@ import day01
 import day02
 import day03
 import day04
+import day05
 
 
 class Test2021(unittest.TestCase):
@@ -39,6 +40,13 @@ class Test2021(unittest.TestCase):
         challenge_part_1, challenge_part_2 = day04.play(*day04.challenge_data)
         self.assertEqual(challenge_part_1, 23177)
         self.assertEqual(challenge_part_2, 6804)
+        
+    def test_05(self):
+        self.assertEqual(day05.part_1(day05.sample_data), 5)
+        self.assertEqual(day05.part_2(day05.sample_data), 12)
+
+        self.assertEqual(day05.part_1(day05.challenge_data), 6267)
+        self.assertEqual(day05.part_2(day05.challenge_data), 20196)
 
 
 if __name__ == "__main__":
