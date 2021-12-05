@@ -10,26 +10,21 @@ class BingoBoard:
     def mark(self, n):
         if n in self.numbers:
             self.marked.add(n)
-            return self.check_win()
+            return self.check_win(n)
         return False
 
     def get_score(self):
         return sum(set(self.numbers).difference(self.marked))
 
-    def check_win(self):
-        return self.check_rows() or self.check_columns()
-
-    def check_rows(self):
-        for i in range(0, 21, 5):
-            if self.marked.issuperset(self.numbers[i:i+5]):
-                return True
-        return False
-
-    def check_columns(self):
-        for i in range(5):
-            if self.marked.issuperset(self.numbers[i::5]):
-                return True
-        return False
+    def check_win(self, n):
+        """Check if n completes the row or column it's in."""
+        i = self.numbers.index(n)
+        r = i // 5 * 5
+        c = i % 5
+        return (
+            self.marked.issuperset(self.numbers[r:r+5])
+            or self.marked.issuperset(self.numbers[c::5])
+        )
 
 
 def get_data(filename):
