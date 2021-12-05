@@ -27,16 +27,16 @@ if not (1 <= day <= 25):
     raise ValueError(f"Day {day} not in range [1, 25].")
 
 year = str(year)
-day = f"{day:02}"
+day_with_zero = f"{day:02}"
 base_path = os.path.dirname(os.path.realpath(__file__))
 year_dir = os.path.join(base_path, year)
-input_filename = f"{year}-{day}-input.txt"
+input_filename = f"{year}-{day_with_zero}-input.txt"
 sample_filename = input_filename.replace("input.txt", "sample.txt")
 relative_input_path = os.path.join("..", "..", "input", input_filename)
 relative_sample_path = os.path.join("..", "..", "input", sample_filename)
 input_path = os.path.abspath(os.path.join(base_path, "..", "input", input_filename))
 sample_path = input_path.replace(input_filename, sample_filename)
-solution_path = os.path.join(year_dir, f"day{day}.py")
+solution_path = os.path.join(year_dir, f"day{day_with_zero}.py")
 test_path = os.path.join(year_dir, f"test{year}.py")
 config_path = os.path.abspath(os.path.join(base_path, "..", "config.json"))
 
@@ -61,13 +61,13 @@ if __name__ == "__main__":
 """
 
 test_template = f"""import unittest\n
-import day{day}\n\n
+import day{day_with_zero}\n\n
 class Test{year}(unittest.TestCase):\n
-    def test_{day}(self):
-        self.assertEqual(day{day}.part_1(day{day}.sample_data), 0)
-        # self.assertEqual(day{day}.part_2(day{day}.sample_data), 0)\n
-        self.assertEqual(day{day}.part_1(day{day}.challenge_data), 0)
-        # self.assertEqual(day{day}.part_2(day{day}.challenge_data), 0)\n\n
+    def test_{day_with_zero}(self):
+        self.assertEqual(day{day_with_zero}.part_1(day{day_with_zero}.sample_data), 0)
+        # self.assertEqual(day{day_with_zero}.part_2(day{day_with_zero}.sample_data), 0)\n
+        self.assertEqual(day{day_with_zero}.part_1(day{day_with_zero}.challenge_data), 0)
+        # self.assertEqual(day{day_with_zero}.part_2(day{day_with_zero}.challenge_data), 0)\n\n
 if __name__ == "__main__":
     unittest.main()
 """
