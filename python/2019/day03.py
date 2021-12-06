@@ -5,6 +5,11 @@ import re
 import math
 
 
+def get_data(filename):
+    with open(filename) as file:
+        return file.read().split("\n\n")
+
+
 def construct_paths(wire_input):
     wires = [wire.split(",") for wire in wire_input.splitlines()]
     paths = []
@@ -59,20 +64,14 @@ def part_2(wire_input):
     return smallest_distance
 
 
-test1 = """R75,D30,R83,U83,L12,D49,R71,U7,L72
-U62,R66,U55,R34,D71,R55,D58,R83
-"""
-assert part_1(test1) == 159
-assert part_2(test1) == 610
-test2 = """R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
-U98,R91,D20,R16,D67,R40,U7,R15,U6,R7
-"""
-assert part_1(test2) == 135
-assert part_2(test2) == 410
+sample_data_a, sample_data_b = get_data("../../input/2019-03-sample.txt")
+challenge_data = get_data("../../input/2019-03-input.txt")[0]
 
+if __name__ == "__main__":
+    assert part_1(sample_data_a) == 159
+    assert part_1(sample_data_b) == 135
+    assert part_2(sample_data_a) == 610
+    assert part_2(sample_data_b) == 410
 
-with open("../../input/2019-03-input.txt") as file:
-    day_03_input = file.read()
-
-print(part_1(day_03_input))  # 489
-print(part_2(day_03_input))  # 93654
+    print(part_1(challenge_data))  # 489
+    print(part_2(challenge_data))  # 93654
