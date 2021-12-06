@@ -3,6 +3,7 @@ import unittest
 import day01
 import day02
 import day03
+import day04
 
 
 class Test2021(unittest.TestCase):
@@ -26,6 +27,25 @@ class Test2021(unittest.TestCase):
 
         self.assertEqual(day03.part_1(day03.challenge_data), 489)
         self.assertEqual(day03.part_2(day03.challenge_data), 93654)
+        
+    def test_04(self):
+        self.assertTrue(day04.check_increasing_digits("111111")
+                        and day04.check_adjacent_pairs("111111"))
+        self.assertFalse(day04.check_increasing_digits("223450")
+                         and day04.check_adjacent_pairs("223450"))
+        self.assertFalse(day04.check_increasing_digits("123789")
+                         and day04.check_adjacent_pairs("123789"))
+
+        self.assertTrue(day04.check_increasing_digits("112233")
+                        and day04.check_adjacent_pairs_group("112233"))
+        self.assertFalse(day04.check_increasing_digits("123444")
+                         and day04.check_adjacent_pairs_group("123444"))
+        self.assertTrue(day04.check_increasing_digits("111122")
+                        and day04.check_adjacent_pairs_group("111122"))
+
+        challenge_part_1, challenge_part_2 = day04.count_passwords(day04.challenge_data)
+        self.assertEqual(challenge_part_1, 1650)
+        self.assertEqual(challenge_part_2, 1129)
 
 
 if __name__ == "__main__":
