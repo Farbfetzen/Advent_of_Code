@@ -6,6 +6,7 @@ import day03
 import day04
 import day05
 import day06
+import day07
 
 
 class Test2021(unittest.TestCase):
@@ -57,6 +58,15 @@ class Test2021(unittest.TestCase):
         challenge_part_1, challenge_part_2 = day06.simulate(day06.challenge_data)
         self.assertEqual(challenge_part_1, 372300)
         self.assertEqual(challenge_part_2, 1675781200288)
+
+    def test_07(self):
+        sample_data = day07.get_data(day07.SAMPLE_PATH)
+        self.assertEqual(day07.part_1(sample_data), 37)
+        self.assertEqual(day07.part_2(sample_data), 168)
+
+        challenge_data = day07.get_data(day07.INPUT_PATH)
+        self.assertEqual(day07.part_1(challenge_data), 352331)
+        self.assertEqual(day07.part_2(challenge_data), 99266250)
 
 
 if __name__ == "__main__":
