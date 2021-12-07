@@ -4,6 +4,10 @@
 import math
 
 
+SAMPLE_PATH = "../../input/2020-03-sample.txt"
+INPUT_PATH = "../../input/2020-03-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         data = file.read()
@@ -34,11 +38,10 @@ def part_2(map_of_trees):
     return math.prod(n_trees)
 
 
-sample_data = get_data("../../input/2020-03-sample.txt")
-challenge_data = get_data("../../input/2020-03-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 7
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 211
     print(part_2(challenge_data))  # 3584591857

@@ -5,6 +5,10 @@ import math
 import numpy
 
 
+SAMPLE_PATH = "../../input/2020-20-sample.txt"
+INPUT_PATH = "../../input/2020-20-input.txt"
+
+
 class Tile:
     def __init__(self, data):
         data = data.splitlines()
@@ -160,12 +164,11 @@ def part_2(tiles):
     return len(all_rough_water_pos)
 
 
-sample_data = get_data("../../input/2020-20-sample.txt")
-challenge_data = get_data("../../input/2020-20-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 20899048083289
     assert part_2(sample_data) == 273
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 27798062994017
     print(part_2(challenge_data))  # 2366

@@ -1,9 +1,13 @@
 # https://adventofcode.com/2020/day/11
 
-# Both parts are too slow for my taste. Maybe I'll improve this sometime.
+# TODO: Improve the performance of both parts.
 
 
 import numpy
+
+
+SAMPLE_PATH = "../../input/2020-11-sample.txt"
+INPUT_PATH = "../../input/2020-11-input.txt"
 
 
 def get_data(filename):
@@ -70,12 +74,11 @@ def part_2(seats):
         seats = new_seats
 
 
-sample_data = get_data("../../input/2020-11-sample.txt")
-challenge_data = get_data("../../input/2020-11-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 37
     assert part_2(sample_data) == 26
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 2299
     print(part_2(challenge_data))  # 2047

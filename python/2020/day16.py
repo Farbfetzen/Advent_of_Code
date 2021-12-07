@@ -4,6 +4,10 @@
 import re
 
 
+SAMPLE_PATH = "../../input/2020-16-sample.txt"
+INPUT_PATH = "../../input/2020-16-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         return parse_input(file.read())
@@ -75,11 +79,10 @@ def part_2(data):
     return result
 
 
-sample_data = get_data("../../input/2020-16-sample.txt")
-challenge_data = get_data("../../input/2020-16-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 71
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 27802
     print(part_2(challenge_data))  # 279139880759

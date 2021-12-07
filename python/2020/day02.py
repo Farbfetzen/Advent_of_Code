@@ -4,6 +4,9 @@
 from collections import namedtuple
 
 
+SAMPLE_PATH = "../../input/2020-02-sample.txt"
+INPUT_PATH = "../../input/2020-02-input.txt"
+
 PasswordEntry = namedtuple("password_data", "min,max,letter,password")
 
 
@@ -42,12 +45,11 @@ def part_2(password_data):
     return sum_valid
 
 
-sample_data = get_data("../../input/2020-02-sample.txt")
-challenge_data = get_data("../../input/2020-02-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 2
     assert part_2(sample_data) == 1
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 434
     print(part_2(challenge_data))  # 509

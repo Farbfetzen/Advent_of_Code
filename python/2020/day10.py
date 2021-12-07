@@ -1,6 +1,10 @@
 # https://adventofcode.com/2020/day/10
 
 
+SAMPLE_PATH = "../../input/2020-10-sample.txt"
+INPUT_PATH = "../../input/2020-10-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         data = file.read().split("\n\n")
@@ -24,14 +28,13 @@ def part_2(adapters):
     return possibilities[0]
 
 
-sample_data = get_data("../../input/2020-10-sample.txt")
-challenge_data = get_data("../../input/2020-10-input.txt")[0]
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data[0]) == 35
     assert part_2(sample_data[0]) == 8
     assert part_1(sample_data[1]) == 220
     assert part_2(sample_data[1]) == 19208
 
+    challenge_data = get_data(INPUT_PATH)[0]
     print(part_1(challenge_data))  # 2760
     print(part_2(challenge_data))  # 13816758796288

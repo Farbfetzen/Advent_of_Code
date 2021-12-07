@@ -4,6 +4,14 @@
 import array
 
 
+INPUT_PATH = "../../input/2020-15-input.txt"
+
+
+def get_data(filename):
+    with open(filename) as file:
+        return [int(x) for x in file.read().split(",")]
+
+
 # noinspection PyUnboundLocalVariable
 def play(numbers, end_turn):
     # Using an array of unsigned ints gives a small speed boost.
@@ -21,9 +29,7 @@ def play(numbers, end_turn):
     return last_num
 
 
-with open("../../input/2020-15-input.txt") as file:
-    challenge_input = [int(x) for x in file.read().split(",")]
-
 if __name__ == "__main__":
-    print(play(challenge_input, 2020))  # 240
-    print(play(challenge_input, 30_000_000))  # 505
+    challenge_data = get_data(INPUT_PATH)
+    print(play(challenge_data, 2020))  # 240
+    print(play(challenge_data, 30_000_000))  # 505

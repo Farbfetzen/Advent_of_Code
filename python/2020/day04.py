@@ -1,6 +1,8 @@
 # https://adventofcode.com/2020/day/4
 
 
+SAMPLE_PATH = "../../input/2020-04-sample.txt"
+INPUT_PATH = "../../input/2020-04-input.txt"
 REQUIRED = ("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")  # no "cid"
 
 
@@ -68,11 +70,10 @@ def part_2(passports):
     return n_valid
 
 
-sample_data = get_data("../../input/2020-04-sample.txt")
-challenge_data = get_data("../../input/2020-04-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 2
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 208
     print(part_2(challenge_data))  # 167

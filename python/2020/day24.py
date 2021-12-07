@@ -13,6 +13,8 @@ DIRECTIONS = {
     "nw": 0-1j,
     "ne": 1-1j
 }
+SAMPLE_PATH = "../../input/2020-24-sample.txt"
+INPUT_PATH = "../../input/2020-24-input.txt"
 
 
 def get_data(filename):
@@ -66,14 +68,13 @@ def part_2(hexmap):
     return len(hexmap)
 
 
-sample_data = get_data("../../input/2020-24-sample.txt")
-challenge_data = get_data("../../input/2020-24-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     sum_black, test_tiles = part_1(sample_data)
     assert sum_black == 10
     assert part_2(test_tiles) == 2208
 
+    challenge_data = get_data(INPUT_PATH)
     sum_black, challenge_tiles = part_1(challenge_data)
     print(sum_black)  # 528
     print(part_2(challenge_tiles))  # 4200

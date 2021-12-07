@@ -1,6 +1,10 @@
 # https://adventofcode.com/2020/day/8
 
 
+SAMPLE_PATH = "../../input/2020-08-sample.txt"
+INPUT_PATH = "../../input/2020-08-input.txt"
+
+
 class HandheldGameConsole:
     def __init__(self, instructions):
         self.instructions = instructions
@@ -73,12 +77,11 @@ def part_2(instructions):
             return game_console.accumulator
 
 
-sample_data = get_data("../../input/2020-08-sample.txt")
-challenge_data = get_data("../../input/2020-08-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 5
     assert part_2(sample_data) == 8
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 1262
     print(part_2(challenge_data))  # 1643

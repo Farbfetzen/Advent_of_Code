@@ -1,12 +1,14 @@
 # https://adventofcode.com/2020/day/18
 
 
-def get_data(filename, sample=False):
+SAMPLE_PATH = "../../input/2020-18-sample.txt"
+INPUT_PATH = "../../input/2020-18-input.txt"
+
+
+def get_data(filename):
     with open(filename) as file:
-        data = file.read()
-    if sample:
-        return [parse_data(line.splitlines()) for line in data.split("\n\n")]
-    return parse_data(data.splitlines())
+        data = file.read().split("\n\n")
+    return [parse_data(line.splitlines()) for line in data]
 
 
 def parse_data(data):
@@ -73,10 +75,8 @@ def part_2(homework):
     return sum(evaluate(add_parentheses(line)) for line in homework)
 
 
-sample_data = get_data("../../input/2020-18-sample.txt", sample=True)
-challenge_data = get_data("../../input/2020-18-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data[0]) == 71
     assert part_1(sample_data[1]) == 51
     assert part_1(sample_data[2]) == 26
@@ -91,5 +91,6 @@ if __name__ == "__main__":
     assert part_2(sample_data[4]) == 669060
     assert part_2(sample_data[5]) == 23340
 
+    challenge_data = get_data(INPUT_PATH)[0]
     print(part_1(challenge_data))  # 25190263477788
     print(part_2(challenge_data))  # 297139939002972

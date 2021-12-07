@@ -6,6 +6,10 @@ from copy import deepcopy
 from itertools import islice
 
 
+SAMPLE_PATH = "../../input/2020-22-sample.txt"
+INPUT_PATH = "../../input/2020-22-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         return parse_input(file.read())
@@ -75,12 +79,11 @@ def part_2(decks, return_index=False):
         return calculate_score(decks[winner_game])
 
 
-sample_data = get_data("../../input/2020-22-sample.txt")
-challenge_data = get_data("../../input/2020-22-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 306
     assert part_2(sample_data) == 291
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 30138
     print(part_2(challenge_data))  # 31587

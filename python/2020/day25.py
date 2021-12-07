@@ -3,6 +3,10 @@
 # No part 2 on the 25th.
 
 
+SAMPLE_PATH = "../../input/2020-25-sample.txt"
+INPUT_PATH = "../../input/2020-25-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         return [int(x) for x in file.read().splitlines()]
@@ -30,10 +34,9 @@ def part_1(public_keys):
     return value
 
 
-sample_data = get_data("../../input/2020-25-sample.txt")
-challenge_data = get_data("../../input/2020-25-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 14897079
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 16902792

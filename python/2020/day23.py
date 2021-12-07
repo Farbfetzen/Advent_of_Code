@@ -1,6 +1,10 @@
 # https://adventofcode.com/2020/day/23
 
 
+SAMPLE_PATH = "../../input/2020-23-sample.txt"
+INPUT_PATH = "../../input/2020-23-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         data = file.read().strip()
@@ -49,12 +53,11 @@ def part_2(cups):
     return str(a * b)
 
 
-sample_data = get_data("../../input/2020-23-sample.txt")
-challenge_data = get_data("../../input/2020-23-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == "67384529"
     assert part_2(sample_data) == "149245887792"
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 24798635
     print(part_2(challenge_data))  # 12757828710

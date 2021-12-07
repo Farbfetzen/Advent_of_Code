@@ -1,6 +1,10 @@
 # https://adventofcode.com/2020/day/9
 
 
+SAMPLE_PATH = "../../input/2020-09-sample.txt"
+INPUT_PATH = "../../input/2020-09-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         return [int(i) for i in file.readlines()]
@@ -31,13 +35,12 @@ def part_2(numbers, target):
                 break
 
 
-sample_data = get_data("../../input/2020-09-sample.txt")
-challenge_data = get_data("../../input/2020-09-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data, 5) == 127
     assert part_2(sample_data, 127) == 62
 
+    challenge_data = get_data(INPUT_PATH)
     invalid_number = part_1(challenge_data, 25)
     print(invalid_number)  # 21806024
     print(part_2(challenge_data, invalid_number))  # 2986195

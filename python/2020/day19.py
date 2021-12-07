@@ -4,12 +4,14 @@
 import itertools
 
 
-def get_data(filename, sample=False):
+SAMPLE_PATH = "../../input/2020-19-sample.txt"
+INPUT_PATH = "../../input/2020-19-input.txt"
+
+
+def get_data(filename):
     with open(filename) as file:
-        data = file.read()
-    if sample:
-        return [parse_data(data) for data in data.split("\n\n\n")]
-    return parse_data(data)
+        data = file.read().split("\n\n\n")
+    return [parse_data(data) for data in data]
 
 
 def parse_data(data):
@@ -85,14 +87,13 @@ def part_2(rules, messages):
     return sum_valid
 
 
-sample_data = get_data("../../input/2020-19-sample.txt", True)
-challenge_data = get_data("../../input/2020-19-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(*sample_data[0]) == 2
     assert part_1(*sample_data[1]) == 3
     assert part_2(*sample_data[1]) == 12
 
+    challenge_data = get_data(INPUT_PATH)[0]
     print(part_1(*challenge_data))  # 248
     print(part_2(*challenge_data))  # 381
 

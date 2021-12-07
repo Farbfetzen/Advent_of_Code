@@ -3,7 +3,12 @@
 
 import os
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
+
 from pygame import Vector2
+
+
+SAMPLE_PATH = "../../input/2020-12-sample.txt"
+INPUT_PATH = "../../input/2020-12-input.txt"
 
 
 def get_data(filename):
@@ -41,12 +46,11 @@ def navigate(instructions, part=1):
     return int(abs(position.x) + abs(position.y))
 
 
-sample_data = get_data("../../input/2020-12-sample.txt")
-challenge_data = get_data("../../input/2020-12-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert navigate(sample_data, part=1) == 25
     assert navigate(sample_data, part=2) == 286
 
+    challenge_data = get_data(INPUT_PATH)
     print(navigate(challenge_data, part=1))  # 362
     print(navigate(challenge_data, part=2))  # 29895

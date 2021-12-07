@@ -4,6 +4,10 @@
 import collections
 
 
+SAMPLE_PATH = "../../input/2020-21-sample.txt"
+INPUT_PATH = "../../input/2020-21-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         return file.read().splitlines()
@@ -58,14 +62,13 @@ def part_2(allergen_ingredients):
     return ",".join(x[1] for x in result)
 
 
-sample_data = get_data("../../input/2020-21-sample.txt")
-challenge_data = get_data("../../input/2020-21-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     sum_safe, allergen_map = part_1(sample_data)
     assert sum_safe == 5
     assert part_2(allergen_map) == "mxmxvkd,sqjhc,fvjkl"
 
+    challenge_data = get_data(INPUT_PATH)
     sum_safe, allergen_map = part_1(challenge_data)
     print(sum_safe)  # 2061
     print(part_2(allergen_map))  # cdqvp,dglm,zhqjs,rbpg,xvtrfz,tgmzqjz,mfqgx,rffqhl

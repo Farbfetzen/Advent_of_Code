@@ -1,7 +1,12 @@
 # https://adventofcode.com/2020/day/14
 
+
 import itertools
 import re
+
+
+SAMPLE_PATH = "../../input/2020-14-sample.txt"
+INPUT_PATH = "../../input/2020-14-input.txt"
 
 
 def get_data(filename):
@@ -48,12 +53,11 @@ def part_2(program):
     return sum(memory.values())
 
 
-sample_data = get_data("../../input/2020-14-sample.txt")
-challenge_data = get_data("../../input/2020-14-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data[0]) == 165
     assert part_2(sample_data[1]) == 208
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 4297467072083
     print(part_2(challenge_data))  # 5030603328768

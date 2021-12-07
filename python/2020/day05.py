@@ -1,8 +1,12 @@
 # https://adventofcode.com/2020/day/5
 
 
-def get_data():
-    with open("../../input/2020-05-input.txt") as file:
+SAMPLE_DATA = ("FBFBBFFRLR", "BFFFBBFRRR", "FFFBBBFRRR", "BBFFBBFRLL")
+INPUT_PATH = "../../input/2020-05-input.txt"
+
+
+def get_data(filename):
+    with open(filename) as file:
         data = file.read().splitlines()
     data.sort()
     return [get_seat_id(p) for p in data]
@@ -26,13 +30,12 @@ def part_2(ids):
             return id_ + 1
 
 
-challenge_data = get_data()
-
 if __name__ == "__main__":
-    assert get_seat_id("FBFBBFFRLR") == 357
-    assert get_seat_id("BFFFBBFRRR") == 567
-    assert get_seat_id("FFFBBBFRRR") == 119
-    assert get_seat_id("BBFFBBFRLL") == 820
+    assert get_seat_id(SAMPLE_DATA[0]) == 357
+    assert get_seat_id(SAMPLE_DATA[1]) == 567
+    assert get_seat_id(SAMPLE_DATA[2]) == 119
+    assert get_seat_id(SAMPLE_DATA[3]) == 820
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 848
     print(part_2(challenge_data))  # 682

@@ -1,6 +1,10 @@
 # https://adventofcode.com/2020/day/1
 
 
+SAMPLE_PATH = "../../input/2020-01-sample.txt"
+INPUT_PATH = "../../input/2020-01-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         return [int(i) for i in file.read().splitlines()]
@@ -28,12 +32,11 @@ def part_2(expenses):
             seen.add(y)
 
 
-sample_data = get_data("../../input/2020-01-sample.txt")
-challenge_data = get_data("../../input/2020-01-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 514579
     assert part_2(sample_data) == 241861950
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 436404
     print(part_2(challenge_data))  # 274879808

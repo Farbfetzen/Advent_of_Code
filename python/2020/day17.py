@@ -8,6 +8,10 @@ from itertools import product
 from operator import add
 
 
+SAMPLE_PATH = "../../input/2020-17-sample.txt"
+INPUT_PATH = "../../input/2020-17-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         return file.read().splitlines()
@@ -50,16 +54,15 @@ def run_reactor(input_list, n_dim):
     return len(reactor_state)
 
 
-sample_data = get_data("../../input/2020-17-sample.txt")
-challenge_data = get_data("../../input/2020-17-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert run_reactor(sample_data, 3) == 112
     assert run_reactor(sample_data, 4) == 848
 
+    challenge_data = get_data(INPUT_PATH)
     print(run_reactor(challenge_data, 3))  # 232
     print(run_reactor(challenge_data, 4))  # 1620
 
-    # Not required but I was curious:
+    # Not required, but I was curious:
     # print(run_reactor(challenge_input, 2))  # 30
     # print(run_reactor(challenge_input, 5))  # 10632 (takes about a minute)

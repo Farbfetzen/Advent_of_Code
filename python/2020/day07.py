@@ -4,12 +4,16 @@
 from collections import namedtuple
 
 
+SAMPLE_PATH = "../../input/2020-07-sample.txt"
+INPUT_PATH = "../../input/2020-07-input.txt"
+
 Bag = namedtuple("bag", ("n", "type"))
 
 
 def get_data(filename):
     with open(filename) as file:
-        return file.read()
+        data = file.read()
+    return [parse_rules(data) for data in data.split("\n\n")]
 
 
 def parse_rules(rules):
@@ -56,14 +60,12 @@ def part_2(rules):
     return count_contents(rules, "shiny gold")
 
 
-sample_data = get_data("../../input/2020-07-sample.txt")
-sample_data = [parse_rules(data) for data in sample_data.split("\n\n")]
-challenge_data = parse_rules(get_data("../../input/2020-07-input.txt"))
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data[0]) == 4
     assert part_2(sample_data[0]) == 32
     assert part_2(sample_data[1]) == 126
 
+    challenge_data = get_data(INPUT_PATH)[0]
     print(part_1(challenge_data))  # 348
     print(part_2(challenge_data))  # 18885
