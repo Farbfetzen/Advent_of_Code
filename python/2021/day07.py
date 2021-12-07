@@ -1,8 +1,8 @@
 # https://adventofcode.com/2021/day/7
 
 
-from math import inf
-from statistics import median
+from math import ceil, floor
+from statistics import mean, median
 
 
 SAMPLE_PATH = "../../input/2021-07-sample.txt"
@@ -19,21 +19,18 @@ def part_1(positions):
     return sum(abs(pos - best_position) for pos in positions)
 
 
-def calc_fuel(steps):
-    return steps * (steps + 1) // 2
-
-
 def part_2(positions):
-    """Just a simple search from min to max position. I could improve it but this one
-    is fast enough. There should be only one minimum so no need to search the other
-    positions after it is found.
-    """
-    min_fuel = inf
-    for best_pos in range(min(positions), max(positions) + 1):
-        fuel = sum(calc_fuel(abs(pos - best_pos)) for pos in positions)
-        if fuel >= min_fuel:
-            return min_fuel
-        min_fuel = fuel
+    mean_position = mean(positions)
+    # Because the positions have to be ints I need to check both around the mean.
+    best_positions = (floor(mean_position), ceil(mean_position))
+    fuel_requirements = [0, 0]
+    for i, bp in enumerate(best_positions):
+        fuel = 0
+        for pos in positions:
+            steps = abs(pos - bp)
+            fuel += steps * (steps + 1) // 2
+        fuel_requirements[i] = fuel
+    return int(min(fuel_requirements))
 
 
 if __name__ == "__main__":
