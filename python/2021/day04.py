@@ -1,6 +1,10 @@
 # https://adventofcode.com/2021/day/4
 
 
+SAMPLE_PATH = "../../input/2021-04-sample.txt"
+INPUT_PATH = "../../input/2021-04-input.txt"
+
+
 class BingoBoard:
 
     def __init__(self, numbers):
@@ -50,14 +54,13 @@ def play(numbers, boards):
         boards = [board for board in boards if board not in boards_to_remove]
 
 
-sample_data = get_data("../../input/2021-04-sample.txt")
-challenge_data = get_data("../../input/2021-04-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     sample_part_1, sample_part_2 = play(*sample_data)
     assert sample_part_1 == 4512
     assert sample_part_2 == 1924
 
+    challenge_data = get_data(INPUT_PATH)
     challenge_part_1, challenge_part_2 = play(*challenge_data)
     print(challenge_part_1)  # 23177
     print(challenge_part_2)  # 6804

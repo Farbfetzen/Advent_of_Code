@@ -1,6 +1,10 @@
 # https://adventofcode.com/2021/day/3
 
 
+SAMPLE_PATH = "../../input/2021-03-sample.txt"
+INPUT_PATH = "../../input/2021-03-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         return file.read().splitlines()
@@ -38,12 +42,11 @@ def part_2(report):
     return oxygen_generator_rating * co2_scrubber_rating
 
 
-sample_data = get_data("../../input/2021-03-sample.txt")
-challenge_data = get_data("../../input/2021-03-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 198
     assert part_2(sample_data) == 230
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 693486
     print(part_2(challenge_data))  # 3379326

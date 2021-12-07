@@ -1,6 +1,10 @@
 # https://adventofcode.com/2021/day/2
 
 
+SAMPLE_PATH = "../../input/2021-02-sample.txt"
+INPUT_PATH = "../../input/2021-02-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         lines = file.read().splitlines()
@@ -31,14 +35,13 @@ def part_2(horizontal_position, depth, _):
     return horizontal_position * depth
 
 
-sample_data = get_data("../../input/2021-02-sample.txt")
-challenge_data = get_data("../../input/2021-02-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     hda_sample = follow_course(sample_data)
     assert part_1(*hda_sample) == 150
     assert part_2(*hda_sample) == 900
 
+    challenge_data = get_data(INPUT_PATH)
     hda_challenge = follow_course(challenge_data)
     print(part_1(*hda_challenge))  # 2073315
     print(part_2(*hda_challenge))  # 1840311528

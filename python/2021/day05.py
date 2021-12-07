@@ -6,6 +6,9 @@ import itertools
 import re
 
 
+SAMPLE_PATH = "../../input/2021-05-sample.txt"
+INPUT_PATH = "../../input/2021-05-input.txt"
+
 Point = collections.namedtuple("Point", ("x", "y"))
 Line = collections.namedtuple("Line", ("start", "end"))
 
@@ -46,12 +49,11 @@ def part_2(lines):
     return count_overlaps(lines)
 
 
-sample_data = get_data("../../input/2021-05-sample.txt")
-challenge_data = get_data("../../input/2021-05-input.txt")
-
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data) == 5
     assert part_2(sample_data) == 12
 
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 6267
     print(part_2(challenge_data))  # 20196
