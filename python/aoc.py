@@ -27,16 +27,16 @@ if not (1 <= day <= 25):
     raise ValueError(f"Day {day} not in range [1, 25].")
 
 year = str(year)
-day_with_zero = f"{day:02}"
+day_xx = f"day{day:02}"
 base_path = os.path.dirname(os.path.realpath(__file__))
 year_dir = os.path.join(base_path, year)
-input_filename = f"{year}-{day_with_zero}-input.txt"
+input_filename = f"{year}-{day:02}-input.txt"
 sample_filename = input_filename.replace("input.txt", "sample.txt")
 relative_input_path = os.path.join("..", "..", "input", input_filename)
 relative_sample_path = os.path.join("..", "..", "input", sample_filename)
 input_path = os.path.abspath(os.path.join(base_path, "..", "input", input_filename))
 sample_path = input_path.replace(input_filename, sample_filename)
-solution_path = os.path.join(year_dir, f"day{day_with_zero}.py")
+solution_path = os.path.join(year_dir, f"{day_xx}.py")
 test_path = os.path.join(year_dir, f"test{year}.py")
 config_path = os.path.abspath(os.path.join(base_path, "..", "config.json"))
 
@@ -44,6 +44,8 @@ challenge_url = f"https://adventofcode.com/{year}/day/{day}"
 input_url = challenge_url + "/input"
 
 solution_template = f"""# {challenge_url}\n\n
+SAMPLE_PATH = "{relative_sample_path}"
+INPUT_PATH = "{relative_input_path}"\n\n
 def get_data(filename):
     with open(filename) as file:
         return file.read().splitlines()\n\n
@@ -51,23 +53,25 @@ def part_1(foo):
     pass\n\n
 # def part_2(foo):
 #     pass\n\n
-sample_data = get_data("{relative_sample_path}")
-challenge_data = get_data("{relative_input_path}")\n
 if __name__ == "__main__":
+    sample_data = get_data(SAMPLE_PATH)
     assert part_1(sample_data)
     # assert part_2(sample_data)\n
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  #
     # print(part_2(challenge_data))  #
 """
 
 test_template = f"""import unittest\n
-import day{day_with_zero}\n\n
+import {day_xx}\n\n
 class Test{year}(unittest.TestCase):\n
-    def test_{day_with_zero}(self):
-        self.assertEqual(day{day_with_zero}.part_1(day{day_with_zero}.sample_data), 0)
-        # self.assertEqual(day{day_with_zero}.part_2(day{day_with_zero}.sample_data), 0)\n
-        self.assertEqual(day{day_with_zero}.part_1(day{day_with_zero}.challenge_data), 0)
-        # self.assertEqual(day{day_with_zero}.part_2(day{day_with_zero}.challenge_data), 0)\n\n
+    def test_{day_xx}(self):
+        sample_data = {day_xx}.get_data({day_xx}.SAMPLE_PATH)
+        self.assertEqual({day_xx}.part_1(sample_data), 0)
+        # self.assertEqual({day_xx}.part_2(sample_data), 0)\n
+        challenge_data = {day_xx}.get_data({day_xx}.INPUT_PATH)
+        self.assertEqual({day_xx}.part_1(challenge_data), 0)
+        # self.assertEqual({day_xx}.part_2(challenge_data), 0)\n\n
 if __name__ == "__main__":
     unittest.main()
 """
