@@ -10,6 +10,7 @@ import day07
 import day08
 import day09
 import day10
+import day11
 
 
 class Test2021(unittest.TestCase):
@@ -101,7 +102,7 @@ class Test2021(unittest.TestCase):
         self.assertEqual(day09.part_1(*challenge_data), 554)
         self.assertEqual(day09.part_2(*challenge_data), 1017792)
 
-    def test10(self):
+    def test_10(self):
         sample_data = day10.get_data(day10.SAMPLE_PATH)
         sample_part_1, sample_part_2 = day10.get_scores(sample_data)
         self.assertEqual(sample_part_1, 26397)
@@ -111,6 +112,15 @@ class Test2021(unittest.TestCase):
         challenge_part_1, challenge_part_2 = day10.get_scores(challenge_data)
         self.assertEqual(challenge_part_1, 362271)
         self.assertEqual(challenge_part_2, 1698395182)
+
+    def test_11(self):
+        octopuses_sample = day11.Octopuses(day11.SAMPLE_PATH)
+        self.assertEqual(octopuses_sample.flashes_after_100_steps, 1656)
+        self.assertEqual(octopuses_sample.steps, 195)
+
+        octopuses_challenge = day11.Octopuses(day11.INPUT_PATH)
+        self.assertEqual(octopuses_challenge.flashes_after_100_steps, 1721)
+        self.assertEqual(octopuses_challenge.steps, 298)
 
 
 if __name__ == "__main__":
