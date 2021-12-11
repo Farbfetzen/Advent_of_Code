@@ -9,6 +9,7 @@ import day06
 import day07
 import day08
 import day09
+import day10
 
 
 class Test2021(unittest.TestCase):
@@ -99,6 +100,17 @@ class Test2021(unittest.TestCase):
         challenge_data = day09.get_data(day09.INPUT_PATH)
         self.assertEqual(day09.part_1(*challenge_data), 554)
         self.assertEqual(day09.part_2(*challenge_data), 1017792)
+
+    def test10(self):
+        sample_data = day10.get_data(day10.SAMPLE_PATH)
+        sample_part_1, sample_part_2 = day10.get_scores(sample_data)
+        self.assertEqual(sample_part_1, 26397)
+        self.assertEqual(sample_part_2, 288957)
+
+        challenge_data = day10.get_data(day10.INPUT_PATH)
+        challenge_part_1, challenge_part_2 = day10.get_scores(challenge_data)
+        self.assertEqual(challenge_part_1, 362271)
+        self.assertEqual(challenge_part_2, 1698395182)
 
 
 if __name__ == "__main__":
