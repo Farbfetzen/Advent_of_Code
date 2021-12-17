@@ -2,6 +2,7 @@
 
 
 from collections import defaultdict
+from functools import lru_cache
 
 
 SAMPLE_PATH = "../../input/2021-12-sample.txt"
@@ -22,31 +23,32 @@ def get_data(filename):
     return cave_maps
 
 
-def find_paths(cave_map, single_small_twice):
-    complete_paths = []
-    # The first element marks the small cave that may be visited twice.
-    # Only relevant for part 2.
-    queue = [[None, "start"]]
-    while queue:
-        path = queue.pop()
-        for target in cave_map[path[-1]]:
+def count_paths(cave_map, single_small_twice):
+    # Use lru_cache to eliminate unnecessary recursive calls.
+    # Putting it in an inner function because dicts are not hashable which means I
+    # can't use the cave_map as an argument for the recursive call.
+    @lru_cache(maxsize=None)
+    def count_next_paths(origin, seen, twice):
+        if origin.islower():
+            seen = seen.union({origin})
+        n_paths = 0
+        for target in cave_map[origin]:
             if target == "end":
-                complete_paths.append(path + [target])
-            elif target[0].isupper() or target not in path:
-                queue.append(path + [target])
-            elif single_small_twice and target != "start" and path[0] is None:
-                new_path = path + [target]
-                new_path[0] = target
-                queue.append(new_path)
-    return complete_paths
+                n_paths += 1
+            elif target not in seen:
+                n_paths += count_next_paths(target, seen, twice)
+            elif target != "start" and twice:
+                n_paths += count_next_paths(target, seen, False)
+        return n_paths
+    return count_next_paths("start", frozenset(), single_small_twice)
 
 
 def part_1(cave_map):
-    return len(find_paths(cave_map, False))
+    return count_paths(cave_map, False)
 
 
 def part_2(cave_map):
-    return len(find_paths(cave_map, True))
+    return count_paths(cave_map, True)
 
 
 if __name__ == "__main__":
