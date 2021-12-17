@@ -11,6 +11,7 @@ import day08
 import day09
 import day10
 import day11
+import day12
 
 
 class Test2021(unittest.TestCase):
@@ -121,6 +122,19 @@ class Test2021(unittest.TestCase):
         octopuses_challenge = day11.Octopuses(day11.INPUT_PATH)
         self.assertEqual(octopuses_challenge.flashes_after_100_steps, 1721)
         self.assertEqual(octopuses_challenge.steps, 298)
+
+    def test_12(self):
+        sample_data = day12.get_data(day12.SAMPLE_PATH)
+        self.assertEqual(day12.part_1(sample_data[0]), 10)
+        self.assertEqual(day12.part_1(sample_data[1]), 19)
+        self.assertEqual(day12.part_1(sample_data[2]), 226)
+        self.assertEqual(day12.part_2(sample_data[0]), 36)
+        self.assertEqual(day12.part_2(sample_data[1]), 103)
+        self.assertEqual(day12.part_2(sample_data[2]), 3509)
+
+        challenge_data = day12.get_data(day12.INPUT_PATH)[0]
+        self.assertEqual(day12.part_1(challenge_data), 5920)
+        self.assertEqual(day12.part_2(challenge_data), 155477)
 
 
 if __name__ == "__main__":
