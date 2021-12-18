@@ -12,6 +12,7 @@ import day09
 import day10
 import day11
 import day12
+import day13
 
 
 class Test2021(unittest.TestCase):
@@ -135,6 +136,23 @@ class Test2021(unittest.TestCase):
         challenge_data = day12.get_data(day12.INPUT_PATH)[0]
         self.assertEqual(day12.part_1(challenge_data), 5920)
         self.assertEqual(day12.part_2(challenge_data), 155477)
+
+    def test_13(self):
+        sample_data = day13.get_data(day13.SAMPLE_PATH)
+        self.assertEqual(day13.part_1(*sample_data), 17)
+        self.assertEqual(day13.part_2(*sample_data), "█████\n█   █\n█   █\n█   █\n█████")
+
+        challenge_data = day13.get_data(day13.INPUT_PATH)
+        self.assertEqual(day13.part_1(*challenge_data), 807)
+        expected_code = (
+            "█     ██  █  █ ████  ██  █  █ ████   ██\n"
+            "█    █  █ █  █ █    █  █ █  █ █       █\n"
+            "█    █    ████ ███  █    █  █ ███     █\n"
+            "█    █ ██ █  █ █    █ ██ █  █ █       █\n"
+            "█    █  █ █  █ █    █  █ █  █ █    █  █\n"
+            "████  ███ █  █ ████  ███  ██  ████  ██ "
+        )
+        self.assertEqual(day13.part_2(*challenge_data), expected_code)
 
 
 if __name__ == "__main__":
