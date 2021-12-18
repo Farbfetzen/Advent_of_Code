@@ -13,6 +13,7 @@ import day10
 import day11
 import day12
 import day13
+import day14
 
 
 class Test2021(unittest.TestCase):
@@ -153,6 +154,15 @@ class Test2021(unittest.TestCase):
             "████  ███ █  █ ████  ███  ██  ████  ██ "
         )
         self.assertEqual(day13.part_2(*challenge_data), expected_code)
+
+    def test_14(self):
+        sample_data = day14.get_data(day14.SAMPLE_PATH)
+        self.assertEqual(day14.part_1(*sample_data), 1588)
+        self.assertEqual(day14.part_2(*sample_data), 2188189693529)
+
+        challenge_data = day14.get_data(day14.INPUT_PATH)
+        self.assertEqual(day14.part_1(*challenge_data), 2768)
+        self.assertEqual(day14.part_2(*challenge_data), 2914365137499)
 
 
 if __name__ == "__main__":
