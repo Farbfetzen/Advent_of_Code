@@ -15,6 +15,7 @@ import day12
 import day13
 import day14
 import day15
+import day16
 
 
 class Test2021(unittest.TestCase):
@@ -173,6 +174,25 @@ class Test2021(unittest.TestCase):
         challenge_data = day15.get_data(day15.INPUT_PATH)
         self.assertEqual(day15.part_1(challenge_data), 717)
         self.assertEqual(day15.part_2(challenge_data), 2993)
+
+    def test16(self):
+        sample_data = day16.get_data(day16.SAMPLE_PATH)
+        self.assertEqual(day16.part_1(sample_data[0]), 16)
+        self.assertEqual(day16.part_1(sample_data[1]), 12)
+        self.assertEqual(day16.part_1(sample_data[2]), 23)
+        self.assertEqual(day16.part_1(sample_data[3]), 31)
+        self.assertEqual(day16.part_2(sample_data[4]), 3)
+        self.assertEqual(day16.part_2(sample_data[5]), 54)
+        self.assertEqual(day16.part_2(sample_data[6]), 7)
+        self.assertEqual(day16.part_2(sample_data[7]), 9)
+        self.assertEqual(day16.part_2(sample_data[8]), 1)
+        self.assertEqual(day16.part_2(sample_data[9]), 0)
+        self.assertEqual(day16.part_2(sample_data[10]), 0)
+        self.assertEqual(day16.part_2(sample_data[11]), 1)
+
+        challenge_data = day16.get_data(day16.INPUT_PATH)[0]
+        self.assertEqual(day16.part_1(challenge_data), 940)
+        self.assertEqual(day16.part_2(challenge_data), 13476220616073)
 
 
 if __name__ == "__main__":
