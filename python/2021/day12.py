@@ -2,7 +2,7 @@
 
 
 from collections import defaultdict
-from functools import lru_cache
+from functools import cache
 
 
 SAMPLE_PATH = "../../input/2021-12-sample.txt"
@@ -24,10 +24,8 @@ def get_data(filename):
 
 
 def count_paths(cave_map, single_small_twice):
-    # Use lru_cache to eliminate unnecessary recursive calls.
-    # Putting it in an inner function because dicts are not hashable which means I
-    # can't use the cave_map as an argument for the recursive call.
-    @lru_cache(maxsize=None)
+    # Use functools.cache to eliminate unnecessary recursive calls.
+    @cache
     def count_next_paths(origin, seen, twice):
         if origin.islower():
             seen = seen.union({origin})

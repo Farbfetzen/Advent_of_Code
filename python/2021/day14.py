@@ -2,7 +2,7 @@
 
 
 from collections import Counter
-from functools import lru_cache
+from functools import cache
 
 
 SAMPLE_PATH = "../../input/2021-14-sample.txt"
@@ -17,7 +17,7 @@ def get_data(filename):
 
 
 def polymerize(template, rules, max_steps):
-    @lru_cache(maxsize=None)
+    @cache
     def count(pair, step):
         if step == max_steps or pair not in rules:
             return Counter()
