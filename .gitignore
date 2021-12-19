@@ -9,4 +9,4 @@ __pycache__/
 *input.txt
 
 # session cookie and secret
-config.json
+secrets.json

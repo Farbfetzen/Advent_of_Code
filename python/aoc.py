@@ -38,7 +38,7 @@ input_path = os.path.abspath(os.path.join(base_path, "..", "input", input_filena
 sample_path = input_path.replace(input_filename, sample_filename)
 solution_path = os.path.join(year_dir, f"{day_xx}.py")
 test_path = os.path.join(year_dir, f"test{year}.py")
-config_path = os.path.abspath(os.path.join(base_path, "..", "config.json"))
+secrets_path = os.path.abspath(os.path.join(base_path, "..", "secrets.json"))
 
 challenge_url = f"https://adventofcode.com/{year}/day/{day}"
 input_url = challenge_url + "/input"
@@ -99,9 +99,9 @@ else:
     # Remember that the session cookie expires after a month. You can get
     # the current one from the website while being logged in.
     # Right click -> Inspect Element -> Storage tab
-    with open(config_path) as file:
-        config = json.load(file)
-    cookie = config["session_cookie"]
+    with open(secrets_path) as file:
+        secrets = json.load(file)
+    cookie = secrets["session_cookie"]
 
     response = requests.get(input_url, cookies={"session": cookie}, timeout=5)
     if not response.ok:
