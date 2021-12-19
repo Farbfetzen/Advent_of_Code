@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-"""Creates a script with some boilerplate code and downloads the input
-for a given day. The optional arguments are 'year' and 'day' with the
-current year and day as default values.
+"""Creates a script template and downloads the input for a given day.
+The optional arguments are 'year' and 'day' with the current year and day as default values.
 Example: ./aoc.py 2020 7
 """
 
@@ -55,8 +54,8 @@ def part_1(foo):
 #     pass\n\n
 if __name__ == "__main__":
     sample_data = get_data(SAMPLE_PATH)
-    assert part_1(sample_data)
-    # assert part_2(sample_data)\n
+    assert part_1(sample_data) == 
+    # assert part_2(sample_data) ==\n
     challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  #
     # print(part_2(challenge_data))  #
