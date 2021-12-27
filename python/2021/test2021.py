@@ -177,7 +177,7 @@ class Test2021(unittest.TestCase):
         self.assertEqual(day15.part_1(challenge_data), 717)
         self.assertEqual(day15.part_2(challenge_data), 2993)
 
-    def test16(self):
+    def test_16(self):
         sample_data = day16.get_data(day16.SAMPLE_PATH)
         self.assertEqual(day16.part_1(sample_data[0]), 16)
         self.assertEqual(day16.part_1(sample_data[1]), 12)
