@@ -238,9 +238,11 @@ class Test2021(unittest.TestCase):
     def test_21(self):
         sample_data = day21.get_data(day21.SAMPLE_PATH)
         self.assertEqual(day21.part_1(*sample_data), 739785)
+        self.assertEqual(day21.part_2(*sample_data), 444356092776315)
 
         challenge_data = day21.get_data(day21.INPUT_PATH)
         self.assertEqual(day21.part_1(*challenge_data), 752247)
+        self.assertEqual(day21.part_2(*challenge_data), 221109915584112)
 
 
 if __name__ == "__main__":
