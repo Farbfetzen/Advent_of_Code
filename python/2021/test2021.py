@@ -23,6 +23,7 @@ import day20
 import day21
 import day22
 import day23
+import day24
 
 
 class Test2021(unittest.TestCase):
@@ -267,6 +268,12 @@ class Test2021(unittest.TestCase):
         self.assertEqual(day23.part_1(*challenge_data_1), 12240)
         challenge_data_2 = day23.get_data(day23.INPUT_PATH, True)
         self.assertEqual(day23.part_2(*challenge_data_2), 44618)
+
+    def test_24(self):
+        program = day24.get_data(day24.INPUT_PATH)
+        part_1, part_2 = day24.solve(program)
+        self.assertEqual(part_1, "29991993698469")
+        self.assertEqual(part_2, "14691271141118")
 
 
 if __name__ == "__main__":
