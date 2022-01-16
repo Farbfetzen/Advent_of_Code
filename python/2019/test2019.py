@@ -5,6 +5,7 @@ import day02
 import day03
 import day04
 import day06
+import day07
 
 
 class Test2021(unittest.TestCase):
@@ -62,6 +63,18 @@ class Test2021(unittest.TestCase):
         challenge_data = day06.decode_orbits(day06.get_data(day06.INPUT_PATH)[0])
         self.assertEqual(day06.part_1(challenge_data), 253104)
         self.assertEqual(day06.part_2(challenge_data), 499)
+
+    def test_07(self):
+        sample_data = day07.get_data(day07.SAMPLE_PATH)
+        self.assertEqual(day07.test_phase_setting(day07.build_amps(sample_data[0], False), (4, 3, 2, 1, 0)), 43210)
+        self.assertEqual(day07.test_phase_setting(day07.build_amps(sample_data[1], False), (0, 1, 2, 3, 4)), 54321)
+        self.assertEqual(day07.test_phase_setting(day07.build_amps(sample_data[2], False), (1, 0, 4, 3, 2)), 65210)
+        self.assertEqual(day07.test_phase_setting(day07.build_amps(sample_data[3], True), (9, 8, 7, 6, 5)), 139629729)
+        self.assertEqual(day07.test_phase_setting(day07.build_amps(sample_data[4], True), (9, 7, 8, 5, 6)), 18216)
+
+        challenge_data = day07.get_data(day07.INPUT_PATH)[0]
+        self.assertEqual(day07.iterate_phases(day07.build_amps(challenge_data, False), range(5)), 21000)
+        self.assertEqual(day07.iterate_phases(day07.build_amps(challenge_data, True), range(5, 10)), 61379886)
 
 
 if __name__ == "__main__":
