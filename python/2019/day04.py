@@ -1,6 +1,9 @@
 # https://adventofcode.com/2019/day/4
 
 
+INPUT_PATH = "../../input/2019-04-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         return [int(i) for i in file.read().split("-")]
@@ -29,8 +32,6 @@ def count_passwords(password_range):
     return total_part_1, total_part_2
 
 
-challenge_data = get_data("../../input/2019-04-input.txt")
-
 if __name__ == "__main__":
     assert check_increasing_digits("111111") and check_adjacent_pairs("111111")
     assert not (check_increasing_digits("223450") and check_adjacent_pairs("223450"))
@@ -40,9 +41,7 @@ if __name__ == "__main__":
     assert not (check_increasing_digits("123444") and check_adjacent_pairs_group("123444"))
     assert check_increasing_digits("111122") and check_adjacent_pairs_group("111122")
 
+    challenge_data = get_data(INPUT_PATH)
     challenge_part_1, challenge_part_2 = count_passwords(challenge_data)
     print(challenge_part_1)  # 1650
     print(challenge_part_2)  # 1129
-
-
-

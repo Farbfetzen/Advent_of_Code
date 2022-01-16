@@ -9,24 +9,29 @@ import day04
 class Test2021(unittest.TestCase):
 
     def test_01(self):
-        self.assertEqual(day01.part_1(day01.sample_data), 34241)
-        self.assertEqual(day01.part_2(day01.sample_data), 51316)
+        sample_data = day01.get_data(day01.SAMPLE_PATH)
+        self.assertEqual(day01.part_1(sample_data), 34241)
+        self.assertEqual(day01.part_2(sample_data), 51316)
 
-        self.assertEqual(day01.part_1(day01.challenge_data), 3223398)
-        self.assertEqual(day01.part_2(day01.challenge_data), 4832253)
+        challenge_data = day01.get_data(day01.INPUT_PATH)
+        self.assertEqual(day01.part_1(challenge_data), 3223398)
+        self.assertEqual(day01.part_2(challenge_data), 4832253)
 
     def test_02(self):
-        self.assertEqual(day02.part_1(day02.challenge_data), 3101844)
-        self.assertEqual(day02.part_2(day02.challenge_data), 8478)
+        challenge_data = day02.get_data(day02.INPUT_PATH)
+        self.assertEqual(day02.part_1(challenge_data), 3101844)
+        self.assertEqual(day02.part_2(challenge_data), 8478)
         
     def test_03(self):
-        self.assertEqual(day03.part_1(day03.sample_data_a), 159)
-        self.assertEqual(day03.part_1(day03.sample_data_b), 135)
-        self.assertEqual(day03.part_2(day03.sample_data_a), 610)
-        self.assertEqual(day03.part_2(day03.sample_data_b), 410)
+        sample_data = day03.get_data(day03.SAMPLE_PATH)
+        self.assertEqual(day03.part_1(sample_data[0]), 159)
+        self.assertEqual(day03.part_1(sample_data[1]), 135)
+        self.assertEqual(day03.part_2(sample_data[0]), 610)
+        self.assertEqual(day03.part_2(sample_data[1]), 410)
 
-        self.assertEqual(day03.part_1(day03.challenge_data), 489)
-        self.assertEqual(day03.part_2(day03.challenge_data), 93654)
+        challenge_data = day03.get_data(day03.INPUT_PATH)[0]
+        self.assertEqual(day03.part_1(challenge_data), 489)
+        self.assertEqual(day03.part_2(challenge_data), 93654)
         
     def test_04(self):
         self.assertTrue(day04.check_increasing_digits("111111")
@@ -43,7 +48,8 @@ class Test2021(unittest.TestCase):
         self.assertTrue(day04.check_increasing_digits("111122")
                         and day04.check_adjacent_pairs_group("111122"))
 
-        challenge_part_1, challenge_part_2 = day04.count_passwords(day04.challenge_data)
+        challenge_data = day04.get_data(day04.INPUT_PATH)
+        challenge_part_1, challenge_part_2 = day04.count_passwords(challenge_data)
         self.assertEqual(challenge_part_1, 1650)
         self.assertEqual(challenge_part_2, 1129)
 

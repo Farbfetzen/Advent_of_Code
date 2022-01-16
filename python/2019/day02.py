@@ -6,6 +6,9 @@ import itertools
 from intcode import IntcodeComputer
 
 
+INPUT_PATH = "../../input/2019-02-input.txt"
+
+
 def get_data(filename):
     with open(filename) as file:
         program = [int(i) for i in file.read().split(",")]
@@ -30,8 +33,7 @@ def part_2(computer):
             return 100 * noun + verb
 
 
-challenge_data = get_data("../../input/2019-02-input.txt")
-
 if __name__ == "__main__":
+    challenge_data = get_data(INPUT_PATH)
     print(part_1(challenge_data))  # 3101844
     print(part_2(challenge_data))  # 8478

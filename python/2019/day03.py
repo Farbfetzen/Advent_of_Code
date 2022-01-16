@@ -1,8 +1,12 @@
 # https://adventofcode.com/2019/day/3
 
 
-import re
 import math
+import re
+
+
+SAMPLE_PATH = "../../input/2019-03-sample.txt"
+INPUT_PATH = "../../input/2019-03-input.txt"
 
 
 def get_data(filename):
@@ -64,14 +68,13 @@ def part_2(wire_input):
     return smallest_distance
 
 
-sample_data_a, sample_data_b = get_data("../../input/2019-03-sample.txt")
-challenge_data = get_data("../../input/2019-03-input.txt")[0]
-
 if __name__ == "__main__":
-    assert part_1(sample_data_a) == 159
-    assert part_1(sample_data_b) == 135
-    assert part_2(sample_data_a) == 610
-    assert part_2(sample_data_b) == 410
+    sample_data = get_data(SAMPLE_PATH)
+    assert part_1(sample_data[0]) == 159
+    assert part_1(sample_data[1]) == 135
+    assert part_2(sample_data[0]) == 610
+    assert part_2(sample_data[1]) == 410
 
+    challenge_data = get_data(INPUT_PATH)[0]
     print(part_1(challenge_data))  # 489
     print(part_2(challenge_data))  # 93654
