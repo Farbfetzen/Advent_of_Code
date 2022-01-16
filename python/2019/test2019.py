@@ -4,6 +4,7 @@ import day01
 import day02
 import day03
 import day04
+import day06
 
 
 class Test2021(unittest.TestCase):
@@ -52,6 +53,15 @@ class Test2021(unittest.TestCase):
         challenge_part_1, challenge_part_2 = day04.count_passwords(challenge_data)
         self.assertEqual(challenge_part_1, 1650)
         self.assertEqual(challenge_part_2, 1129)
+
+    def test_06(self):
+        sample_data = day06.get_data(day06.SAMPLE_PATH)
+        self.assertEqual(day06.part_1(day06.decode_orbits(sample_data[0])), 42)
+        self.assertEqual(day06.part_2(day06.decode_orbits(sample_data[1])), 4)
+
+        challenge_data = day06.decode_orbits(day06.get_data(day06.INPUT_PATH)[0])
+        self.assertEqual(day06.part_1(challenge_data), 253104)
+        self.assertEqual(day06.part_2(challenge_data), 499)
 
 
 if __name__ == "__main__":
