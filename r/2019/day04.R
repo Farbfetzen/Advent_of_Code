@@ -1,7 +1,7 @@
 # https://adventofcode.com/2019/day/4
 
 
-password_range <- readLines("../input/2019-04-input.txt")
+password_range <- readLines("../input/2019/04-input.txt")
 password_range <- as.integer(strsplit(password_range, "-")[[1]])
 passwords <- password_range[1]:password_range[2]
 passwords <- strsplit(as.character(passwords), "")
@@ -15,7 +15,7 @@ print(total_2)  # 1129
 
 # And just for fun here is the solution as a single magrittr pipeline:
 library(magrittr)
-readLines("2019/day_04_input.txt") %>%
+readLines("../input/2019/04-input.txt") %>%
     strsplit("-") %>%
     unlist() %>%
     as.integer() %>%
@@ -31,7 +31,7 @@ readLines("2019/day_04_input.txt") %>%
     print()
 
 # And again but in a ridiculously compact format:
-as.integer(unlist(strsplit(readLines("2019/day_04_input.txt"), "-"))) %>%
+as.integer(unlist(strsplit(readLines("../input/2019/04-input.txt"), "-"))) %>%
     {strsplit(as.character(seq(.[1], .[2])), "")} %>%
     {apply(sapply(lapply(.[!vapply(., is.unsorted, TRUE)], table), function(x) c(any(x > 1), 2 %in% x)), 1, sum)} %>%
     print()

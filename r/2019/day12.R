@@ -11,7 +11,7 @@
 # state 0.
 
 
-positions <- readLines("../input/2019-12-input.txt")
+positions <- readLines("../input/2019/12-input.txt")
 positions <- regmatches(positions, gregexpr("-?\\d+", positions))
 positions <- do.call(rbind, positions)
 class(positions) <- "numeric"

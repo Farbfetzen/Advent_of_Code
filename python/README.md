@@ -1,18 +1,25 @@
-The scripts are written such that you need to run them from the respective year directory.
-Otherwise, they will not find the input files.  
-Remember that most participants get different input data so the results in the comments and unit tests will likely be different from yours.  
-I use python 3.10, and I think you need at least Python 3.9 to run these scripts.
-This is how I set up my virtual environment with `venv`:
-```
-python3.10 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+### Preparing for a day
+Run `prepare.py` to download the input and generate the script and tests from templates for the current day.
+The optional arguments are `year` and `day` with the current year and day as default values.
+Run `prepare.py --all-inputs` to download the inputs of all challenges so far.
 
-I wrote the little helper `aoc.py` which creates a solution template and downloads the input data for a given day.
-The optional arguments are `year` and `day` with the current year and day as default values.  
-Example: `./aoc.py 2020 7`  
-For it to be able to download the input data you need to have your session cookie stored in the file `secrets.json` in the root of this repository.
-Remember that the session cookie expires after a month.
+To be able to download the input data you need to have your session cookie stored in a file with the name `secrets.json` in the root of this repository.
 You can get your current one from the website while being logged in.
 In Firefox: Right click -> Inspect Element -> Storage tab.
+Remember that the session cookie expires after one month.
+
+### Running the scripts
+Run `aoc.py` to run the script for the current day. Use the arguments `year` and `day` to specify a different date.  
+Example: `python aoc.py 2021 10` runs Advent of Code 2021-12-10.
+
+### Testing
+Run `test.py` to run all tests in the `test` directory.
+Use the optional arguments `year` and `day` to run only one year or only one day from that year.
+With `--skip-samples` the scripts are only checked against the real inputs.
+With `--verbosity` followed by an integer you can control the amount of `unittest` output.
+0 is quiet, 1 is just the dots (default), and 2 is verbose.
+
+Remember that most participants get different input data so the results in the comments and unit tests will likely be different from yours.
+
+**Please note that the above information about running and testing the solutions does not apply for 2019.
+I still need to rewrite the scripts of that year.**
