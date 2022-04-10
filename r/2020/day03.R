@@ -13,7 +13,7 @@ check_slope <- function(slope, map) {
 }
 
 
-map <- readLines("../input/2020-03-input.txt")
+map <- readLines("../input/2020/03-input.txt")
 map <- matrix(unlist(strsplit(map, "")), nrow = length(map), byrow = TRUE)
 map <- map == "#"
 
