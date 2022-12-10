@@ -9,7 +9,6 @@ You can also run it with the argument --all-inputs to download all inputs.
 import argparse
 import datetime
 import itertools
-import json
 import os
 
 import requests
@@ -64,7 +63,7 @@ URL = "https://adventofcode.com/{year}/day/{day}"
 THIS_PATH = os.path.dirname(os.path.realpath(__file__))
 SCRIPT_PATH = os.path.join("src", "year{year}", "day{day_padded}.py")
 TEST_PATH = os.path.join("test", "year{year}", "test_day{day_padded}.py")
-SECRETS_PATH = os.path.abspath(os.path.join(THIS_PATH, "secrets.json"))
+COOKIE_PATH = os.path.abspath(os.path.join(THIS_PATH, "session_cookie.txt"))
 
 
 class Preparer:
@@ -92,11 +91,10 @@ class Preparer:
         elif self.check_file_exists(input_path, "input"):
             return True
 
-        # Remember that the session cookie expires after a month. You can get
+        # Remember that the session cookie expires after some time. You can get
         # the current one from the website while being logged in.
-        # Right click -> Inspect Element -> Storage tab
-        with open(SECRETS_PATH) as file:
-            cookie = json.load(file)["session_cookie"]
+        with open(COOKIE_PATH) as file:
+            cookie = file.read().strip()
 
         input_url = self.url + "/input"
         print(f"Downloading input from {input_url}")

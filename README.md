@@ -14,10 +14,9 @@ Run `prepare.py` to download the input and generate the script and tests from te
 The optional arguments are `year` and `day` with the current year and day as default values.
 Run `prepare.py --all-inputs` to download the inputs of all challenges so far.
 
-To be able to download the input data you need to have your session cookie stored in a file with the name `secrets.json` in the root of this repository.
-The file must contain the value of the cookie as a string with the key "session_cookie".
+To be able to download the input data you need to have your session cookie stored in a file with the name `session_cookie.txt` in the root of this repository.
 You can get your current cookie from the website while being logged in.
-Remember that it expires after one month.
+Remember that it expires after some time.
 
 ## Running the scripts
 Run `aoc.py` to run the script for the current day. Use the arguments `year` and `day` to specify a different date.  
