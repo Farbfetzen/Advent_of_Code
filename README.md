@@ -7,7 +7,7 @@
 | 2019 |  44 ⭐ |
 | 2020 |  50 ⭐ |
 | 2021 |  50 ⭐ |
-| 2022 |   4 ⭐ |
+| 2022 |   6 ⭐ |
 
 ## Preparing for a day
 Run `prepare.py` to download the input and generate the script and tests from templates for the current day.
