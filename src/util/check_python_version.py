@@ -12,8 +12,6 @@ with open(os.path.join(base_path, "..", "..", "requirements.txt")) as file:
         if "Python version" in line:
             version = line.split(":")[1]
             break
-major, minor = version.split(".")
-major = int(major)
-minor = int(minor)
+major, minor = (int(x) for x in version.split("."))
 if sys.version_info < (major, minor):
     raise SystemExit(f"This project requires Python version {major}.{minor} or above.")

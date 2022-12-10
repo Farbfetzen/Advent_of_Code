@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, NamedTuple
+from typing import Any, NamedTuple, Protocol
 
 
 @dataclass
@@ -37,13 +37,13 @@ class Solution:
         return ""
 
 
-class ModuleWithSolveFunction:
+class ModuleWithSolveFunction(Protocol):
     """An interface for the day modules. All they need is
     a module-level function that conforms to this solve method.
 
     This allows for static type checking. Use it like this:
     module = importlib.import_module("foo.bar.baz")
-    module = typing.cast(ModuleWithSolveFunction, module)
+    solution_module = typing.cast(ModuleWithSolveFunction, module)
 
     I got the idea from https://stackoverflow.com/a/49011396/16724834.
     """
