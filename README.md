@@ -31,5 +31,5 @@ With `--verbosity` followed by an integer you can control the amount of `unittes
 
 Remember that most participants get different input data so the results in the comments and unit tests will likely be different from yours.
 
-**Please note that the above information about running and testing the solutions does not apply to 2019.
-I still need to rewrite the scripts of that year.**
+Please note that the above information about running and testing the solutions does not apply to 2019.
+I still need to rewrite the scripts of that year.
