@@ -3,10 +3,10 @@
 
 | Year | Stars |
 |------|------:|
-| 2021 |  50 ⭐ |
-| 2020 |  50 ⭐ |
-| 2019 |  44 ⭐ |
 | 2018 |   8 ⭐ |
+| 2019 |  44 ⭐ |
+| 2020 |  50 ⭐ |
+| 2021 |  50 ⭐ |
 
 ## Preparing for a day
 Run `prepare.py` to download the input and generate the script and tests from templates for the current day.
