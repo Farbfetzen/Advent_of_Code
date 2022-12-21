@@ -1,12 +1,17 @@
 # https://adventofcode.com/2019/day/3
 
-
-import re
 import math
+import re
+
+from src.util.types import Data, Solution
 
 
-def construct_paths(wire_input):
-    wires = [wire.split(",") for wire in wire_input.splitlines()]
+def prepare_data(data: str) -> list[str]:
+    return data.splitlines()
+
+
+def construct_paths(wire_input: list[str]) -> list[list[tuple[int, int]]]:
+    wires = [wire.split(",") for wire in wire_input]
     paths = []
     pattern = re.compile(r"(\D+)(\d+)")
     for wire in wires:
@@ -29,24 +34,24 @@ def construct_paths(wire_input):
     return paths
 
 
-def get_crossings(paths):
+def get_crossings(paths: list[list[tuple[int, int]]]) -> set[tuple[int, int]]:
     crossings = set(paths[0]) & set(paths[1])
     crossings.remove((0, 0))
     return crossings
 
 
-def get_closest_crossing_distance(crossings):
+def get_closest_crossing_distance(crossings: set[tuple[int, int]]) -> int:
     manhattan_distances = [abs(x) + abs(y) for x, y in crossings]
     return min(manhattan_distances)
 
 
-def part_1(wire_input):
+def part_1(wire_input: list[str]) -> int:
     paths = construct_paths(wire_input)
     crossings = get_crossings(paths)
     return get_closest_crossing_distance(crossings)
 
 
-def part_2(wire_input):
+def part_2(wire_input: list[str]) -> int:
     paths = construct_paths(wire_input)
     crossings = get_crossings(paths)
     smallest_distance = math.inf
@@ -56,23 +61,17 @@ def part_2(wire_input):
             distance += path.index(crossing)
         if distance < smallest_distance:
             smallest_distance = distance
-    return smallest_distance
+    return int(smallest_distance)
 
 
-test1 = """R75,D30,R83,U83,L12,D49,R71,U7,L72
-U62,R66,U55,R34,D71,R55,D58,R83
-"""
-assert part_1(test1) == 159
-assert part_2(test1) == 610
-test2 = """R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
-U98,R91,D20,R16,D67,R40,U7,R15,U6,R7
-"""
-assert part_1(test2) == 135
-assert part_2(test2) == 410
+def solve(data: Data) -> Solution:
+    solution = Solution()
+    for sample in data.samples:
+        sample_data = prepare_data(sample)
+        solution.samples_part_1.append(part_1(sample_data))
+        solution.samples_part_2.append(part_2(sample_data))
 
-
-with open("../../input/2019-03-input.txt") as file:
-    day_03_input = file.read()
-
-print(part_1(day_03_input))  # 489
-print(part_2(day_03_input))  # 93654
+    challenge_data = prepare_data(data.input)
+    solution.part_1 = part_1(challenge_data)
+    solution.part_2 = part_2(challenge_data)
+    return solution
