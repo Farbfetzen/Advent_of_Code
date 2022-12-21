@@ -1,22 +1,17 @@
 # https://adventofcode.com/2019/day/6
 
+from src.util.types import Data, Solution
 
-def decode_orbits(orbit_txt):
+
+def prepare_data(data: str) -> dict[str, str]:
     orbits = {}
-    for line in orbit_txt.split():
+    for line in data.splitlines():
         a, b = line.split(")")
         orbits[b] = a
     return orbits
 
 
-def sum_orbits(orbits):
-    total = 0
-    for o in orbits:
-        total += len(find_com(orbits, o)) + 1
-    return total
-
-
-def find_com(orbits, start):
+def find_com(orbits: dict[str, str], start: str) -> list[str]:
     path = []
     position = orbits[start]
     while position != "COM":
@@ -25,25 +20,28 @@ def find_com(orbits, start):
     return path
 
 
-def jumps_to_santa(orbits):
+def part_1(orbits: dict[str, str]) -> int:
+    total = 0
+    for o in orbits:
+        total += len(find_com(orbits, o)) + 1
+    return total
+
+
+def part_2(orbits: dict[str, str]) -> int:
     you_to_com = find_com(orbits, "YOU")
     san_to_com = find_com(orbits, "SAN")
     jumps = set(you_to_com).symmetric_difference(san_to_com)
     return len(jumps)
 
 
-with open("../../input/2019-06-sample.txt") as file:
-    test_inputs = file.read().split("\n\n")
-test1 = test_inputs[0]
-assert sum_orbits(decode_orbits(test1)) == 42
-test2 = test_inputs[1]
-assert jumps_to_santa(decode_orbits(test2)) == 4
+def solve(data: Data) -> Solution:
+    solution = Solution()
+    sample_data_0 = prepare_data(data.samples[0])
+    solution.samples_part_1.append(part_1(sample_data_0))
+    sample_data_1 = prepare_data(data.samples[1])
+    solution.samples_part_2.append(part_2(sample_data_1))
 
-
-with open("../../input/2019-06-input.txt") as file:
-    day_06_input = file.read()
-
-# part 1:
-print(sum_orbits(decode_orbits(day_06_input)))  # 253104
-# part 2:
-print(jumps_to_santa(decode_orbits(day_06_input)))  # 499
+    challenge_data = prepare_data(data.input)
+    solution.part_1 = part_1(challenge_data)
+    solution.part_2 = part_2(challenge_data)
+    return solution
