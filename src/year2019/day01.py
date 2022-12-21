@@ -1,28 +1,37 @@
 # https://adventofcode.com/2019/day/1
 
+from src.util.types import Data, Solution
 
-def calculate_fuel(mass):
+
+def prepare_data(data: str) -> list[int]:
+    return [int(i) for i in data.splitlines()]
+
+
+def calculate_fuel(mass: int) -> int:
     return max(mass // 3 - 2, 0)
 
 
-with open("../../input/2019-01-input.txt") as file:
-    masses = [int(i) for i in file.read().splitlines()]
+def part_1(masses: list[int]) -> int:
+    return sum(calculate_fuel(m) for m in masses)
 
 
-# part 1
-total = 0
-for m in masses:
-    total += calculate_fuel(m)
+def part_2(masses: list[int]) -> int:
+    total = 0
+    for m in masses:
+        additional_fuel = calculate_fuel(m)
+        while additional_fuel > 0:
+            total += additional_fuel
+            additional_fuel = calculate_fuel(additional_fuel)
+    return total
 
-print(total)  # 3223398
 
+def solve(data: Data) -> Solution:
+    solution = Solution()
+    sample_data = prepare_data(data.samples[0])
+    solution.samples_part_1.append(part_1(sample_data))
+    solution.samples_part_2.append(part_2(sample_data))
 
-# part 2
-total = 0
-for m in masses:
-    additional_fuel = calculate_fuel(m)
-    while additional_fuel > 0:
-        total += additional_fuel
-        additional_fuel = calculate_fuel(additional_fuel)
-
-print(total)  # 4832253
+    challenge_data = prepare_data(data.input)
+    solution.part_1 = part_1(challenge_data)
+    solution.part_2 = part_2(challenge_data)
+    return solution
