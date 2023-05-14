@@ -20,8 +20,6 @@ Use -h or --help to see a help message about the arguments.
 from importlib import import_module
 from unittest import defaultTestLoader, TestLoader, TextTestRunner
 
-# noinspection PyUnresolvedReferences
-import src.util.check_python_version
 from test.parse_test_args import parsed_args
 
 
