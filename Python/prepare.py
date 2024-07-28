@@ -63,7 +63,7 @@ URL = "https://adventofcode.com/{year}/day/{day}"
 THIS_PATH = os.path.dirname(os.path.realpath(__file__))
 SCRIPT_PATH = os.path.join("src", "year{year}", "day{day_padded}.py")
 TEST_PATH = os.path.join("test", "year{year}", "test_day{day_padded}.py")
-COOKIE_PATH = os.path.abspath(os.path.join(THIS_PATH, "session_cookie.txt"))
+COOKIE_PATH = os.path.abspath(os.path.join(THIS_PATH, "../session_cookie.txt"))
 
 
 class Preparer:
@@ -73,7 +73,7 @@ class Preparer:
         self.day = str(day)
         self.day_padded = self.day.zfill(2)
         self.url = f"https://adventofcode.com/{self.year}/day/{self.day}"
-        self.input_year_dir = os.path.abspath(os.path.join(THIS_PATH, "input", f"{self.year}"))
+        self.input_year_dir = os.path.abspath(os.path.join(THIS_PATH, "../input", f"{self.year}"))
 
     def prepare_all(self) -> None:
         self.prepare_input()
