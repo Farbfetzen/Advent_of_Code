@@ -1,0 +1,8 @@
+# Minimum supported Python version: 3.10
+matplotlib==3.8.0
+mypy==1.5.1
+numpy==1.26.0
+parameterized==0.9.0
+pygame==2.5.2
+requests==2.31.0
+sympy==1.12
