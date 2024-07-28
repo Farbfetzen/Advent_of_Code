@@ -1,5 +1,6 @@
 __pycache__/
 .idea/
+.Rproj.user
 .venv/
 
 # Cookie for automatically downloading the input
