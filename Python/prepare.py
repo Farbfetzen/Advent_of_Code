@@ -3,7 +3,7 @@
 """Creates script and test templates and downloads the input for a given day.
 The optional arguments are 'year' and 'day' with the current year and day as default values.
 Example: ./prepare.py 2020 7
-You can also run it with the argument --all-inputs to download all inputs.
+You can also run it with the argument --all-inputs to download all inputs you don't yet have.
 """
 
 import argparse
@@ -164,7 +164,7 @@ class Preparer:
 
 
 def load_all_inputs() -> None:
-    print("Attempting to download the inputs of all past challenges. Are you sure? (y/N)")
+    print("Attempting to download the inputs of all challenges you don't already have. Are you sure? (y/N)")
     decision = input("> ")
     if not decision.lower().startswith("y"):
         print("Aborting.")

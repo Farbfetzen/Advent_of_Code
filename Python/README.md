@@ -5,13 +5,13 @@ I still need to rewrite many of the scripts of that year.
 
 ## Preparing for a day
 
-Run `prepare.py` to download the input and generate the script and tests from templates for the current day.
-The optional arguments are `year` and `day` with the current year and day as default values.
-Run `prepare.py --all-inputs` to download the inputs of all challenges so far.
-
 To be able to download the input data you need to have your session cookie stored in a file with the name `session_cookie.txt` in the root of this repository.
 You can get your current cookie from the website while being logged in.
 Remember that it expires after some time.
+
+Run `prepare.py` to download the input and generate the script and tests from templates for the current day.
+The optional arguments are `year` and `day` with the current year and day as default values.
+Run `prepare.py --all-inputs` to download all inputs you don't yet have.
 
 ## Running the scripts
 
