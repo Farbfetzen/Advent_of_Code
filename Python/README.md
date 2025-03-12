@@ -3,6 +3,26 @@
 Please note that the information about running and testing the solutions does not apply to 2019.
 I still need to rewrite many of the scripts of that year.
 
+## Setup
+
+Set up a Python venv:
+
+```shell
+python3 -m venv .venv
+```
+
+Activate the venv:
+
+```shell
+source .venv/bin/activate
+```
+
+Install the dependencies:
+
+```shell
+pip install -r requirements.txt
+```
+
 ## Preparing for a day
 
 To be able to download the input data you need to have your session cookie stored in a file with the name `session_cookie.txt` in the root of this repository.
