@@ -11,4 +11,4 @@ def check_python_version():
                 break
     major, minor = (int(x) for x in version.split("."))
     if sys.version_info < (major, minor):
-        raise SystemExit(f"This project requires Python version {major}.{minor} or above.")
+        sys.exit(f"This project requires Python version {major}.{minor} or above.")

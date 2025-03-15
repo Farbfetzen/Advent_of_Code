@@ -1,27 +1,27 @@
 # https://adventofcode.com/2022/day/1
 
-from src.util.types import Data, Solution
+from src.util.types import Inputs, Solution
 
 
-def prepare_data(data: str) -> list[list[int]]:
-    return [[int(x) for x in line.split()] for line in data.split("\n\n")]
+class Solution2022Day1(Solution):
 
+    def solve(self, inputs: Inputs) -> None:
+        sample_data = self.prepare(inputs.samples[0])
+        self.samples_1.append(self.solve_1(sample_data))
+        self.samples_2.append(self.solve_2(sample_data))
 
-def part_1(data: list[list[int]]) -> int:
-    return max(sum(x) for x in data)
+        puzzle_data = self.prepare(inputs.input)
+        self.result_1 = self.solve_1(puzzle_data)
+        self.result_2 = self.solve_2(puzzle_data)
 
+    @staticmethod
+    def prepare(data: str) -> list[list[int]]:
+        return [[int(x) for x in line.split()] for line in data.split("\n\n")]
 
-def part_2(data: list[list[int]]) -> int:
-    return sum(sorted((sum(x) for x in data), reverse=True)[:3])
+    @staticmethod
+    def solve_1(data: list[list[int]]) -> int:
+        return max(sum(x) for x in data)
 
-
-def solve(data: Data) -> Solution:
-    solution = Solution()
-    sample_data = prepare_data(data.samples[0])
-    solution.samples_part_1.append(part_1(sample_data))
-    solution.samples_part_2.append(part_2(sample_data))
-
-    challenge_data = prepare_data(data.input)
-    solution.part_1 = part_1(challenge_data)
-    solution.part_2 = part_2(challenge_data)
-    return solution
+    @staticmethod
+    def solve_2(data: list[list[int]]) -> int:
+        return sum(sorted((sum(x) for x in data), reverse=True)[:3])

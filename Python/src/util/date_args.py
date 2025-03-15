@@ -1,3 +1,4 @@
+import sys
 from argparse import ArgumentParser
 from datetime import date
 from typing import Optional
@@ -16,7 +17,7 @@ def validate_args_default_today(year: int, day: int) -> tuple[int, int]:
             year = today.year
             day = today.day
         else:
-            raise ValueError("Either specify both year and day or none of them.")
+            sys.exit("Error: Either specify both year and day or none of them.")
     validate_date(year, day, today)
     validate_year(year, today)
     validate_day(day)
@@ -27,17 +28,17 @@ def validate_date(year: int, day: int, today: Optional[date] = None) -> None:
     today = today or date.today()
     december_date = date(year, 12, day)
     if december_date > today:
-        raise ValueError(f"Date {december_date} is invalid because it's in the future.")
+        sys.exit(f"Error: Date {december_date} is invalid because it's in the future.")
 
 
 def validate_year(year: int, today: Optional[date] = None) -> None:
     today = today or date.today()
     if not (2015 <= year <= today.year):
-        raise ValueError(f"Year {year} not in range [2015, {today.year}].")
+        sys.exit(f"Error: Year {year} not in range [2015, {today.year}].")
     if year == today.year and today.month < 12:
-        raise ValueError(f"Year {year} is invalid because it's not december yet.")
+        sys.exit(f"Error: Year {year} is invalid because it's not december yet.")
 
 
 def validate_day(day: int) -> None:
     if not (1 <= day <= 25):
-        raise ValueError(f"Day {day} not in range [1, 25].")
+        sys.exit(f"Error: Day {day} not in range [1, 25].")
