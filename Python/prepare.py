@@ -13,51 +13,49 @@ import os
 
 import requests
 
-from src.util.date_args import add_date_args, validate_args_default_today
+from src.util import date_args
 
 
-SCRIPT_TEMPLATE = """# {url}\n
-from src.util.types import Data, Solution\n\n
-def prepare_data(data: str) -> str:
-    return data\n\n
-def part_1(data: str) -> None:
-    return\n\n
-# def part_2(data: str) -> None:
-#     return\n\n
-def solve(data: Data) -> Solution:
-    solution = Solution()
-    sample_data = prepare_data(data.samples[0])
-    solution.samples_part_1.append(part_1(sample_data))
-    # solution.samples_part_2.append(part_2(sample_data))\n
-    # challenge_data = prepare_data(data.input)
-    # solution.part_1 = part_1(challenge_data)
-    # solution.part_2 = part_2(challenge_data)
-    return solution
+SOLUTION_TEMPLATE = """# {url}
+
+from src.util.inputs import Inputs
+from src.util.solution import Solution
+
+
+class Solution{year}Day{day}(Solution):
+
+    def solve(self, inputs: Inputs) -> None:
+        prepared_input = self.prepare(inputs.samples[0])
+        self.sample_results_1.append(self.solve_1(prepared_input))
+        self.sample_results_2.append(self.solve_2(prepared_input))
+
+        prepared_input = self.prepare(inputs.input)
+        self.result_1 = self.solve_1(prepared_input)
+        self.result_2 = self.solve_2(prepared_input)
+
+    @staticmethod
+    def prepare(data: str) -> str:
+        return data
+
+    @staticmethod
+    def solve_1(data: str) -> str:
+        return data
+
+    @staticmethod
+    def solve_2(data: str) -> str:
+        return data
 """
-TEST_TEMPLATE = """from unittest import TestCase\n
-from src.util.load_data import load_data
-from src.year{year}.day{day_padded} import part_1, part_2, prepare_data
-from test.decorators import sample\n\n
-data = load_data({year}, {day})\n\n
-@sample
-class Test{year}Day{day_padded}Samples(TestCase):\n
-    prepared_data: str\n
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.prepared_data = prepare_data(data.samples[0])\n
-    def test_part_1(self) -> None:
-        self.assertEqual(None, part_1(self.prepared_data))\n
-    # def test_part_2(self) -> None:
-    #     self.assertEqual(None, part_2(self.prepared_data))\n\n
-# class Test{year}Day{day_padded}(TestCase):\n#
-#     prepared_data: str\n#
-#     @classmethod
-#     def setUpClass(cls) -> None:
-#         cls.prepared_data = prepare_data(data.input)\n#
-#     def test_part_1(self) -> None:
-#         self.assertEqual(None, part_1(self.prepared_data))\n#
-#     def test_part_2(self) -> None:
-#         self.assertEqual(None, part_2(self.prepared_data))
+TEST_TEMPLATE = """from src import solutions
+from src.util.inputs import load_inputs
+
+
+def test_day_01() -> None:
+    solution = solutions[{year}][1]()
+    solution.solve(load_inputs({year}, 1))
+    assert solution.sample_results_1[0] == 0
+    assert solution.sample_results_2[0] == 0
+    assert solution.result_1 == 0
+    assert solution.result_2 == 0
 """
 URL = "https://adventofcode.com/{year}/day/{day}"
 THIS_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -70,9 +68,8 @@ class Preparer:
 
     def __init__(self, year: int, day: int):
         self.year = str(year)
-        self.day = str(day)
-        self.day_padded = self.day.zfill(2)
-        self.url = f"https://adventofcode.com/{self.year}/day/{self.day}"
+        self.day = str(day).zfill(2)
+        self.url = f"https://adventofcode.com/{self.year}/day/{day}"
         self.input_year_dir = os.path.abspath(os.path.join(THIS_PATH, "../input", f"{self.year}"))
 
     def prepare_all(self) -> None:
@@ -85,7 +82,10 @@ class Preparer:
         print(self.url, end="\n\n")
 
     def prepare_input(self) -> bool:
-        input_path = os.path.join(self.input_year_dir, f"{self.day_padded}-input.txt")
+        """Download the input and write it to file.
+        Returns True on success and False on failure.
+        """
+        input_path = os.path.join(self.input_year_dir, f"{self.day}-input.txt")
         if not os.path.exists(self.input_year_dir):
             os.mkdir(self.input_year_dir)
         elif self.check_file_exists(input_path, "input"):
@@ -114,7 +114,7 @@ class Preparer:
         return response.ok
 
     def prepare_sample(self) -> None:
-        sample_path = os.path.join(self.input_year_dir, f"{self.day_padded}-sample.txt")
+        sample_path = os.path.join(self.input_year_dir, f"{self.day}-sample.txt")
         if not os.path.exists(self.input_year_dir):
             os.mkdir(self.input_year_dir)
         elif self.check_file_exists(sample_path, "sample"):
@@ -124,36 +124,32 @@ class Preparer:
         self.print_file_link(sample_path)
 
     def prepare_script(self) -> None:
-        src_year_path = os.path.join("src", f"year{self.year}")
-        script_path = os.path.join(src_year_path, f"day{self.day_padded}.py")
-        if not os.path.exists(src_year_path):
-            os.mkdir(src_year_path)
-        elif self.check_file_exists(script_path, "script"):
+        year_path = os.path.join("src", f"year_{self.year}")
+        solution_path = os.path.join(year_path, f"day_{self.day}.py")
+        if not os.path.exists(year_path):
+            os.mkdir(year_path)
+        elif self.check_file_exists(solution_path, "solution"):
             return
-        script_template = SCRIPT_TEMPLATE.format(url=self.url)
-        print("Writing script file.")
-        with open(script_path, "w") as file:
-            file.write(script_template)
-        self.print_file_link(script_path)
+        solution_template = SOLUTION_TEMPLATE.format(url=self.url, year=self.year, day=self.day)
+        print("Creating solution file.")
+        with open(solution_path, "w") as file:
+            file.write(solution_template)
+        self.print_file_link(solution_path)
 
     def prepare_test(self) -> None:
-        test_year_path = os.path.join("test", f"year{self.year}")
-        test_path = os.path.join(test_year_path, f"test_day{self.day_padded}.py")
-        if not os.path.exists(test_year_path):
-            os.mkdir(test_year_path)
-        elif self.check_file_exists(test_path, "test"):
+        test_path = os.path.join("test", f"test_{self.year}.py")
+        if self.check_file_exists(test_path, "test"):
             return
-        test_template = TEST_TEMPLATE.format(day=self.day, day_padded=self.day_padded, year=self.year)
-        print("Writing test file.")
+        test_template = TEST_TEMPLATE.format(year=self.year)
+        print("Creating test file.")
         with open(test_path, "w") as file:
             file.write(test_template)
         self.print_file_link(test_path)
 
-    @staticmethod
-    def check_file_exists(path: str, name: str) -> bool:
+    def check_file_exists(self, path: str, name: str) -> bool:
         if os.path.exists(path):
             print(f"Skipping {name} file generation because it already exists.")
-            Preparer.print_file_link(path)
+            self.print_file_link(path)
             return True
         return False
 
@@ -182,15 +178,14 @@ def load_all_inputs() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(allow_abbrev=False)
-    add_date_args(parser)
+    date_args.add_date_args(parser)
     parser.add_argument("--all-inputs", action="store_true")
     args = parser.parse_args()
     if args.all_inputs:
         load_all_inputs()
     else:
-        year, day = validate_args_default_today(args.year, args.day)
+        year, day = date_args.validate_args(args.year, args.day)
         Preparer(year, day).prepare_all()
 
 
-if __name__ == "__main__":
-    main()
+main()
