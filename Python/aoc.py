@@ -1,29 +1,25 @@
 #!/usr/bin/env python3
 
-from argparse import ArgumentParser
-from importlib import import_module
-from typing import cast
+import argparse
+import sys
 
+from src import solutions
+from src.util import date_args
 from src.util.check_python_version import check_python_version
-from src.util.date_args import add_date_args, validate_args_default_today
-from src.util.load_data import load_data
-from src.util.types import ModuleWithSolveFunction
+from src.util.inputs import load_inputs
 
 
-def main() -> None:
-    check_python_version()
+check_python_version()
+parser = argparse.ArgumentParser()
+date_args.add_date_args(parser)
+args = parser.parse_args()
+year, day = date_args.validate_args(args.year, args.day)
 
-    parser = ArgumentParser()
-    add_date_args(parser)
-    args = parser.parse_args()
-    year, day = validate_args_default_today(args.year, args.day)
+try:
+    solution = solutions[year][day]()
+except KeyError:
+    sys.exit(f"Error: No solution exists for {year=}, {day=}. Did you forget to add it to src/year_{year}/__init__.py?")
 
-    data = load_data(year, day)
-    solution_module = cast(ModuleWithSolveFunction, import_module(f"src.year{year}.day{day:02}"))
-    solution = solution_module.solve(data)
-
-    print(solution)
-
-
-if __name__ == "__main__":
-    main()
+inputs = load_inputs(year, day)
+solution.solve(inputs)
+print(solution)
