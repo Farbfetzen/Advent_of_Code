@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 
-class IntcodeComputer:
+class IntcodeComputerDeprecated:
     def __init__(self, intcode, silent=False,
                  feedback_mode=False, ascii_mode=False):
         self.intcode = defaultdict(int, {i: x for i, x in enumerate(intcode)})

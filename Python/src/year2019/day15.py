@@ -10,15 +10,16 @@
 
 import os
 
+
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 import pygame
 
-from intcode import IntcodeComputer
+from intcode_deprecated import IntcodeComputerDeprecated
 
 
 with open("../../input/2019-15-input.txt") as file:
     code = [int(i) for i in file.read().split(",")]
-droid = IntcodeComputer(code, True, True)
+droid = IntcodeComputerDeprecated(code, True, True)
 
 # Set the origin to its final position learned from previous runs. This
 # prevents the maze from shifting around:
@@ -115,31 +116,31 @@ while running:
     if show:
         for pos, pos_type in world.items():
             pygame.draw.rect(
-                display,
-                colors[pos_type],
-                (pos[0] * tile_size, pos[1] * tile_size, tile_size, tile_size)
+                    display,
+                    colors[pos_type],
+                    (pos[0] * tile_size, pos[1] * tile_size, tile_size, tile_size)
             )
         for pos in path:
             pygame.draw.rect(
-                display,
-                colors["path"],
-                (pos[0] * tile_size, pos[1] * tile_size, tile_size, tile_size)
+                    display,
+                    colors["path"],
+                    (pos[0] * tile_size, pos[1] * tile_size, tile_size, tile_size)
             )
         pygame.draw.rect(
-            display,
-            colors["droid"],
-            (position[0] * tile_size, position[1] * tile_size, tile_size, tile_size)
+                display,
+                colors["droid"],
+                (position[0] * tile_size, position[1] * tile_size, tile_size, tile_size)
         )
         for pos in contains_oxygen:
             pygame.draw.rect(
-                display,
-                colors["oxygen"],
-                (pos[0] * tile_size, pos[1] * tile_size, tile_size, tile_size)
+                    display,
+                    colors["oxygen"],
+                    (pos[0] * tile_size, pos[1] * tile_size, tile_size, tile_size)
             )
         pygame.draw.rect(
-            display,
-            colors["origin"],
-            (origin[0] * tile_size, origin[1] * tile_size, tile_size, tile_size)
+                display,
+                colors["origin"],
+                (origin[0] * tile_size, origin[1] * tile_size, tile_size, tile_size)
         )
         pygame.display.flip()
 pygame.quit()

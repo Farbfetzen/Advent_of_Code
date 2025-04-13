@@ -3,22 +3,23 @@
 import itertools
 
 from src.util.types import Data, Solution
-from src.year2019.intcode import IntcodeComputer
+
+from src.year2019.intcode_deprecated import IntcodeComputerDeprecated
 
 
-def prepare_data(data: str) -> IntcodeComputer:
+def prepare_data(data: str) -> IntcodeComputerDeprecated:
     program = [int(i) for i in data.split(",")]
     program[1] = 12
     program[2] = 2
-    return IntcodeComputer(program)
+    return IntcodeComputerDeprecated(program)
 
 
-def part_1(computer: IntcodeComputer) -> int:
+def part_1(computer: IntcodeComputerDeprecated) -> int:
     computer.run()
     return computer.intcode[0]
 
 
-def part_2(computer: IntcodeComputer) -> int:
+def part_2(computer: IntcodeComputerDeprecated) -> int:
     target = 19690720
     for noun, verb in itertools.product(range(100), repeat=2):
         computer.original_intcode[1] = noun

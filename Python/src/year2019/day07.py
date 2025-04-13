@@ -3,18 +3,19 @@
 import itertools
 
 from src.util.types import Data, Solution
-from src.year2019.intcode import IntcodeComputer
+
+from src.year2019.intcode_deprecated import IntcodeComputerDeprecated
 
 
 def prepare_data(data: str) -> list[int]:
     return [int(x) for x in data.split(",")]
 
 
-def build_amps(code: list[int], feedback_mode: bool) -> list[IntcodeComputer]:
-    return [IntcodeComputer(code, True, feedback_mode) for _ in range(5)]
+def build_amps(code: list[int], feedback_mode: bool) -> list[IntcodeComputerDeprecated]:
+    return [IntcodeComputerDeprecated(code, True, feedback_mode) for _ in range(5)]
 
 
-def test_phase_setting(amps: list[IntcodeComputer], phases: tuple[int, ...]) -> int:
+def test_phase_setting(amps: list[IntcodeComputerDeprecated], phases: tuple[int, ...]) -> int:
     assert len(amps) == len(phases)
     signal = 0
     for amp, phase in zip(amps, phases):
@@ -29,12 +30,12 @@ def test_phase_setting(amps: list[IntcodeComputer], phases: tuple[int, ...]) -> 
     return signal
 
 
-def iterate_phases(amps: list[IntcodeComputer], phase_range: range) -> int:
+def iterate_phases(amps: list[IntcodeComputerDeprecated], phase_range: range) -> int:
     max_signal = 0
     for phase_settings in itertools.permutations(phase_range):
         max_signal = max(
-            test_phase_setting(amps, phase_settings),
-            max_signal
+                test_phase_setting(amps, phase_settings),
+                max_signal
         )
     return max_signal
 

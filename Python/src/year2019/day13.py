@@ -4,15 +4,16 @@
 import collections
 import os
 
+
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 import pygame
 
-from intcode import IntcodeComputer
+from intcode_deprecated import IntcodeComputerDeprecated
 
 
 with open("../../input/2019-13-input.txt") as file:
     game_code = [int(i) for i in file.read().split(",")]
-arcade = IntcodeComputer(game_code, True, True)
+arcade = IntcodeComputerDeprecated(game_code, True, True)
 
 grid = {}
 while not arcade.has_halted:
@@ -48,11 +49,11 @@ if show:
         y_max * tile_size + tile_size)
     )
     colors = [
-        pygame.Color("black"),        # background
-        pygame.Color("gray30"),       # wall
+        pygame.Color("black"),  # background
+        pygame.Color("gray30"),  # wall
         pygame.Color("forestgreen"),  # block
-        pygame.Color("orange"),       # paddle
-        pygame.Color("firebrick")     # ball
+        pygame.Color("orange"),  # paddle
+        pygame.Color("firebrick")  # ball
     ]
     font = pygame.font.Font(None, 30)
     score_surf = font.render(str(score), False, colors[4], colors[0])
@@ -90,14 +91,14 @@ while running:
             ball_x = x
         if show:
             pygame.draw.rect(
-                display,
-                colors[tile],
-                pygame.Rect(
-                    x * tile_size,
-                    y * tile_size,
-                    tile_size,
-                    tile_size
-                )
+                    display,
+                    colors[tile],
+                    pygame.Rect(
+                            x * tile_size,
+                            y * tile_size,
+                            tile_size,
+                            tile_size
+                    )
             )
     if show:
         display.blit(score_surf, score_rect)

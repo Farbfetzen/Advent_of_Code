@@ -1,16 +1,16 @@
 from unittest import TestCase
 
 from src.util.load_data import load_data
+
 from src.year2019.day02 import part_1, part_2, prepare_data
-from src.year2019.intcode import IntcodeComputer
+from src.year2019.intcode_deprecated import IntcodeComputerDeprecated
 
 
 data = load_data(2019, 2)
 
 
 class Test2019Day02(TestCase):
-
-    prepared_data: IntcodeComputer
+    prepared_data: IntcodeComputerDeprecated
 
     @classmethod
     def setUpClass(cls) -> None:

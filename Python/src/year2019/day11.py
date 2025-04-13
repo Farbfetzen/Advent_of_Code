@@ -2,9 +2,10 @@
 
 
 import collections
+
 import numpy as np
 
-from intcode import IntcodeComputer
+from intcode_deprecated import IntcodeComputerDeprecated
 
 
 def paint(starting_color):
@@ -29,7 +30,7 @@ def paint(starting_color):
 
 with open("../../input/2019-11-input.txt") as file:
     program = [int(i) for i in file.read().split(",")]
-robot = IntcodeComputer(program, True, True)
+robot = IntcodeComputerDeprecated(program, True, True)
 
 # part 1:
 print(len(paint(0)))  # 2428
@@ -51,9 +52,9 @@ for k, v in image.items():
         registration[y, x] = "█"
 registration = np.flip(registration, 0)
 registration = np.apply_along_axis(
-    lambda line: "".join(line),
-    1,
-    registration
+        lambda line: "".join(line),
+        1,
+        registration
 )
 registration = "\n".join(registration)
 print(registration)  # RJLFBUCU
