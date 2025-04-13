@@ -55,6 +55,13 @@ def test_day_04() -> None:
     assert solution.result_2 == 1129
 
 
+def test_day_05() -> None:
+    solution = solutions[2019][5]()
+    solution.solve(load_inputs(2019, 5))
+    assert solution.result_1 == 9006673
+    assert solution.result_2 == 3629692
+
+
 def test_day_06() -> None:
     solution = solutions[2019][6]()
     solution.solve(load_inputs(2019, 6))
