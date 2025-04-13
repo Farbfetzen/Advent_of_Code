@@ -56,7 +56,7 @@ def test_year_too_early(year: int) -> None:
 def test_not_december_yet() -> None:
     with pytest.raises(SystemExit) as exception:
         date_args.validate_year(2024, datetime.date(2024, 1, 1))
-    assert str(exception.value) == f"Error: Year 2024 is invalid because it's not december yet."
+    assert str(exception.value) == "Error: Year 2024 is invalid because it's not december yet."
 
 
 def test_valid_day() -> None:

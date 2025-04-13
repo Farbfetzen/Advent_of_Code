@@ -10,8 +10,8 @@ class Solution(ABC):
         self.sample_results_1: list[int | str] = []
         self.sample_results_2: list[int | str] = []
         self.sample_results_other: dict[int | str, Any] = {}
-        self.result_1: int | str = ""
-        self.result_2: int | str = ""
+        self.result_1: int | str = 0
+        self.result_2: int | str = 0
 
     @abstractmethod
     def solve(self, inputs: Inputs) -> None:
