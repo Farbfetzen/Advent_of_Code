@@ -1,8 +1,7 @@
 # https://adventofcode.com/2019/day/19
 
 
-from pprint import pprint
-from intcode import IntcodeComputer
+from intcode_deprecated import IntcodeComputerDeprecated
 
 
 def part_1():
@@ -41,7 +40,7 @@ def part_2(beam):
 
 with open("../../input/2019-19-input.txt") as file:
     challenge_input = [int(x) for x in file.read().split(",")]
-computer = IntcodeComputer(challenge_input, silent=True)
+computer = IntcodeComputerDeprecated(challenge_input, silent=True)
 
 # part 1
 n_affected, beam_map = part_1()

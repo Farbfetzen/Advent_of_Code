@@ -3,17 +3,16 @@
 
 import math
 
-from intcode import IntcodeComputer
+from intcode_deprecated import IntcodeComputerDeprecated
 
 
 with open("../../input/2019-17-input.txt") as file:
     code = [int(i) for i in file.read().split(",")]
 
-droid = IntcodeComputer(code, True, True, ascii_mode=True)
+droid = IntcodeComputerDeprecated(code, True, True, ascii_mode=True)
 scaffold = droid.run_ascii()
 # print(scaffold)
 scaffold = scaffold.strip().splitlines()
-
 
 # part 1
 intersections = []
@@ -29,7 +28,6 @@ for x in range(1, width - 1):
             intersections.append((x, y))
 alignments = [math.prod(x) for x in intersections]
 print(sum(alignments))  # 8520
-
 
 # part 2
 droid.reset()

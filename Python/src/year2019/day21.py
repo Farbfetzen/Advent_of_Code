@@ -1,12 +1,12 @@
 # https://adventofcode.com/2019/day/21
 
 
-from intcode import IntcodeComputer
+from intcode_deprecated import IntcodeComputerDeprecated
 
 
 with open("../../input/2019-21-input.txt") as file:
     code = [int(i) for i in file.read().split(",")]
-droid = IntcodeComputer(code, silent=True, feedback_mode=True, ascii_mode=True)
+droid = IntcodeComputerDeprecated(code, silent=True, feedback_mode=True, ascii_mode=True)
 
 # Catch the output and print only the final numbers.
 
@@ -26,7 +26,6 @@ WALK
 droid_output = droid.run_ascii(springscript_1)
 # print(droid_output)
 print(droid_output.splitlines()[-1])  # 19362259
-
 
 # part 2
 droid.reset()
