@@ -12,6 +12,18 @@ def test_day_01() -> None:
     assert solution.result_2 == 4832253
 
 
+def test_day_02() -> None:
+    solution = solutions[2019][2]()
+    solution.solve(load_inputs(2019, 2))
+    assert solution.sample_results_other["sample 0"] == (3500, 9, 10, 70, 2, 3, 11, 0, 99, 30, 40, 50)
+    assert solution.sample_results_other["sample 1"] == (2, 0, 0, 0, 99)
+    assert solution.sample_results_other["sample 2"] == (2, 3, 0, 6, 99)
+    assert solution.sample_results_other["sample 3"] == (2, 4, 4, 5, 99, 9801)
+    assert solution.sample_results_other["sample 4"] == (30, 1, 1, 4, 2, 5, 6, 0, 99)
+    assert solution.result_1 == 3101844
+    assert solution.result_2 == 8478
+
+
 def test_day_03() -> None:
     solution = solutions[2019][3]()
     solution.solve(load_inputs(2019, 3))

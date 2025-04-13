@@ -2,6 +2,7 @@ from typing import Type
 
 from src import Solution
 from src.year_2019.day_01 import Solution2019Day01
+from src.year_2019.day_02 import Solution2019Day02
 from src.year_2019.day_03 import Solution2019Day03
 from src.year_2019.day_04 import Solution2019Day04
 from src.year_2019.day_06 import Solution2019Day06
@@ -17,6 +18,7 @@ from src.year_2019.day_22 import Solution2019Day22
 
 solutions_2019: dict[int, Type[Solution]] = {
     1: Solution2019Day01,
+    2: Solution2019Day02,
     3: Solution2019Day03,
     4: Solution2019Day04,
     6: Solution2019Day06,
