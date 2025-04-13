@@ -12,6 +12,18 @@ def test_day_01() -> None:
     assert solution.result_2 == 4832253
 
 
+def test_day_02() -> None:
+    solution = solutions[2019][2]()
+    solution.solve(load_inputs(2019, 2))
+    assert solution.sample_results_other["sample 0"] == (3500, 9, 10, 70, 2, 3, 11, 0, 99, 30, 40, 50)
+    assert solution.sample_results_other["sample 1"] == (2, 0, 0, 0, 99)
+    assert solution.sample_results_other["sample 2"] == (2, 3, 0, 6, 99)
+    assert solution.sample_results_other["sample 3"] == (2, 4, 4, 5, 99, 9801)
+    assert solution.sample_results_other["sample 4"] == (30, 1, 1, 4, 2, 5, 6, 0, 99)
+    assert solution.result_1 == 3101844
+    assert solution.result_2 == 8478
+
+
 def test_day_03() -> None:
     solution = solutions[2019][3]()
     solution.solve(load_inputs(2019, 3))
@@ -43,6 +55,13 @@ def test_day_04() -> None:
     assert solution.result_2 == 1129
 
 
+def test_day_05() -> None:
+    solution = solutions[2019][5]()
+    solution.solve(load_inputs(2019, 5))
+    assert solution.result_1 == 9006673
+    assert solution.result_2 == 3629692
+
+
 def test_day_06() -> None:
     solution = solutions[2019][6]()
     solution.solve(load_inputs(2019, 6))
@@ -50,6 +69,18 @@ def test_day_06() -> None:
     assert solution.sample_results_2[0] == 4
     assert solution.result_1 == 253104
     assert solution.result_2 == 499
+
+
+def test_day_07() -> None:
+    solution = solutions[2019][7]()
+    solution.solve(load_inputs(2019, 7))
+    assert solution.sample_results_1[0] == 43210
+    assert solution.sample_results_1[1] == 54321
+    assert solution.sample_results_1[2] == 65210
+    assert solution.sample_results_2[0] == 139629729
+    assert solution.sample_results_2[1] == 18216
+    assert solution.result_1 == 21000
+    assert solution.result_2 == 61379886
 
 
 def test_day_08() -> None:
@@ -71,6 +102,17 @@ def test_day_08() -> None:
     )
 
 
+def test_day_09() -> None:
+    solution = solutions[2019][9]()
+    solution.solve(load_inputs(2019, 9))
+    assert solution.sample_results_other["copy program"] == [109, 1, 204, -1, 1001, 100, 1, 100,
+                                                             1008, 100, 16, 101, 1006, 101, 0, 99]
+    assert len(str(solution.sample_results_1[0])) == 16
+    assert solution.sample_results_1[1] == 1125899906842624
+    assert solution.result_1 == 2457252183
+    assert solution.result_2 == 70634
+
+
 def test_day_10() -> None:
     solution = solutions[2019][10]()
     solution.solve(load_inputs(2019, 10))
@@ -78,6 +120,20 @@ def test_day_10() -> None:
     assert solution.sample_results_2[0] == 802
     assert solution.result_1 == 221
     assert solution.result_2 == 806
+
+
+def test_day_11() -> None:
+    solution = solutions[2019][11]()
+    solution.solve(load_inputs(2019, 11))
+    assert solution.result_1 == 2428
+    assert solution.result_2 == (
+        " ███    ██ █    ████ ███  █  █  ██  █  █   \n"
+        " █  █    █ █    █    █  █ █  █ █  █ █  █   \n"
+        " █  █    █ █    ███  ███  █  █ █    █  █   \n"
+        " ███     █ █    █    █  █ █  █ █    █  █   \n"
+        " █ █  █  █ █    █    █  █ █  █ █  █ █  █   \n"
+        " █  █  ██  ████ █    ███   ██   ██   ██    "
+    )
 
 
 def test_day_12() -> None:
@@ -89,6 +145,13 @@ def test_day_12() -> None:
     assert solution.sample_results_2[1] == 4686774924
     assert solution.result_1 == 8742
     assert solution.result_2 == 325433763467176
+
+
+def test_day_13() -> None:
+    solution = solutions[2019][13]()
+    solution.solve(load_inputs(2019, 13))
+    assert solution.result_1 == 268
+    assert solution.result_2 == 13989
 
 
 def test_day_14() -> None:
@@ -104,6 +167,13 @@ def test_day_14() -> None:
     assert solution.result_2 == 1670299
 
 
+def test_day_15() -> None:
+    solution = solutions[2019][15]()
+    solution.solve(load_inputs(2019, 15))
+    assert solution.result_1 == 330
+    assert solution.result_2 == 352
+
+
 def test_day_16() -> None:
     solution = solutions[2019][16]()
     solution.solve(load_inputs(2019, 16))
@@ -115,6 +185,13 @@ def test_day_16() -> None:
     assert solution.sample_results_2[2] == "53553731"
     assert solution.result_1 == "74608727"
     assert solution.result_2 == "57920757"
+
+
+def test_day_17() -> None:
+    solution = solutions[2019][17]()
+    solution.solve(load_inputs(2019, 17))
+    assert solution.result_1 == 8520
+    assert solution.result_2 == 926819
 
 
 def test_day_18() -> None:
@@ -133,6 +210,13 @@ def test_day_18() -> None:
     assert solution.result_2 == 1964
 
 
+def test_day_19() -> None:
+    solution = solutions[2019][19]()
+    solution.solve(load_inputs(2019, 19))
+    assert solution.result_1 == 173
+    assert solution.result_2 == 6671097
+
+
 def test_day_20() -> None:
     solution = solutions[2019][20]()
     solution.solve(load_inputs(2019, 20))
@@ -141,6 +225,13 @@ def test_day_20() -> None:
     assert solution.sample_results_2[0] == 396
     assert solution.result_1 == 422
     assert solution.result_2 == 5040
+
+
+def test_day_21() -> None:
+    solution = solutions[2019][21]()
+    solution.solve(load_inputs(2019, 21))
+    assert solution.result_1 == 19362259
+    assert solution.result_2 == 1141066762
 
 
 def test_day_22() -> None:
