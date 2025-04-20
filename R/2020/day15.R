@@ -22,6 +22,6 @@ play <- function(numbers, end_turn) {
 }
 
 
-challenge_input = as.numeric(strsplit(readLines("../input/2020/15-input.txt"), ",")[[1]])
+challenge_input = as.numeric(strsplit(readLines("input/2020/15-input.txt"), ",")[[1]])
 print(play(challenge_input, 2020))  # 240
 print(play(challenge_input, 30000000))  # 505

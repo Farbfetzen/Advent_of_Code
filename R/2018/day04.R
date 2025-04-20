@@ -6,7 +6,7 @@
 library(zoo)
 
 
-records <- readLines("../input/2018/04-input.txt")
+records <- readLines("input/2018/04-input.txt")
 records <- unlist(strsplit(records, "\n"))
 records <- strsplit(records, "] ")
 records <- as.data.frame(do.call(rbind, records), stringsAsFactors = FALSE)

@@ -27,6 +27,6 @@ part_2 <- function(data) {
 }
 
 
-expenses <- as.integer(readLines("../input/2020/01-input.txt"))
+expenses <- as.integer(readLines("input/2020/01-input.txt"))
 print(part_1(expenses))  # 436404
 print(part_2(expenses))  # 274879808

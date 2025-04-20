@@ -34,7 +34,7 @@ fft_2 <- function(signal, n = 100) {
 }
 
 
-signal <- readLines("../input/2019/16-input.txt")
+signal <- readLines("input/2019/16-input.txt")
 signal <- as.numeric(strsplit(signal, "")[[1]])
 
 # part 1:

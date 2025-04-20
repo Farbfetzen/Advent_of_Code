@@ -12,3 +12,12 @@ Remember that most participants get different input data so the results in the c
 | 2020 |  50 ⭐ |
 | 2021 |  50 ⭐ |
 | 2022 |   8 ⭐ |
+
+
+## Project setup
+
+I like to launch my IDEs here in the project root.
+The R solutions have input paths relative to this directory.
+The Python project is configured such that the Python directory should be used as its working directory.
+The imports and paths are all relative to `./Python`.
+For more information see the [readme there](Python/README.md).

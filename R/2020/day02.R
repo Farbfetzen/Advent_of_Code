@@ -4,7 +4,7 @@
 library(stringr)
 
 
-input <- strsplit(readLines("../input/2020/02-input.txt"), " ")
+input <- strsplit(readLines("input/2020/02-input.txt"), " ")
 low_high <- strsplit(sapply(input, function(x) x[1]), "-")
 low <- as.integer(sapply(low_high, function(x) x[1]))
 high <- as.integer(sapply(low_high, function(x) x[2]))

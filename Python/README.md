@@ -3,6 +3,8 @@
 Please note that the information about running and testing the solutions does not apply to 2019.
 I still need to rewrite many of the scripts of that year.
 
+Make sure that this is the working directory for running the scripts because all paths and imports are relative to here.
+
 ## Setup
 
 Set up a Python venv:

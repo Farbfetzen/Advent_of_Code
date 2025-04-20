@@ -4,7 +4,7 @@
 library(grid)
 
 
-transmission <- readLines("../input/2019/08-input.txt")
+transmission <- readLines("input/2019/08-input.txt")
 transmission <- as.integer(strsplit(transmission, "")[[1]])
 layers <- array(transmission,  c(25, 6, length(transmission) / (25 * 6)))
 layers <- aperm(layers, c(2, 1, 3))

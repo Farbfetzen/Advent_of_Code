@@ -1,8 +1,3 @@
-__pycache__/
-.idea/
-.Rproj.user
-.venv/
-
 # Cookie for automatically downloading the input
 session_cookie.txt
 
@@ -11,3 +6,17 @@ session_cookie.txt
 # reverse-engineer how they are randomly generated. Also, to my
 # knowledge the inputs are not licensed for redistribution.
 *input.txt
+
+
+# IntelliJ
+*.iml
+.idea/
+
+
+# Python
+.venv/
+__pycache__/
+
+
+# R
+.Rproj.user
