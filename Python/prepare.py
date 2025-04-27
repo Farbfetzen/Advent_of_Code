@@ -37,13 +37,11 @@ class Solution{year}Day{day}(Solution):
     def prepare(data: str) -> str:
         return data
 
-    @staticmethod
-    def solve_1(data: str) -> str:
-        return data
+    def solve_1(data: str) -> None:
+        self.result_1 = 0
 
-    @staticmethod
-    def solve_2(data: str) -> str:
-        return data
+    def solve_2(data: str) -> None:
+        self.result_2 = 0
 """
 TEST_TEMPLATE = """from src import solutions
 from src.util.inputs import load_inputs
