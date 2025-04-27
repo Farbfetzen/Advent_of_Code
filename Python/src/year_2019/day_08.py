@@ -39,7 +39,7 @@ class Solution2019Day08(Solution):
         image = image.astype(str)
         image[image == "0"] = " "
         image[image == "1"] = "█"
-        image = numpy.apply_along_axis(lambda x: "".join(i for i in x), 1, image)
+        image = numpy.apply_along_axis(lambda x: "".join(x), 1, image)
         return "\n".join(image)
 
     def solve_2_as_image(self, layers: numpy.ndarray, width: int, height: int) -> None:
