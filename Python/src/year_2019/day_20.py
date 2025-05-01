@@ -124,9 +124,10 @@ class Solution2019Day20(Solution):
         """Walk through the maze using BFS and return the first path found."""
         queue = [(Portal("AA", -1), 0, -1)]  # last portal, level, distance
         while queue:
-            # Sort reversed by distance to pop the shortest distance first.
-            queue.sort(key=lambda x: x[2], reverse=True)
-            last_portal, level, distance = queue.pop()
+            # Find the item with the lowest level, breaking ties by lowest distance:
+            min_q = min(queue, key=lambda x: (x[1], x[2]))
+            queue.remove(min_q)
+            last_portal, level, distance = min_q
             if last_portal.label == "ZZ":
                 return distance
             distance += 1
