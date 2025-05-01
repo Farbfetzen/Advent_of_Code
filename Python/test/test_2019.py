@@ -222,7 +222,8 @@ def test_day_20() -> None:
     solution.solve(load_inputs(2019, 20))
     assert solution.sample_results_1[0] == 23
     assert solution.sample_results_1[1] == 58
-    assert solution.sample_results_2[0] == 396
+    assert solution.sample_results_2[0] == 26
+    assert solution.sample_results_2[1] == 396
     assert solution.result_1 == 422
     assert solution.result_2 == 5040
 

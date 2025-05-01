@@ -76,6 +76,12 @@ def test_isub_not_implemented() -> None:
     assert str(exception.value) == "unsupported operand type(s) for -=: 'Vector2' and 'tuple'"
 
 
+def test_unpack() -> None:
+    x, y = Vector2(3, 7)
+    assert x == 3
+    assert y == 7
+
+
 def test_turn_right() -> None:
     v = Vector2(1, 2).turn_right()
     assert v == Vector2(-2, 1)
@@ -96,3 +102,27 @@ def test_turn_left() -> None:
     assert v == Vector2(-2, 1)
     v = v.turn_left()
     assert v == Vector2(1, 2)
+
+
+def test_above() -> None:
+    assert Vector2(0, 0).above() == Vector2(0, -1)
+
+
+def test_below() -> None:
+    assert Vector2(0, 0).below() == Vector2(0, 1)
+
+
+def test_left() -> None:
+    assert Vector2(0, 0).left() == Vector2(-1, 0)
+
+
+def test_right() -> None:
+    assert Vector2(0, 0).right() == Vector2(1, 0)
+
+
+def test_neighbors_4() -> None:
+    top, right, bottom, left = Vector2(0, 0).neighbors_4()
+    assert top == Vector2(0, -1)
+    assert right == Vector2(1, 0)
+    assert bottom == Vector2(0, 1)
+    assert left == Vector2(-1, 0)

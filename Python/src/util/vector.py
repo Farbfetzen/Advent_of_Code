@@ -1,8 +1,8 @@
-import dataclasses
-from typing import Self
+from dataclasses import dataclass
+from typing import Iterator, Self
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclass(frozen=True)
 class Vector2:
     """Custom Vector2 class that only supports integers and is immutable as opposed to pygame.Vector2.
     Advent of code never deals with floats, so I wanted to write my own Vector2 just for fun.
@@ -39,6 +39,9 @@ class Vector2:
     def __isub__(self, other: Self) -> Self:
         return self.__sub__(other)
 
+    def __iter__(self) -> Iterator[int]:
+        return iter((self.x, self.y))
+
     def turn_right(self) -> Self:
         """Turn 90 degrees clockwise. Assumes that y increases downwards as usual for screen coordinates."""
         return Vector2(-self.y, self.x)
@@ -46,3 +49,21 @@ class Vector2:
     def turn_left(self) -> Self:
         """Turn 90 degrees counterclockwise. Assumes that y increases downwards as usual for screen coordinates."""
         return Vector2(self.y, -self.x)
+
+    def above(self) -> Self:
+        """Returns the position above, reducing y by 1."""
+        return Vector2(self.x, self.y - 1)
+
+    def below(self) -> Self:
+        """Returns the position below, increasing y by 1."""
+        return Vector2(self.x, self.y + 1)
+
+    def left(self) -> Self:
+        return Vector2(self.x - 1, self.y)
+
+    def right(self) -> Self:
+        return Vector2(self.x + 1, self.y)
+
+    def neighbors_4(self) -> tuple[Self, Self, Self, Self]:
+        """Returns the 4 horizontal and vertical neighbors clockwise, starting from the top."""
+        return self.above(), self.right(), self.below(), self.left()
