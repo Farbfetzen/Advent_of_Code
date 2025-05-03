@@ -1,6 +1,5 @@
 from typing import Type
 
-import src.year_2021.day_13
 from src.util.solution import Solution
 from src.year_2021.day_01 import Solution2021Day01
 from src.year_2021.day_02 import Solution2021Day02
