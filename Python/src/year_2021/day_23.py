@@ -9,7 +9,7 @@ from src.util.solution import Solution
 
 
 # I don't use Vector2 for the positions here because that makes it much slower. This solution runs both parts
-# for the sample and puzzle input in about 7-8 seconds on my machine. This performance is similar
+# for the sample and puzzle input in about 6 seconds on my machine. This performance is similar
 # to other python solutions I saw on reddit. I spent a lot of time on this to reduce the search space
 # and don't see much potential for improvement. It's good enough for me.
 
@@ -18,7 +18,7 @@ from src.util.solution import Solution
 type AmphipodPositionMap = dict[tuple[int, int], str]
 
 # Positions mapped to their connected positions and the distances to them.
-type Connections = dict[tuple[int, int], list[tuple[tuple[int, int], int]]]
+type ConnectionMap = dict[tuple[int, int], list[tuple[tuple[int, int], int]]]
 
 # All positions that can be used for moves.
 type Spaces = list[tuple[int, int]]
@@ -40,17 +40,15 @@ class Solution2021Day23(Solution):
         self.result_2 = self.solve_2(diagram)
 
     def solve_1(self, diagram: list[str]) -> int:
-        amphipods, spaces = self.parse_diagram(diagram)
-        connections = self.find_connections(spaces)
-        return self.find_min_energy(amphipods, connections)
+        amphipods, connection_map = self.parse_diagram(diagram)
+        return self.find_min_energy(amphipods, connection_map)
 
     def solve_2(self, diagram: list[str]) -> int:
         diagram = diagram[:3] + ["  #D#C#B#A#", "  #D#B#A#C#"] + diagram[3:]
-        amphipods, spaces = self.parse_diagram(diagram)
-        connections = self.find_connections(spaces)
-        return self.find_min_energy(amphipods, connections)
+        amphipods, connection_map = self.parse_diagram(diagram)
+        return self.find_min_energy(amphipods, connection_map)
 
-    def parse_diagram(self, diagram: list[str]) -> tuple[AmphipodPositionMap, Spaces]:
+    def parse_diagram(self, diagram: list[str]) -> tuple[AmphipodPositionMap, ConnectionMap]:
         amphipods: AmphipodPositionMap = {}
         spaces: Spaces = []
         max_y = len(diagram) - 1
@@ -66,35 +64,40 @@ class Solution2021Day23(Solution):
                     else:
                         amphipods[position] = char
                         spaces.append(position)
-        return amphipods, spaces
+        return amphipods, self.find_connections(spaces, amphipods)
 
-    def find_connections(self, spaces: Spaces) -> Connections:
+    def find_connections(self, spaces: Spaces, amphipods: AmphipodPositionMap) -> ConnectionMap:
         """Returns the positions of all reachable spaces and the distances to a space."""
-        connections: Connections = {space: [] for space in spaces}
+        connection_map: ConnectionMap = {space: [] for space in spaces}
         for space, other in itertools.combinations(spaces, 2):
-            if self.hallway_y == space[1] == other[1]:
-                # Skip because amphipods won't move between hallway positions.
+            if space[0] == other[0] or self.hallway_y == space[1] == other[1]:
+                # Skip because amphipods that are not satisfied must first move into the hallway
+                # before moving back into the starting room.
+                # And skip because amphipods won't move between hallway positions.
                 continue
             if space[1] == self.hallway_y or other[1] == self.hallway_y:
                 # Hallway spaces can only point to room spaces.
                 # Room spaces can point to hallway spaces.
                 distance = self.manhattan_distance(space, other)
-                connections[space].append((other, distance))
-                connections[other].append((space, distance))
+                connection_map[space].append((other, distance))
+                connection_map[other].append((space, distance))
             else:
-                # Room spaces can point to spaces in other rooms.
+                # Room spaces can point to spaces in other rooms if those belong to the correct amphipod type.
                 # Get the distance to the hallway, then the manhattan distance to the target.
                 distance = space[1] - self.hallway_y
                 distance += self.manhattan_distance((space[0], self.hallway_y), other)
-                connections[space].append((other, distance))
-                connections[other].append((space, distance))
-        return connections
+
+                if amphipods[space] == self.home_room_x[other[0]]:
+                    connection_map[space].append((other, distance))
+                elif amphipods[other] == self.home_room_x[space[0]]:
+                    connection_map[other].append((space, distance))
+        return connection_map
 
     @staticmethod
     def manhattan_distance(a: tuple[int, int], b: tuple[int, int]) -> int:
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
-    def find_min_energy(self, amphipods: AmphipodPositionMap, connections: Connections) -> int:
+    def find_min_energy(self, amphipods: AmphipodPositionMap, connection_map: ConnectionMap) -> int:
         seen_states: set[tuple[tuple[tuple[int, int], str], ...]] = set()
         energy = 0
         queue: list[tuple[int, AmphipodPositionMap]] = [(energy, amphipods)]
@@ -113,7 +116,7 @@ class Solution2021Day23(Solution):
             for position, amphipod in amphipods.items():
                 if amphipod == self.satisfied_amphipod:
                     continue
-                for new_position, distance in self.find_moves(position, amphipod, amphipods, connections):
+                for new_position, distance in self.find_moves(position, amphipod, amphipods, connection_map):
                     new_amphipods = amphipods.copy()
                     del new_amphipods[position]
                     if new_position[1] == self.hallway_y:
@@ -136,40 +139,33 @@ class Solution2021Day23(Solution):
             position: tuple[int, int],
             amphipod: str,
             amphipods: AmphipodPositionMap,
-            connections: Connections
+            connection_map: ConnectionMap
     ) -> list[tuple[tuple[int, int], int]]:
         """Find all spaces that are reachable from the current position and return them with their distances."""
         moves: list[tuple[tuple[int, int], int]] = []
-        for connection in connections[position]:
+        position_x, position_y = position
+        if (position_x, position_y - 1) in amphipods:
+            return moves
+        for connection in connection_map[position]:
             target = connection[0]
             if target in amphipods:
                 continue
-            if target[1] == self.hallway_y:
-                if self.check_path_clear(position, target, amphipods):
+            target_x, target_y = target
+            if target_y == self.hallway_y:
+                if self.check_path_clear(position_x, target_x, amphipods):
                     moves.append(connection)
-            elif self.home_room_x[target[0]] == amphipod:
+            elif self.home_room_x[target_x] == amphipod:
                 # Target is at the amphipod home position.
-                below = (target[0], target[1] + 1)
+                below = (target_x, target_y + 1)
                 # If below is not in connections then there is a wall and this is the lowest position in the room.
-                if ((below not in connections or amphipods.get(below) == self.satisfied_amphipod)
-                        and self.check_path_clear(position, target, amphipods)):
+                if ((below not in connection_map or amphipods.get(below) == self.satisfied_amphipod)
+                        and self.check_path_clear(position_x, target_x, amphipods)):
                     # Return only this move because moving anywhere else wouldn't make sense.
                     return [connection]
         return moves
 
-    def check_path_clear(
-            self,
-            position: tuple[int, int],
-            target: tuple[int, int],
-            amphipods: AmphipodPositionMap
-    ) -> bool:
-        # Check if the space directly above is empty. Other spaces above can be ignored
-        # because there are never gaps in rooms.
-        if (position[0], position[1] - 1) in amphipods:
-            return False
+    def check_path_clear(self, position_x: int, target_x: int, amphipods: AmphipodPositionMap) -> bool:
         # Check if the hallway is clear between the two positions.
-        position_x = position[0]
-        target_x = target[0]
         for x, y in amphipods:
             if y == self.hallway_y and (position_x < x < target_x or position_x > x > target_x):
                 return False
