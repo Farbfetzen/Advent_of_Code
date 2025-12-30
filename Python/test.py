@@ -17,10 +17,7 @@ import argparse
 import pytest
 
 from src.util import date_args
-from src.util.check_python_version import check_python_version
 
-
-check_python_version()
 
 parser = argparse.ArgumentParser()
 date_args.add_date_args(parser)

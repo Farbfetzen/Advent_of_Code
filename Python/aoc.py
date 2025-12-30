@@ -5,11 +5,9 @@ import sys
 
 from src import solutions
 from src.util import date_args
-from src.util.check_python_version import check_python_version
 from src.util.inputs import load_inputs
 
 
-check_python_version()
 parser = argparse.ArgumentParser()
 date_args.add_date_args(parser)
 args = parser.parse_args()

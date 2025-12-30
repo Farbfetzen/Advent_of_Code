@@ -1,13 +1,14 @@
 # Python solutions for Advent of Code
 
-Make sure that this is the working directory for running the scripts because all paths and imports are relative to here.
+Make sure this is the working directory for running the scripts because all paths and imports are relative to here.
 
 ## Setup
 
-Set up a Python venv:
+I recommend [virtualenv](https://virtualenv.pypa.io) for creating and managing the virtual environment.
+The latest Python version with which the code was tested is 3.13.7.
 
 ```shell
-python3 -m venv .venv
+virtualenv .venv -p python3.13
 ```
 
 Activate the venv:
