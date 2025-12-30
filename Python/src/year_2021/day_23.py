@@ -13,15 +13,19 @@ from src.util.solution import Solution
 # to other python solutions I saw on reddit. I spent a lot of time on this to reduce the search space
 # and don't see much potential for improvement. It's good enough for me.
 
+type Position = tuple[int, int]
 
 # Amphipod positions mapped to their names. Ones that reached their final position are renamed to "X".
-type AmphipodPositionMap = dict[tuple[int, int], str]
+type AmphipodPositionMap = dict[Position, str]
+
+# The AmphipodPositionMap converted to a tuple so it can be inserted into a set.
+type AmphipodPositionTuple = tuple[tuple[Position, str], ...]
 
 # Positions mapped to their connected positions and the distances to them.
-type ConnectionMap = dict[tuple[int, int], list[tuple[tuple[int, int], int]]]
+type ConnectionMap = dict[Position, list[tuple[Position, int]]]
 
 # All positions that can be used for moves.
-type Spaces = list[tuple[int, int]]
+type Spaces = list[Position]
 
 
 class Solution2021Day23(Solution):
@@ -94,11 +98,11 @@ class Solution2021Day23(Solution):
         return connection_map
 
     @staticmethod
-    def manhattan_distance(a: tuple[int, int], b: tuple[int, int]) -> int:
+    def manhattan_distance(a: Position, b: Position) -> int:
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
     def find_min_energy(self, amphipods: AmphipodPositionMap, connection_map: ConnectionMap) -> int:
-        seen_states: set[tuple[tuple[tuple[int, int], str], ...]] = set()
+        seen_states: set[AmphipodPositionTuple] = set()
         energy = 0
         queue: list[tuple[int, AmphipodPositionMap]] = [(energy, amphipods)]
         while queue:
@@ -108,7 +112,8 @@ class Solution2021Day23(Solution):
                 # All amphipods have reached their goal positions.
                 return energy
 
-            state = self.tuple_amphipods(amphipods)
+            # Convert amphipods to a tuple so they can be inserted into a set.
+            state = tuple(sorted(amphipods.items()))
             if state in seen_states:
                 continue
             seen_states.add(state)
@@ -129,20 +134,15 @@ class Solution2021Day23(Solution):
                     bisect.insort(queue, (new_energy, new_amphipods), key=lambda x: -x[0])
         raise ResultExpectedError
 
-    @staticmethod
-    def tuple_amphipods(amphipods: AmphipodPositionMap) -> tuple[tuple[tuple[int, int], str], ...]:
-        """Convert amphipods to a tuple so they can be inserted into a set."""
-        return tuple(sorted(amphipods.items()))
-
     def find_moves(
             self,
-            position: tuple[int, int],
+            position: Position,
             amphipod: str,
             amphipods: AmphipodPositionMap,
             connection_map: ConnectionMap
-    ) -> list[tuple[tuple[int, int], int]]:
+    ) -> list[tuple[Position, int]]:
         """Find all spaces that are reachable from the current position and return them with their distances."""
-        moves: list[tuple[tuple[int, int], int]] = []
+        moves: list[tuple[Position, int]] = []
         position_x, position_y = position
         if (position_x, position_y - 1) in amphipods:
             return moves
