@@ -94,7 +94,7 @@ class Solution2021Day23(Solution):
 
                 if amphipods[space] == self.home_room_x[other[0]]:
                     connection_map[space].append((other, distance))
-                elif amphipods[other] == self.home_room_x[space[0]]:
+                if amphipods[other] == self.home_room_x[space[0]]:
                     connection_map[other].append((space, distance))
         return connection_map
 
