@@ -2,6 +2,7 @@
 
 import bisect
 import itertools
+from math import inf
 
 from src.util.exceptions import ResultExpectedError
 from src.util.inputs import Inputs
@@ -102,21 +103,14 @@ class Solution2021Day23(Solution):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
     def find_min_energy(self, amphipods: AmphipodPositionMap, connection_map: ConnectionMap) -> int:
-        seen_states: set[AmphipodPositionTuple] = set()
-        energy = 0
-        queue: list[tuple[int, AmphipodPositionMap]] = [(energy, amphipods)]
+        seen_states: dict[AmphipodPositionTuple, int] = {}
+        queue: list[tuple[int, AmphipodPositionMap]] = [(0, amphipods)]
         while queue:
             energy, amphipods = queue.pop()
 
             if all(amphipod == self.satisfied_amphipod for amphipod in amphipods.values()):
                 # All amphipods have reached their goal positions.
                 return energy
-
-            # Convert amphipods to a tuple so they can be inserted into a set.
-            state = tuple(sorted(amphipods.items()))
-            if state in seen_states:
-                continue
-            seen_states.add(state)
 
             for position, amphipod in amphipods.items():
                 if amphipod == self.satisfied_amphipod:
@@ -129,9 +123,17 @@ class Solution2021Day23(Solution):
                     else:
                         # Amphipod moves into a room. This is only possible if that is its home.
                         new_amphipods[new_position] = self.satisfied_amphipod
+
+                    state = tuple(sorted(new_amphipods.items()))
+                    seen_energy = seen_states.get(state, inf)
                     new_energy = energy + distance * self.energy_requirements[amphipod]
+                    if new_energy >= seen_energy:
+                        continue
+                    seen_states[state] = new_energy
+
                     # Insert while keeping the queue sorted by descending energy.
                     bisect.insort(queue, (new_energy, new_amphipods), key=lambda x: -x[0])
+
         raise ResultExpectedError
 
     def find_moves(
