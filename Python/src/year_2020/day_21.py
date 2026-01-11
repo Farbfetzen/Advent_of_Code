@@ -47,23 +47,26 @@ class Solution2020Day21(Solution):
         sum_ = sum(ingredient_counter[ingredient] for ingredient in without_allergens)
         return sum_, allergen_ingredients
 
-    @staticmethod
-    def solve_2(allergen_ingredients: dict[str, set[str]]) -> str:
+    def solve_2(self, allergen_ingredients: dict[str, set[str]]) -> str:
         finished = False
-        done = set()
+        done: set[str] = set()
         while not finished:
             finished = True
             for allergen, ingredients in allergen_ingredients.items():
                 if len(ingredients) == 1:
-                    # Get only element of set without removing it.
-                    ingredient = next(iter(ingredients))
-                    if ingredient not in done:
-                        done.add(ingredient)
-                        for a, i in allergen_ingredients.items():
-                            if a != allergen:
-                                i.discard(ingredient)
+                    self.discard_ingredients(allergen, allergen_ingredients, done, ingredients)
                 else:
                     finished = False
         result = [(k, *v) for k, v in allergen_ingredients.items()]
         result.sort(key=lambda x: x[0])
         return ",".join(x[1] for x in result)
+
+    @staticmethod
+    def discard_ingredients(allergen: str, allergen_ingredients: dict[str, set[str]], done: set[str],
+                            ingredients: set[str]) -> None:
+        ingredient = next(iter(ingredients))
+        if ingredient not in done:
+            done.add(ingredient)
+            for a, i in allergen_ingredients.items():
+                if a != allergen:
+                    i.discard(ingredient)

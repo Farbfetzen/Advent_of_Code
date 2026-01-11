@@ -19,7 +19,7 @@ class Solution2021Day09(Solution):
         self.result_2 = self.solve_2(heightmap, low_points)
 
     def prepare(self, data: str) -> tuple[tuple[tuple[int, ...], ...], list[Point2]]:
-        heightmap = tuple(tuple(int(x) for x in list(line)) for line in data.splitlines())
+        heightmap = tuple(tuple(int(x) for x in line) for line in data.splitlines())
         low_points = self.get_low_points(heightmap)
         return heightmap, low_points
 

@@ -65,4 +65,4 @@ class Solution2021Day11(Solution):
 
     @staticmethod
     def prepare(data: str) -> list[list[int]]:
-        return [[int(x) for x in list(line)] for line in data.splitlines()]
+        return [[int(x) for x in line] for line in data.splitlines()]

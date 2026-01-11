@@ -102,7 +102,7 @@ class Solution2021Day23(Solution):
     def manhattan_distance(a: Position, b: Position) -> int:
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
-    def find_min_energy(self, amphipods: AmphipodPositionMap, connection_map: ConnectionMap) -> int:
+    def find_min_energy(self, amphipods: AmphipodPositionMap, connection_map: ConnectionMap) -> int:  # noqa: S3776
         seen_states: dict[AmphipodPositionTuple, int] = {}
         # The queue is sorted by total energy, which is the sum of energy used so far plus potential remaining energy.
         # energy so far: sum of energy used to reach the current state

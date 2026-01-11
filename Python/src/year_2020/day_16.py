@@ -1,5 +1,6 @@
 # https://adventofcode.com/2020/day/16
 
+import itertools
 import re
 from typing import Any
 
@@ -55,27 +56,22 @@ class Solution2020Day16(Solution):
     def solve_2(data: dict[str, Any]) -> int:
         # Depends on part_1() to first remove all invalid tickets.
         columns = tuple({x} for x in data["my_ticket"])
-        for i in range(len(columns)):
-            for ticket in data["other_tickets"]:
-                columns[i].add(ticket[i])
+        for i, ticket in itertools.product(range(len(columns)), data["other_tickets"]):
+            columns[i].add(ticket[i])
         possible_fields = []
         for col in columns:
-            names = set()
-            for field_name, valid_values in data["rules"].items():
-                if valid_values.issuperset(col):
-                    names.add(field_name)
+            names = {field_name for field_name, valid_values in data["rules"].items() if valid_values.issuperset(col)}
             possible_fields.append(names)
 
         # Search for entries where only one field is possible and remove that
         # from all other possible positions.
         fixed_fields = [p.pop() if len(p) == 1 else "" for p in possible_fields]
         while not all(fixed_fields):
-            for f in fixed_fields:
-                for i, p in enumerate(possible_fields):
-                    if f in p:
-                        p.remove(f)
-                    if len(p) == 1:
-                        fixed_fields[i] = p.pop()
+            for f, (i, p) in itertools.product(fixed_fields, enumerate(possible_fields)):
+                if f in p:
+                    p.remove(f)
+                if len(p) == 1:
+                    fixed_fields[i] = p.pop()
 
         result = 1
         for i, f in enumerate(fixed_fields):

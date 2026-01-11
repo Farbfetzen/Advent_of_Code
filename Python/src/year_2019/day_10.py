@@ -9,6 +9,9 @@ from src.util.inputs import Inputs
 from src.util.solution import Solution
 
 
+type Position = tuple[int, int]
+
+
 class Solution2019Day10(Solution):
 
     def solve(self, inputs: Inputs) -> None:
@@ -20,28 +23,17 @@ class Solution2019Day10(Solution):
         self.result_1 = self.solve_1(visibility_map)
         self.result_2 = self.solve_2(visibility_map, station_position)
 
-    @staticmethod
-    def create_visibility_map(map_str: str) -> tuple[dict[tuple[int, int], list[tuple[int, int]]], tuple[int, int]]:
-        asteroid_map = []
+    def create_visibility_map(self, map_str: str) -> tuple[dict[Position, list[Position]], Position]:
+        asteroid_map: list[Position] = []
         for y, line in enumerate(map_str.splitlines()):
             for x, char in enumerate(line):
                 if char == "#":
                     asteroid_map.append((x, y))
         max_visible = 0
-        most_unique_slopes: dict[tuple[int, int], list[tuple[int, int]]] = {}
-        best_position: tuple[int, int] = (0, 0)
+        most_unique_slopes: dict[Position, list[Position]] = {}
+        best_position: Position = (0, 0)
         for a in asteroid_map:
-            unique_slopes = {}
-            for other in asteroid_map:
-                if other == a:
-                    continue
-                slope = (other[0] - a[0], other[1] - a[1])
-                slope_gcd = math.gcd(*slope)
-                slope = (slope[0] // slope_gcd, slope[1] // slope_gcd)
-                if slope in unique_slopes:
-                    unique_slopes[slope].append(other)
-                else:
-                    unique_slopes[slope] = [other]
+            unique_slopes = self.get_unique_slopes(a, asteroid_map)
             visible = len(unique_slopes)
             if visible > max_visible:
                 max_visible = visible
@@ -50,14 +42,29 @@ class Solution2019Day10(Solution):
         return most_unique_slopes, best_position
 
     @staticmethod
-    def solve_1(visibility_map: dict[tuple[int, int], list[tuple[int, int]]]) -> int:
+    def get_unique_slopes(asteroid: Position, asteroid_map: list[Position]) -> dict:
+        unique_slopes = {}
+        for other in asteroid_map:
+            if other == asteroid:
+                continue
+            slope = (other[0] - asteroid[0], other[1] - asteroid[1])
+            slope_gcd = math.gcd(*slope)
+            slope = (slope[0] // slope_gcd, slope[1] // slope_gcd)
+            if slope in unique_slopes:
+                unique_slopes[slope].append(other)
+            else:
+                unique_slopes[slope] = [other]
+        return unique_slopes
+
+    @staticmethod
+    def solve_1(visibility_map: dict[Position, list[Position]]) -> int:
         return len(visibility_map)
 
     @staticmethod
     def solve_2(
-            visibility_map: dict[tuple[int, int], list[tuple[int, int]]],
-            station_position: tuple[int, int]) -> int:
-        slope_map: dict[float, list[tuple[int, int]]] = {}
+            visibility_map: dict[Position, list[Position]],
+            station_position: Position) -> int:
+        slope_map: dict[float, list[Position]] = {}
         for slope in list(visibility_map.keys()):
             # The laser shooting starts straight up and rotates clockwise. This
             # means the angles have to be sorted accordingly.

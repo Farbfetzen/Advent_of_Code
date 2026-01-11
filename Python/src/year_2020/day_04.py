@@ -1,13 +1,20 @@
 # https://adventofcode.com/2020/day/4
 
+import re
+from typing import Callable
+
 from src.util.inputs import Inputs
 from src.util.solution import Solution
 
 
-REQUIRED = ("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")  # no "cid"
+type Passport = dict[str, str]
 
 
 class Solution2020Day04(Solution):
+    required_fields = {"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"}  # no "cid"
+    height_pattern = re.compile(r"^(?P<height>\d+)(?P<unit>[a-z]+)$")
+    hair_color_pattern = re.compile("^#[0-9a-f]{6}$")
+    valid_eye_colors = {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"}
 
     def solve(self, inputs: Inputs) -> None:
         passports = self.prepare(inputs.samples[0])
@@ -18,54 +25,55 @@ class Solution2020Day04(Solution):
         self.result_2 = self.solve_2(passports)
 
     @staticmethod
-    def prepare(data: str) -> list[dict[str, str]]:
+    def prepare(data: str) -> list[Passport]:
         passports = []
         for entry in data.split("\n\n"):
-            passport = {k: v for k, v in (field.split(":") for field in entry.split())}
+            passport = dict(field.split(":") for field in entry.split())  # noqa: S7494
             passports.append(passport)
         return passports
 
-    @staticmethod
-    def solve_1(passports: list[dict[str, str]]) -> int:
-        n_valid = 0
-        for passport in passports:
-            if all(req in passport for req in REQUIRED):
-                n_valid += 1
-        return n_valid
+    def solve_1(self, passports: list[Passport]) -> int:
+        return sum(1 for passport in passports if self.validate_required_fields(passport))
+
+    def solve_2(self, passports: list[Passport]) -> int:
+        validators = [
+            self.validate_required_fields,
+            self.validate_years,
+            self.validate_height,
+            self.validate_hair_color,
+            self.validate_eye_color,
+            self.validate_id
+        ]
+        return sum(all(validate(passport) for validate in validators) for passport in passports)
+
+    def validate_passport(self, passport: Passport, validators: list[Callable[[Passport], bool]]) -> bool:
+        return (all(req in passport for req in self.required_fields)
+                and all(validate(passport) for validate in validators))
+
+    def validate_required_fields(self, passport: Passport) -> bool:
+        return self.required_fields.issubset(passport.keys())
 
     @staticmethod
-    def solve_2(passports: list[dict[str, str]]) -> int:
-        valid_hcl = "0123456789abcdef"
-        valid_ecl = ("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
-        n_valid = 0
-        for passport in passports:
-            if not all(req in passport for req in REQUIRED):
-                continue
-            if not (1920 <= int(passport["byr"]) <= 2002):
-                continue
-            if not (2010 <= int(passport["iyr"]) <= 2020):
-                continue
-            if not (2020 <= int(passport["eyr"]) <= 2030):
-                continue
-            hgt = passport["hgt"]
-            unit = hgt[-2:]
-            if unit == "cm":
-                if not (150 <= int(hgt[:-2]) <= 193):
-                    continue
-            elif unit == "in":
-                if not (59 <= int(hgt[:-2]) <= 76):
-                    continue
-            else:
-                continue
-            hcl = passport["hcl"]
-            if (hcl[0] != "#"
-                    or len(hcl) != 7
-                    or any(x not in valid_hcl for x in hcl[1:])):
-                continue
-            if passport["ecl"] not in valid_ecl:
-                continue
-            pid = passport["pid"]
-            if len(pid) != 9 or any(n not in "0123456789" for n in pid):
-                continue
-            n_valid += 1
-        return n_valid
+    def validate_years(passport: Passport) -> bool:
+        return ((1920 <= int(passport["byr"]) <= 2002)
+                and (2010 <= int(passport["iyr"]) <= 2020)
+                and (2020 <= int(passport["eyr"]) <= 2030))
+
+    def validate_height(self, passport: Passport) -> bool:
+        match = self.height_pattern.match(passport["hgt"])
+        if match is None:
+            return False
+        height = int(match.group("height"))
+        unit = match.group("unit")
+        return (unit == "cm" and 150 <= height <= 193) or (unit == "in" and 59 <= height <= 76)
+
+    def validate_hair_color(self, passport: Passport) -> bool:
+        return self.hair_color_pattern.match(passport["hcl"]) is not None
+
+    def validate_eye_color(self, passport: Passport) -> bool:
+        return passport["ecl"] in self.valid_eye_colors
+
+    @staticmethod
+    def validate_id(passport: Passport) -> bool:
+        pid = passport["pid"]
+        return len(pid) == 9 and pid.isdigit()

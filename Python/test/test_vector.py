@@ -69,7 +69,7 @@ def test__iadd__() -> None:
 
 
 def test__iadd__not_implemented() -> None:
-    v = Vector2(1, 2)  # NOSONAR
+    v = Vector2(1, 2)  # noqa: S1481
     with pytest.raises(TypeError) as exception:
         v += (1, 2)
     assert str(exception.value) == "unsupported operand type(s) for +=: 'Vector2' and 'tuple'"
@@ -93,7 +93,7 @@ def test__isub__() -> None:
 
 
 def test__isub__not_implemented() -> None:
-    v = Vector2(1, 2)  # NOSONAR
+    v = Vector2(1, 2)  # noqa: S1481
     with pytest.raises(TypeError) as exception:
         v -= (1, 2)
     assert str(exception.value) == "unsupported operand type(s) for -=: 'Vector2' and 'tuple'"

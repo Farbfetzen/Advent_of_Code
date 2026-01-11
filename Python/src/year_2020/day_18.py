@@ -56,22 +56,27 @@ class Solution2020Day18(Solution):
         parentheses_levels = {"(": 1, ")": -1}
         i = 0
         while i < len(line):
-            if line[i] == "+":
-                level = 0
-                # look left of the "+"
-                for j, char in reversed(list(enumerate(line[:i]))):
-                    level += parentheses_levels.get(char, 0)
-                    if level == 0:
-                        line = line[:j] + ["("] + line[j:]
-                        i += 1
-                        break
-                # look right of the "+"
-                for j, char in enumerate(line[i + 1:], i + 1):
-                    level += parentheses_levels.get(char, 0)
-                    if level == 0:
-                        line = line[:j + 1] + [")"] + line[j + 1:]
-                        i += 1
-                        break
+            if line[i] != "+":
+                i += 1
+                continue
+            level = 0
+
+            # look left of the "+"
+            for j, char in reversed(list(enumerate(line[:i]))):
+                level += parentheses_levels.get(char, 0)
+                if level == 0:
+                    line = line[:j] + ["("] + line[j:]
+                    i += 1
+                    break
+
+            # look right of the "+"
+            for j, char in enumerate(line[i + 1:], i + 1):
+                level += parentheses_levels.get(char, 0)
+                if level == 0:
+                    line = line[:j + 1] + [")"] + line[j + 1:]
+                    i += 1
+                    break
+
             i += 1
         return line
 

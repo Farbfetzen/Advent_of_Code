@@ -4,6 +4,7 @@ import itertools
 from collections.abc import Iterator
 from typing import Self
 
+from src.util.exceptions import ResultExpectedError
 from src.util.inputs import Inputs
 from src.util.solution import Solution
 
@@ -64,15 +65,12 @@ class Scanner:
         for i in range(1, 24):
             for position in self.beacon_positions:
                 position.rotate_around_x()
-            if i == 4 or i == 8 or i == 12:
-                for position in self.beacon_positions:
+                if i == 4 or i == 8 or i == 12:
                     position.rotate_around_y()
-            elif i == 16:
-                for position in self.beacon_positions:
+                elif i == 16:
                     position.rotate_around_y()
                     position.rotate_around_z()
-            elif i == 20:
-                for position in self.beacon_positions:
+                elif i == 20:
                     position.rotate_around_z()
                     position.rotate_around_z()
             yield
@@ -146,10 +144,11 @@ class Solution2021Day19(Solution):
                 n_matching = 0
                 for i, pos in enumerate(current_scanner.beacon_positions):
                     b_shifted = pos + translation_vector
-                    if b_shifted in fixed_scanner.beacon_positions:
-                        n_matching += 1
+                    n_matching += b_shifted in fixed_scanner.beacon_positions
                     if n_matching == 12:
                         return translation_vector
-                    if len(current_scanner.beacon_positions) - i < 12 - n_matching:
+                    if (len(current_scanner.beacon_positions) - i) < (12 - n_matching):
                         # Not enough beacons left to get to 12.
                         break
+
+        raise ResultExpectedError

@@ -2,54 +2,60 @@
 
 from src.util.inputs import Inputs
 from src.util.solution import Solution
-from src.util.util import Point2
+
+
+type CucumberMap = list[list[str]]
 
 
 class Solution2021Day25(Solution):
 
     def solve(self, inputs: Inputs) -> None:
         prepared_input = self.prepare(inputs.samples[0])
-        self.sample_results_1.append(self.solve_1(*prepared_input))
+        self.sample_results_1.append(self.solve_1(prepared_input))
 
         prepared_input = self.prepare(inputs.input)
-        self.result_1 = self.solve_1(*prepared_input)
+        self.result_1 = self.solve_1(prepared_input)
         self.result_2 = "No part 2 on day 25. Merry Christmas!"
 
     @staticmethod
-    def prepare(data: str) -> tuple[set[Point2], set[Point2], int, int]:
-        data_list = data.splitlines()
-        cucumbers_right = set()
-        cucumbers_down = set()
-        for y, row in enumerate(data_list):
-            for x, char in enumerate(row):
-                if char == ">":
-                    cucumbers_right.add(Point2(x, y))
-                elif char == "v":
-                    cucumbers_down.add(Point2(x, y))
-        width = len(data_list[0])
-        height = len(data_list)
-        return cucumbers_right, cucumbers_down, width, height
+    def prepare(data: str) -> CucumberMap:
+        return [list(line) for line in data.splitlines()]
+
+    def solve_1(self, cucumber_map: CucumberMap) -> int:
+        width = len(cucumber_map[0])
+        height = len(cucumber_map)
+        steps = 0
+        moved = True
+        while moved:
+            steps += 1
+            new_map = [row.copy() for row in cucumber_map]
+            moved = self.move_right(cucumber_map, new_map, width)
+            cucumber_map = [row.copy() for row in new_map]
+            moved = self.move_down(cucumber_map, new_map, height, moved)
+            cucumber_map = new_map
+        return steps
 
     @staticmethod
-    def solve_1(cucumbers_right: set[Point2], cucumbers_down: set[Point2], width: int, height: int) -> int:
-        steps = 0
-        while True:
-            steps += 1
-            move_right = []
-            for x, y in cucumbers_right:
-                new_position = Point2((x + 1) % width, y)
-                if new_position not in cucumbers_right and new_position not in cucumbers_down:
-                    move_right.append((Point2(x, y), new_position))
-            for position, new_position in move_right:
-                cucumbers_right.remove(position)
-                cucumbers_right.add(new_position)
-            move_down = []
-            for x, y in cucumbers_down:
-                new_position = Point2(x, (y + 1) % height)
-                if new_position not in cucumbers_down and new_position not in cucumbers_right:
-                    move_down.append(((x, y), new_position))
-            for position, new_position in move_down:
-                cucumbers_down.remove(position)
-                cucumbers_down.add(new_position)
-            if not move_right and not move_down:
-                return steps
+    def move_right(cucumber_map: CucumberMap, new_map: CucumberMap, width: int) -> bool:
+        moved = False
+        for y, row in enumerate(cucumber_map):
+            for x, cucumber in enumerate(row):
+                if cucumber == ">":
+                    right_x = (x + 1) % width
+                    if cucumber_map[y][right_x] == ".":
+                        new_map[y][right_x] = ">"
+                        new_map[y][x] = "."
+                        moved = True
+        return moved
+
+    @staticmethod
+    def move_down(cucumber_map: CucumberMap, new_map: CucumberMap, height: int, moved: bool) -> bool:
+        for y, row in enumerate(cucumber_map):
+            for x, cucumber in enumerate(row):
+                if cucumber == "v":
+                    below_y = (y + 1) % height
+                    if cucumber_map[below_y][x] == ".":
+                        new_map[below_y][x] = "v"
+                        new_map[y][x] = "."
+                        moved = True
+        return moved

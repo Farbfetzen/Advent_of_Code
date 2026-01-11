@@ -5,7 +5,7 @@ class IntcodeComputer:
 
     def __init__(self, program: str | list[int]) -> None:
         ints = program if isinstance(program, list) else [int(i) for i in program.split(",")]
-        self.memory = defaultdict(int, {k: v for k, v in enumerate(ints)})
+        self.memory = defaultdict(int, dict(enumerate(ints)))
         self.inputs: list[int] = []
         self.opcode = "99"
         self.opcode_methods = {

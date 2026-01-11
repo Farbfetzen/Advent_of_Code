@@ -1,9 +1,11 @@
 # https://adventofcode.com/2020/day/20
 
+import itertools
 from math import sqrt
 
 import numpy
 
+from src.util.exceptions import ResultExpectedError
 from src.util.inputs import Inputs
 from src.util.solution import Solution
 
@@ -86,51 +88,13 @@ class Solution2020Day20(Solution):
                 corner_product *= tile.id
         return corner_product
 
-    # noinspection PyUnboundLocalVariable
-    @staticmethod
-    def solve_2(tiles: list[Tile]) -> int:
-        # Find a corner tile for the top left corner.
-        for tile in tiles:
-            if tile.n_neighbors == 2:
-                break
-        # Rotate until the shared borders are bottom and right.
-        for _ in range(4):
-            if {tile.right, tile.bottom}.issubset(tile.shared_borders):
-                break
-            tile.rotate()
-
-        # first row of whole image
+    def solve_2(self, tiles: list[Tile]) -> int:
+        tile = self.find_corner_tile(tiles)
+        self.rotate_align(tile)
         tile_map = [[tile]]
         side_length = int(sqrt(len(tiles)))
-        for i in range(1, side_length):
-            for neighbor in tile.neighbors:
-                if tile.right in neighbor.shared_borders:
-                    break
-            for j in range(8):
-                if neighbor.left == tile.right:
-                    break
-                neighbor.rotate()
-                if j == 4:
-                    neighbor.flip()
-            tile_map[0].append(neighbor)
-            tile = neighbor
-
-        # all other rows
-        for y in range(1, side_length):
-            row = []
-            for x in range(side_length):
-                tile = tile_map[y - 1][x]
-                for neighbor in tile.neighbors:
-                    if tile.bottom in neighbor.shared_borders:
-                        break
-                for j in range(8):
-                    if neighbor.top == tile.bottom:
-                        break
-                    neighbor.rotate()
-                    if j == 4:
-                        neighbor.flip()
-                row.append(neighbor)
-            tile_map.append(row)
+        self.assemble_first_row(tile, tile_map, side_length)
+        self.assemble_other_rows(tile_map, side_length)
 
         size = tile.content.shape[0] - 2
         image_size = side_length * size
@@ -145,30 +109,81 @@ class Solution2020Day20(Solution):
             list("#    ##    ##    ###"),
             list(" #  #  #  #  #  #   ")
         ))
-        monster_pos = {(x, y) for y, x in zip(*numpy.where(monster == "#"))}
-        monster_width = len(monster[0])
-        monster_height = len(monster)
+        monster_height, monster_width = monster.shape
+        monster_pos = {(x, y) for y, x in zip(*numpy.nonzero(monster == "#"))}
+        all_rough_water_pos = self.find_rough_water(monster_width, monster_height, monster_pos, image, image_size)
+        return len(all_rough_water_pos)
 
+    @staticmethod
+    def find_corner_tile(tiles: list[Tile]) -> Tile:
+        """Find a corner tile for the top left corner."""
+        for tile in tiles:
+            if tile.n_neighbors == 2:
+                return tile
+        raise ResultExpectedError
+
+    @staticmethod
+    def rotate_align(tile: Tile) -> None:
+        """Rotate until the shared borders are bottom and right."""
+        for _ in range(4):
+            if {tile.right, tile.bottom}.issubset(tile.shared_borders):
+                break
+            tile.rotate()
+
+    @staticmethod
+    def assemble_first_row(tile: Tile, tile_map: list[list[Tile]], side_length: int) -> None:
+        """First row of whole image."""
+        for _ in range(1, side_length):
+            neighbor = next(neighbor for neighbor in tile.neighbors if tile.right in neighbor.shared_borders)
+            for j in range(8):
+                if neighbor.left == tile.right:
+                    break
+                neighbor.rotate()
+                if j == 4:
+                    neighbor.flip()
+            tile_map[0].append(neighbor)
+            tile = neighbor
+
+    @staticmethod
+    def assemble_other_rows(tile_map: list[list[Tile]], side_length: int) -> None:
+        """All other rows of the image."""
+        for y in range(1, side_length):
+            row = []
+            for x in range(side_length):
+                tile = tile_map[y - 1][x]
+                neighbor = next(neighbor for neighbor in tile.neighbors if tile.bottom in neighbor.shared_borders)
+                for j in range(8):
+                    if neighbor.top == tile.bottom:
+                        break
+                    neighbor.rotate()
+                    if j == 4:
+                        neighbor.flip()
+                row.append(neighbor)
+            tile_map.append(row)
+
+    @staticmethod
+    def find_rough_water(monster_width: int, monster_height: int, monster_pos: set[tuple[int, int]],
+                         image: numpy.ndarray, image_size: int) -> set[tuple[int, int]]:
         monster_found = False
         for i in range(8):
             # Rough water positions need to be calculated after every rotation or flip.
-            all_rough_water_pos = {(x, y) for y, x in zip(*numpy.where(image == "#"))}
-            for y in range(image_size - monster_height):
-                for x in range(image_size - monster_width):
-                    cropped = image[y:y + monster_height, x:x + monster_width]
-                    rough_water_pos = set()
-                    for cy, row in enumerate(cropped):
-                        for cx, char in enumerate(row):
-                            if char == "#":
-                                rough_water_pos.add((cx, cy))
-                    if monster_pos.issubset(rough_water_pos):
-                        monster_found = True
-                        for x_, y_ in monster_pos & rough_water_pos:
-                            pos = (x + x_, y + y_)
-                            all_rough_water_pos.remove(pos)
+            all_rough_water_pos = {(x, y) for y, x in zip(*numpy.nonzero(image == "#"))}
+            for x, y in itertools.product(range(image_size - monster_width), range(image_size - monster_height)):
+                cropped = image[y:y + monster_height, x:x + monster_width]
+                rough_water_pos = {
+                    (cx, cy)
+                    for cy, row in enumerate(cropped)
+                    for cx, char in enumerate(row)
+                    if char == "#"
+                }
+                if monster_pos.issubset(rough_water_pos):
+                    monster_found = True
+                    for x_, y_ in monster_pos & rough_water_pos:
+                        pos = (x + x_, y + y_)
+                        all_rough_water_pos.remove(pos)
             if monster_found:
-                break
+                return all_rough_water_pos
             image = numpy.rot90(image)
             if i == 4:
                 image = numpy.flip(image, 1)
-        return len(all_rough_water_pos)
+        raise ResultExpectedError

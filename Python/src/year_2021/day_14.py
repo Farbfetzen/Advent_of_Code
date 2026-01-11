@@ -21,7 +21,7 @@ class Solution2021Day14(Solution):
     @staticmethod
     def prepare(data: str) -> tuple[str, dict[str, str]]:
         template, _, *rules_list = data.splitlines()
-        rules_dict = {k: v for k, v in (rule.split(" -> ") for rule in rules_list)}
+        rules_dict = dict(rule.split(" -> ") for rule in rules_list)  # noqa: S7494
         return template, rules_dict
 
     @staticmethod

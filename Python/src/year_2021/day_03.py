@@ -17,7 +17,7 @@ class Solution2021Day03(Solution):
 
     @staticmethod
     def count_bits(numbers: list[str]) -> list[int]:
-        return [sum(int(b) for b in bits) for bits in list(zip(*numbers))]
+        return [sum(int(b) for b in bits) for bits in zip(*numbers)]
 
     def get_rating(self, numbers: list[str], search_most_common=True):
         numbers = numbers.copy()
