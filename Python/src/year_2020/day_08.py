@@ -42,6 +42,7 @@ class HandheldGameConsole:
     def step(self) -> None:
         """Execute only one operation."""
         operation, value = self.instructions[self.pointer]
+        # noinspection PyArgumentList
         self.operations[operation](value)
         self.check_pointer()
 

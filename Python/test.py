@@ -5,7 +5,7 @@ You can also run pytest directly, see https://docs.pytest.org/en/stable/how-to/u
 
 Run all the tests from the command line using `python test.py`
 You can optionally specify a year to run all test from a year
-and additionally a day to run the tests of a specific day from one year.
+and additionally a day to run the test of that day in the aforementioned year.
 If more than one day is specified the days are run in parallel.
 Example:
 - `python test.py` runs all tests in parallel

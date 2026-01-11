@@ -31,3 +31,4 @@ class Solution(ABC):
             if isinstance(results, list):
                 return heading + ":\n" + ", ".join(map(str, results))
             return heading + ":\n" + str(results)
+        return None

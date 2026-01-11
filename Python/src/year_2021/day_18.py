@@ -105,6 +105,7 @@ class Solution2021Day18(Solution):
             depth += 1
             return self.find_explosion_candidate(number.left, depth) or \
                 self.find_explosion_candidate(number.right, depth)
+        return None
 
     def find_split_candidate(self, number: SnailfishNumber, depth=0) -> SnailfishNumber | None:
         assert number is not None
@@ -114,6 +115,7 @@ class Solution2021Day18(Solution):
                 self.find_split_candidate(number.right, depth)
         if number.value >= 10:
             return number
+        return None
 
     @staticmethod
     def explode(number: SnailfishNumber) -> None:

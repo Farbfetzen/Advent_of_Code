@@ -37,6 +37,7 @@ class Cuboid:
                     self.z_min if other.z_min <= self.z_min < other.z_max else other.z_min,
                     self.z_max if other.z_min <= self.z_max < other.z_max else other.z_max
             )
+        return None
 
 
 class Solution2021Day22(Solution):

@@ -4,7 +4,7 @@ from src.util.inputs import Inputs
 from src.util.solution import Solution
 
 
-# Using axial coordinates where x runs left to right and y runs north-west to south-east.
+# Using axial coordinates where x runs from left to right and y runs from north-west to south-east.
 # I use complex numbers so movement is simply the sum of directions.
 # https://www.redblobgames.com/grids/hexagons/#coordinates-axial
 DIRECTIONS = {

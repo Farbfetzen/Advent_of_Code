@@ -34,7 +34,7 @@ class Solution2021Day15(Solution):
         came_from = {start: None}
         risk_so_far = {start: 0}
         offsets = ((1, 0), (0, 1), (-1, 0), (0, -1))
-        pos = None
+        pos = start
         while not frontier.empty():
             pos = frontier.get()[1]
             if pos == destination:

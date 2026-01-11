@@ -21,6 +21,7 @@ class Deck:
 
     def shuffle(self, instructions: list[tuple[str, int | None]]) -> None:
         for instruction, argument in instructions:
+            # noinspection PyArgumentList
             self.instruction_map[instruction](argument)
 
     def deal_into_new_stack(self, _) -> None:
