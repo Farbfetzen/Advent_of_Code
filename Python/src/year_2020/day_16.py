@@ -28,13 +28,8 @@ class Solution2020Day16(Solution):
             allowed_values = set(range(low1, high1 + 1)) | set(range(low2, high2 + 1))
             rules[field] = allowed_values
         my_ticket = tuple(int(x) for x in my_ticket_str.splitlines()[1].split(","))
-        other_tickets = tuple(tuple(int(x) for x in line.split(","))
-                              for line in other_tickets_str.splitlines()[1:])
-        return {
-            "rules": rules,
-            "my_ticket": my_ticket,
-            "other_tickets": other_tickets
-        }
+        other_tickets = tuple(tuple(int(x) for x in line.split(",")) for line in other_tickets_str.splitlines()[1:])
+        return {"rules": rules, "my_ticket": my_ticket, "other_tickets": other_tickets}
 
     @staticmethod
     def solve_1(data: dict[str, Any]) -> int:
@@ -48,8 +43,7 @@ class Solution2020Day16(Solution):
             if invalid:
                 sum_invalid += sum(invalid)
                 discard.add(i)
-        data["other_tickets"] = tuple(x for i, x in enumerate(data["other_tickets"])
-                                      if i not in discard)
+        data["other_tickets"] = tuple(x for i, x in enumerate(data["other_tickets"]) if i not in discard)
         return sum_invalid
 
     @staticmethod

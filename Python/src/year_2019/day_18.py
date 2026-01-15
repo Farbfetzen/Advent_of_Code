@@ -34,7 +34,7 @@ class Solution2019Day18(Solution):
         paths = {}
         ignored_symbols = set(".#@1234")
         dxy = ((1, 0), (-1, 0), (0, 1), (0, -1))
-        for (x, y, distance, path) in queue:
+        for x, y, distance, path in queue:
             seen.add((x, y))
             symbol = maze[y][x]
             if distance > 0 and symbol not in ignored_symbols:
@@ -46,7 +46,7 @@ class Solution2019Day18(Solution):
                 path += symbol
             # Search for walkable spaces among neighboring positions.
             distance += 1
-            for (dx, dy) in dxy:
+            for dx, dy in dxy:
                 nx = x + dx
                 ny = y + dy
                 if (nx, ny) not in seen and maze[ny][nx] != "#":
@@ -70,7 +70,7 @@ class Solution2019Day18(Solution):
         all_paths = self.build_maze(maze)
         keys = [k for k in all_paths if k in string.ascii_lowercase]
         # info = (current location, collected keys): distance so far
-        info = {('@', frozenset()): 0}
+        info = {("@", frozenset()): 0}
         for _ in keys:
             new_info = {}
             for item in info:
@@ -87,8 +87,7 @@ class Solution2019Day18(Solution):
                         continue
                     new_distance = current_distance + distance
                     new_keys = frozenset({next_key}.union(collected_keys))
-                    if ((next_key, new_keys) not in new_info
-                            or new_distance < new_info[(next_key, new_keys)]):
+                    if (next_key, new_keys) not in new_info or new_distance < new_info[(next_key, new_keys)]:
                         new_info[(next_key, new_keys)] = new_distance
             info = new_info
         return min(info.values())
@@ -103,7 +102,7 @@ class Solution2019Day18(Solution):
         keys = [k for k in all_paths if k in string.ascii_lowercase]
         # info is almost the same as in part 1 but now has the positions of
         # all four robots.
-        info = {(('1', '2', '3', '4'), frozenset()): 0}
+        info = {(("1", "2", "3", "4"), frozenset()): 0}
         for _ in keys:
             new_info = {}
             for item in info:
@@ -125,8 +124,9 @@ class Solution2019Day18(Solution):
                         new_positions = list(current_positions)
                         new_positions[robot] = next_key
                         new_positions = tuple(new_positions)
-                        if ((new_positions, new_keys) not in new_info
-                                or new_distance < new_info[(new_positions, new_keys)]):
+                        if (new_positions, new_keys) not in new_info or new_distance < new_info[
+                            (new_positions, new_keys)
+                        ]:
                             new_info[(new_positions, new_keys)] = new_distance
             info = new_info
         return min(info.values())
@@ -136,11 +136,11 @@ class Solution2019Day18(Solution):
         maze = [list(row) for row in maze]
         for y, row in enumerate(maze):
             for x, symbol in enumerate(row):
-                if symbol == '@':
-                    for (dx, dy) in [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]:
-                        maze[y + dy][x + dx] = '#'
-                    maze[y - 1][x - 1] = '1'
-                    maze[y - 1][x + 1] = '2'
-                    maze[y + 1][x - 1] = '3'
-                    maze[y + 1][x + 1] = '4'
+                if symbol == "@":
+                    for dx, dy in [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]:
+                        maze[y + dy][x + dx] = "#"
+                    maze[y - 1][x - 1] = "1"
+                    maze[y - 1][x + 1] = "2"
+                    maze[y + 1][x - 1] = "3"
+                    maze[y + 1][x + 1] = "4"
         return ["".join(row) for row in maze]

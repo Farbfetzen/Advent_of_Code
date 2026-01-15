@@ -43,10 +43,7 @@ class Solution2020Day11(Solution):
     @staticmethod
     def count_neighbors_1(seats: numpy.ndarray, x: int, y: int) -> int:
         height, width = seats.shape
-        neighborhood = seats[
-            max(y - 1, 0):min(y + 2, height),
-            max(x - 1, 0):min(x + 2, width)
-        ]
+        neighborhood = seats[max(y - 1, 0) : min(y + 2, height), max(x - 1, 0) : min(x + 2, width)]
         return (neighborhood == "#").sum()
 
     @staticmethod

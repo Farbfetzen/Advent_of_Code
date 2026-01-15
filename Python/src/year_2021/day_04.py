@@ -25,7 +25,7 @@ class BingoBoard:
         i = self.numbers.index(n)
         r = i // 5 * 5
         c = i % 5
-        return self.marked.issuperset(self.numbers[r:r + 5]) or self.marked.issuperset(self.numbers[c::5])
+        return self.marked.issuperset(self.numbers[r : r + 5]) or self.marked.issuperset(self.numbers[c::5])
 
 
 class Solution2021Day04(Solution):

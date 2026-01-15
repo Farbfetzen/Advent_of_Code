@@ -13,7 +13,7 @@ DIRECTIONS = {
     "sw": -1 + 1j,
     "w": -1 + 0j,
     "nw": 0 - 1j,
-    "ne": 1 - 1j
+    "ne": 1 - 1j,
 }
 
 
@@ -52,8 +52,9 @@ class Solution2020Day24(Solution):
         return len(hexmap), hexmap
 
     @staticmethod
-    def check_neighbors(position: complex, old_state: set[complex], new_state: set[complex],
-                        candidates: set[complex] = None) -> None:
+    def check_neighbors(
+        position: complex, old_state: set[complex], new_state: set[complex], candidates: set[complex] = None
+    ) -> None:
         neighbor_positions = {position + direction for direction in DIRECTIONS.values()}
         n_neighbors = len(neighbor_positions & old_state)
         active = position in old_state

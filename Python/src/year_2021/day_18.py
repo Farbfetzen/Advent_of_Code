@@ -12,11 +12,7 @@ from src.util.solution import Solution
 class SnailfishNumber:
 
     def __init__(
-            self,
-            value: int | None = None,
-            parent: Self | None = None,
-            left: Self | None = None,
-            right: Self | None = None
+        self, value: int | None = None, parent: Self | None = None, left: Self | None = None, right: Self | None = None
     ) -> None:
         self.value = value
         self.parent = parent
@@ -103,16 +99,16 @@ class Solution2021Day18(Solution):
             if depth == 4:
                 return number
             depth += 1
-            return self.find_explosion_candidate(number.left, depth) or \
-                self.find_explosion_candidate(number.right, depth)
+            return self.find_explosion_candidate(number.left, depth) or self.find_explosion_candidate(
+                number.right, depth
+            )
         return None
 
     def find_split_candidate(self, number: SnailfishNumber, depth=0) -> SnailfishNumber | None:
         assert number is not None
         if number.value is None:
             depth += 1
-            return self.find_split_candidate(number.left, depth) or \
-                self.find_split_candidate(number.right, depth)
+            return self.find_split_candidate(number.left, depth) or self.find_split_candidate(number.right, depth)
         if number.value >= 10:
             return number
         return None

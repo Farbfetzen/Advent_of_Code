@@ -33,6 +33,6 @@ class Solution2022Day03(Solution):
     def solve_2(self, data: list[str]) -> int:
         common_items = []
         for i in range(0, len(data), 3):
-            sets = [set(rucksack) for rucksack in data[i:i + 3]]
+            sets = [set(rucksack) for rucksack in data[i : i + 3]]
             common_items.append(set.intersection(*sets).pop())
         return self.sum_priorities(common_items)

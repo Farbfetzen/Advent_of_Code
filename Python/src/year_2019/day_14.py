@@ -32,18 +32,15 @@ class Solution2019Day14(Solution):
                 input_chemical = left.pop().split()
                 input_chemicals[input_chemical[1]] = int(input_chemical[0])
             right = reaction[1].split()
-            reactions[right[1]] = {
-                "quantity": int(right[0]),
-                "input": input_chemicals
-            }
+            reactions[right[1]] = {"quantity": int(right[0]), "input": input_chemicals}
         return reactions
 
     def get_ore_requirement(
-            self,
-            reactions: dict[str, dict[str, int | dict[str, int]]],
-            product: str,
-            required_quantity: int,
-            excess: collections.defaultdict[str, int]
+        self,
+        reactions: dict[str, dict[str, int | dict[str, int]]],
+        product: str,
+        required_quantity: int,
+        excess: collections.defaultdict[str, int],
     ) -> int:
         if product == "ORE":
             return required_quantity
@@ -61,10 +58,7 @@ class Solution2019Day14(Solution):
         excess[product] += product_quantity * reaction_repetitions - required_quantity
         return ore
 
-    def solve_2(
-            self,
-            reactions: dict[str, dict[str, int | dict[str, int]]],
-            required_ore_for_1: int) -> int:
+    def solve_2(self, reactions: dict[str, dict[str, int | dict[str, int]]], required_ore_for_1: int) -> int:
         available_ore = 1_000_000_000_000
         excess = collections.defaultdict(int)
         fuel_to_produce = available_ore // required_ore_for_1

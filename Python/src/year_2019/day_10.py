@@ -61,9 +61,7 @@ class Solution2019Day10(Solution):
         return len(visibility_map)
 
     @staticmethod
-    def solve_2(
-            visibility_map: dict[Position, list[Position]],
-            station_position: Position) -> int:
+    def solve_2(visibility_map: dict[Position, list[Position]], station_position: Position) -> int:
         slope_map: dict[float, list[Position]] = {}
         for slope in list(visibility_map.keys()):
             # The laser shooting starts straight up and rotates clockwise. This
@@ -75,8 +73,8 @@ class Solution2019Day10(Solution):
             slope_map[angle] = visibility_map.pop(slope)
         for v in slope_map.values():
             v.sort(
-                    key=(lambda x: abs(x[0] - station_position[0]) + abs(x[1] - station_position[1])),
-                    reverse=True
+                key=(lambda x: abs(x[0] - station_position[0]) + abs(x[1] - station_position[1])),
+                reverse=True,
             )
         n = 0
         slope_map = collections.OrderedDict(sorted(slope_map.items()))

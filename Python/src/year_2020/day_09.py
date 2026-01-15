@@ -24,7 +24,7 @@ class Solution2020Day09(Solution):
 
     def solve_1(self, numbers: list[int], pre_len: int) -> int:
         for i, n in enumerate(numbers[pre_len:]):
-            if not self.valid(numbers[i:(pre_len + i)], n):
+            if not self.valid(numbers[i : (pre_len + i)], n):
                 return n
         raise ResultExpectedError
 
@@ -43,7 +43,7 @@ class Solution2020Day09(Solution):
     @staticmethod
     def valid(preamble, n) -> bool:
         for i, a in enumerate(preamble[:-1]):
-            for b in preamble[(i + 1):]:
+            for b in preamble[(i + 1) :]:
                 if a + b == n:
                     return True
         return False

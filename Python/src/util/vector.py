@@ -9,8 +9,7 @@ class Orderable(Protocol):
     See https://stackoverflow.com/a/70018221
     """
 
-    def __lt__(self, other) -> bool:
-        ...
+    def __lt__(self, other) -> bool: ...
 
 
 @dataclass(frozen=True, slots=True, order=True)

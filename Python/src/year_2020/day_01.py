@@ -36,7 +36,7 @@ class Solution2020Day01(Solution):
     def solve_2(expenses: list[int]) -> int:
         seen = set()
         for i, x in enumerate(expenses):
-            for j, y in enumerate(expenses[(i + 1):]):
+            for j, y in enumerate(expenses[(i + 1) :]):
                 z = 2020 - x - y
                 if z in seen:
                     return x * y * z

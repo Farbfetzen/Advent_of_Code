@@ -60,7 +60,7 @@ class Solution2021Day15(Solution):
             for line in cave_map:
                 right_part = [x % 9 + 1 for x in line[-original_width:]]
                 line.extend(right_part)
-            for line in cave_map[original_height * i:original_height * (i + 1)]:
+            for line in cave_map[original_height * i : original_height * (i + 1)]:
                 new_line = [x % 9 + 1 for x in line]
                 cave_map.append(new_line)
 

@@ -46,5 +46,5 @@ class Solution2018Day02(Solution):
             i = x[0]
             a, b = x[1]
             if a != b:
-                return id_1[:i] + id_1[i + 1:]
+                return id_1[:i] + id_1[i + 1 :]
         raise ResultExpectedError

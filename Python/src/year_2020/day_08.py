@@ -14,11 +14,7 @@ class HandheldGameConsole:
         self.seen_pointers = {self.pointer}
         self.has_halted = False
         self.in_infinite_loop = False
-        self.operations = {
-            "acc": self.acc,
-            "jmp": self.jmp,
-            "nop": self.nop
-        }
+        self.operations = {"acc": self.acc, "jmp": self.jmp, "nop": self.nop}
 
     def acc(self, n: int) -> None:
         self.accumulator += n

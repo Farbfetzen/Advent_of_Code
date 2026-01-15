@@ -76,9 +76,7 @@ class Solution2019Day20(Solution):
 
     @staticmethod
     def get_distances_to_connecting_portals(
-            portal_position: Vector2,
-            walkable: set[Vector2],
-            portal_map: dict[Vector2, Portal]
+        portal_position: Vector2, walkable: set[Vector2], portal_map: dict[Vector2, Portal]
     ) -> dict[Portal, int]:
         distances: dict[Portal, int] = {}
         seen = {portal_position}
@@ -113,10 +111,7 @@ class Solution2019Day20(Solution):
             for other_portal, other_distance in connections[last_portal].items():
                 if other_portal not in path:
                     other_portal_exit = Portal(other_portal.label, -other_portal.edge)
-                    queue.append((
-                        path + [other_portal, other_portal_exit],
-                        distance + other_distance)
-                    )
+                    queue.append((path + [other_portal, other_portal_exit], distance + other_distance))
         raise ResultExpectedError
 
     @staticmethod
@@ -138,9 +133,11 @@ class Solution2019Day20(Solution):
                 #   because it may be that e.g. ("BC", 1) has a walking
                 #   connection to ("BC", -1). Going that route would not make sense.
                 if other_portal_is_open and other_portal.label != last_portal.label:
-                    queue.append((
-                        Portal(other_portal.label, -other_portal.edge),
-                        level + other_portal.edge,
-                        distance + other_distance
-                    ))
+                    queue.append(
+                        (
+                            Portal(other_portal.label, -other_portal.edge),
+                            level + other_portal.edge,
+                            distance + other_distance,
+                        )
+                    )
         raise ResultExpectedError

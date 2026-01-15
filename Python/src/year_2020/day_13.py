@@ -52,8 +52,7 @@ class Solution2020Day13(Solution):
         # Turns out crt() is not necessary to solve this problem.
         # I found this clever algorithm in the solutions thread on Reddit:
         # https://www.reddit.com/r/adventofcode/comments/kc4njx/2020_day_13_solutions/gfo4b1z
-        data = [(i, int(bus_id)) for i, bus_id in enumerate(bus_info[1].split(","))
-                if bus_id != "x"]
+        data = [(i, int(bus_id)) for i, bus_id in enumerate(bus_info[1].split(",")) if bus_id != "x"]
         jump = data[0][1]  # first bus_id
         time = 0
         for delta, bus_id in data[1:]:

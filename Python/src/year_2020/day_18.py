@@ -70,10 +70,10 @@ class Solution2020Day18(Solution):
                     break
 
             # look right of the "+"
-            for j, char in enumerate(line[i + 1:], i + 1):
+            for j, char in enumerate(line[i + 1 :], i + 1):
                 level += parentheses_levels.get(char, 0)
                 if level == 0:
-                    line = line[:j + 1] + [")"] + line[j + 1:]
+                    line = line[: j + 1] + [")"] + line[j + 1 :]
                     i += 1
                     break
 

@@ -42,22 +42,25 @@ class Solution2020Day04(Solution):
             self.validate_height,
             self.validate_hair_color,
             self.validate_eye_color,
-            self.validate_id
+            self.validate_id,
         ]
         return sum(all(validate(passport) for validate in validators) for passport in passports)
 
     def validate_passport(self, passport: Passport, validators: list[Callable[[Passport], bool]]) -> bool:
-        return (all(req in passport for req in self.required_fields)
-                and all(validate(passport) for validate in validators))
+        return all(req in passport for req in self.required_fields) and all(
+            validate(passport) for validate in validators
+        )
 
     def validate_required_fields(self, passport: Passport) -> bool:
         return self.required_fields.issubset(passport.keys())
 
     @staticmethod
     def validate_years(passport: Passport) -> bool:
-        return ((1920 <= int(passport["byr"]) <= 2002)
-                and (2010 <= int(passport["iyr"]) <= 2020)
-                and (2020 <= int(passport["eyr"]) <= 2030))
+        return (
+            (1920 <= int(passport["byr"]) <= 2002)
+            and (2010 <= int(passport["iyr"]) <= 2020)
+            and (2020 <= int(passport["eyr"]) <= 2030)
+        )
 
     def validate_height(self, passport: Passport) -> bool:
         match = self.height_pattern.match(passport["hgt"])

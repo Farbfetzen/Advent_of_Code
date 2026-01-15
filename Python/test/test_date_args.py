@@ -15,7 +15,7 @@ def mock_today(today: datetime.date, monkeypatch) -> None:
         def today(cls) -> Self:
             return today
 
-    monkeypatch.setattr(datetime, 'date', MyDatetime)
+    monkeypatch.setattr(datetime, "date", MyDatetime)
 
 
 def test_validate_args(monkeypatch) -> None:

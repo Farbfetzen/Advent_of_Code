@@ -18,7 +18,7 @@ class IntcodeComputer:
             "07": self.less_than,
             "08": self.equals,
             "09": self.adjust_relative_base,
-            "99": self.halt
+            "99": self.halt,
         }
         self.parameter_modes = ("0", "0", "0")
         self.instruction_pointer = 0

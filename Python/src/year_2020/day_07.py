@@ -50,8 +50,7 @@ class Solution2020Day07(Solution):
 
     def search_shiny_gold(self, rules, key) -> bool:
         for bag in rules[key]:
-            if (bag.type == "shiny gold" or
-                    bag.type != NO_OTHER and self.search_shiny_gold(rules, bag.type)):
+            if bag.type == "shiny gold" or bag.type != NO_OTHER and self.search_shiny_gold(rules, bag.type):
                 return True
         return False
 

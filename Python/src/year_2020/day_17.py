@@ -48,8 +48,7 @@ class Solution2020Day17(Solution):
             new_state = set()
             candidates = set()
             for position in reactor_state:
-                self.check_neighbors(position, reactor_state, new_state, directions,
-                                     candidates)
+                self.check_neighbors(position, reactor_state, new_state, directions, candidates)
             # Check the neighbors of the active cells:
             for position in candidates:
                 self.check_neighbors(position, reactor_state, new_state, directions)

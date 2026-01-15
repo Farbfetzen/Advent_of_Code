@@ -17,7 +17,7 @@ def load_inputs(year: int, day: int) -> Inputs:
     filenames = [name for name in os.listdir(year_directory) if name.startswith(day_padded)]
     input_filename = f"{day_padded}-input.txt"
     if input_filename not in filenames:
-        sys.exit(f"File \"{input_filename}\" not in input directory!")
+        sys.exit(f'File "{input_filename}" not in input directory!')
 
     inputs = Inputs()
     for filename in sorted(filenames):
@@ -28,5 +28,5 @@ def load_inputs(year: int, day: int) -> Inputs:
         elif filename.startswith(f"{day_padded}-sample"):
             inputs.samples.append(content)
         else:
-            sys.exit(f"Unknown input file \"{filename}\".")
+            sys.exit(f'Unknown input file "{filename}".')
     return inputs

@@ -11,5 +11,5 @@ solutions_2022: dict[int, Type[Solution]] = {
     1: Solution2022Day01,
     2: Solution2022Day02,
     3: Solution2022Day03,
-    4: Solution2022Day04
+    4: Solution2022Day04,
 }

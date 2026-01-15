@@ -16,19 +16,9 @@ class Tile:
         data = data.splitlines()
         self.id = int(data[0][5:-1])
         self.content = numpy.array([list(line) for line in data[1:]])
-        self.borders = {
-            self.top,
-            self.bottom,
-            self.left,
-            self.right
-        }
+        self.borders = {self.top, self.bottom, self.left, self.right}
         self.rotate(2)
-        self.borders.update((
-            self.top,
-            self.bottom,
-            self.left,
-            self.right
-        ))
+        self.borders.update((self.top, self.bottom, self.left, self.right))
         self.shared_borders = set()
         self.neighbors = set()
         self.n_neighbors = 0
@@ -74,7 +64,7 @@ class Solution2020Day20(Solution):
     @staticmethod
     def solve_1(tiles: list[Tile]) -> int:
         for i, tile in enumerate(tiles[:-1]):
-            for other in tiles[i + 1:]:
+            for other in tiles[i + 1 :]:
                 shared_borders = tile.borders & other.borders
                 if shared_borders:
                     tile.neighbors.add(other)
@@ -102,13 +92,15 @@ class Solution2020Day20(Solution):
 
         for y, row in enumerate(tile_map):
             for x, tile in enumerate(row):
-                image[y * size:(y + 1) * size, x * size:(x + 1) * size] = tile.content[1:-1, 1:-1]
+                image[y * size : (y + 1) * size, x * size : (x + 1) * size] = tile.content[1:-1, 1:-1]
 
-        monster = numpy.array((
-            list("                  # "),
-            list("#    ##    ##    ###"),
-            list(" #  #  #  #  #  #   ")
-        ))
+        monster = numpy.array(
+            (
+                list("                  # "),
+                list("#    ##    ##    ###"),
+                list(" #  #  #  #  #  #   "),
+            )
+        )
         monster_height, monster_width = monster.shape
         monster_pos = {(x, y) for y, x in zip(*numpy.nonzero(monster == "#"))}
         all_rough_water_pos = self.find_rough_water(monster_width, monster_height, monster_pos, image, image_size)
@@ -162,19 +154,21 @@ class Solution2020Day20(Solution):
             tile_map.append(row)
 
     @staticmethod
-    def find_rough_water(monster_width: int, monster_height: int, monster_pos: set[tuple[int, int]],
-                         image: numpy.ndarray, image_size: int) -> set[tuple[int, int]]:
+    def find_rough_water(
+        monster_width: int,
+        monster_height: int,
+        monster_pos: set[tuple[int, int]],
+        image: numpy.ndarray,
+        image_size: int,
+    ) -> set[tuple[int, int]]:
         monster_found = False
         for i in range(8):
             # Rough water positions need to be calculated after every rotation or flip.
             all_rough_water_pos = {(x, y) for y, x in zip(*numpy.nonzero(image == "#"))}
             for x, y in itertools.product(range(image_size - monster_width), range(image_size - monster_height)):
-                cropped = image[y:y + monster_height, x:x + monster_width]
+                cropped = image[y : y + monster_height, x : x + monster_width]
                 rough_water_pos = {
-                    (cx, cy)
-                    for cy, row in enumerate(cropped)
-                    for cx, char in enumerate(row)
-                    if char == "#"
+                    (cx, cy) for cy, row in enumerate(cropped) for cx, char in enumerate(row) if char == "#"
                 }
                 if monster_pos.issubset(rough_water_pos):
                     monster_found = True

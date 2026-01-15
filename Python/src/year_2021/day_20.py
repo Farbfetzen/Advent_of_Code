@@ -48,7 +48,7 @@ class Solution2021Day20(Solution):
                         pixel = image[py][px]
                     else:
                         pixel = padding_value
-                    algorithm_index += pixel * 2 ** i
+                    algorithm_index += pixel * 2**i
                 new_image[y][x] = algorithm[algorithm_index]
             image = new_image
             padding_value = algorithm[0] if padding_value == 0 else algorithm[-1]

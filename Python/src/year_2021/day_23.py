@@ -142,11 +142,7 @@ class Solution2021Day23(Solution):
         raise ResultExpectedError
 
     def find_moves(
-            self,
-            position: Position,
-            amphipod: str,
-            amphipods: AmphipodPositionMap,
-            connection_map: ConnectionMap
+        self, position: Position, amphipod: str, amphipods: AmphipodPositionMap, connection_map: ConnectionMap
     ) -> list[tuple[Position, int]]:
         """Find all spaces that are reachable from the current position and return them with their distances."""
         moves: list[tuple[Position, int]] = []
@@ -165,8 +161,9 @@ class Solution2021Day23(Solution):
                 # Target is at the amphipod home position.
                 below = (target_x, target_y + 1)
                 # If below is not in connections then there is a wall and this is the lowest position in the room.
-                if ((below not in connection_map or amphipods.get(below) == self.satisfied_amphipod)
-                        and self.check_path_clear(position_x, target_x, amphipods)):
+                if (
+                    below not in connection_map or amphipods.get(below) == self.satisfied_amphipod
+                ) and self.check_path_clear(position_x, target_x, amphipods):
                     # Return only this move because moving anywhere else wouldn't make sense.
                     return [connection]
         return moves

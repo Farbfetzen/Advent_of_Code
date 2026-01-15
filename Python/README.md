@@ -23,6 +23,8 @@ Install the dependencies:
 pip install -r requirements.txt
 ```
 
+This project uses [black](https://github.com/psf/black) for Python code formatting.
+
 ## Preparing for a day
 
 To be able to download the input data you need to have your session cookie stored in a file with the name `session_cookie.txt` in the root of this repository.

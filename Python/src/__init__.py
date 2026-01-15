@@ -11,5 +11,5 @@ solutions = {
     2019: solutions_2019,
     2020: solutions_2020,
     2021: solutions_2021,
-    2022: solutions_2022
+    2022: solutions_2022,
 }

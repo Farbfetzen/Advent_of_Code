@@ -21,8 +21,7 @@ class Solution2020Day22(Solution):
 
     @staticmethod
     def prepare(data: str) -> list[deque[int]]:
-        return [deque([int(card) for card in deck.splitlines()[1:]])
-                for deck in data.split("\n\n")]
+        return [deque([int(card) for card in deck.splitlines()[1:]]) for deck in data.split("\n\n")]
 
     @staticmethod
     def calculate_score(cards: deque[int]) -> int:

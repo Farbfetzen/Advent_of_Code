@@ -25,17 +25,22 @@ class Cuboid:
         """If this cuboid intersects with other cuboid, returns a new cuboid that
         matches the space covered by both. Otherwise, returns None.
         """
-        if (self.x_min < other.x_max and self.x_max > other.x_min and
-                self.y_min < other.y_max and self.y_max > other.y_min and
-                self.z_min < other.z_max and self.z_max > other.z_min):
+        if (
+            self.x_min < other.x_max
+            and self.x_max > other.x_min
+            and self.y_min < other.y_max
+            and self.y_max > other.y_min
+            and self.z_min < other.z_max
+            and self.z_max > other.z_min
+        ):
             return Cuboid(
-                    not self.is_on,
-                    self.x_min if other.x_min <= self.x_min < other.x_max else other.x_min,
-                    self.x_max if other.x_min <= self.x_max < other.x_max else other.x_max,
-                    self.y_min if other.y_min <= self.y_min < other.y_max else other.y_min,
-                    self.y_max if other.y_min <= self.y_max < other.y_max else other.y_max,
-                    self.z_min if other.z_min <= self.z_min < other.z_max else other.z_min,
-                    self.z_max if other.z_min <= self.z_max < other.z_max else other.z_max
+                not self.is_on,
+                self.x_min if other.x_min <= self.x_min < other.x_max else other.x_min,
+                self.x_max if other.x_min <= self.x_max < other.x_max else other.x_max,
+                self.y_min if other.y_min <= self.y_min < other.y_max else other.y_min,
+                self.y_max if other.y_min <= self.y_max < other.y_max else other.y_max,
+                self.z_min if other.z_min <= self.z_min < other.z_max else other.z_min,
+                self.z_max if other.z_min <= self.z_max < other.z_max else other.z_max,
             )
         return None
 
@@ -69,10 +74,14 @@ class Solution2021Day22(Solution):
 
     def solve_1(self, cuboids: list[Cuboid]) -> int:
         initialization_cuboids = [
-            cuboid for cuboid in cuboids
-            if cuboid.x_min >= -50 and cuboid.x_max <= 51
-               and cuboid.y_min >= -50 and cuboid.y_max <= 51
-               and cuboid.z_min >= -50 and cuboid.z_max <= 51
+            cuboid
+            for cuboid in cuboids
+            if cuboid.x_min >= -50
+            and cuboid.x_max <= 51
+            and cuboid.y_min >= -50
+            and cuboid.y_max <= 51
+            and cuboid.z_min >= -50
+            and cuboid.z_max <= 51
         ]
         return self.reboot_reactor(initialization_cuboids)
 

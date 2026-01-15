@@ -87,10 +87,12 @@ def test_day_08() -> None:
     solution = solutions[2019][8]()
     solution.solve(load_inputs(2019, 8))
     assert solution.sample_results_1[0] == 1
+    # fmt: off
     assert solution.sample_results_2[0] == (
         " █\n"
         "█ "
     )
+    # fmt: on
     assert solution.result_1 == 2520
     assert solution.result_2 == (
         "█    ████  ██    ██ █   █\n"
@@ -105,8 +107,10 @@ def test_day_08() -> None:
 def test_day_09() -> None:
     solution = solutions[2019][9]()
     solution.solve(load_inputs(2019, 9))
+    # fmt: off
     assert solution.sample_results_other["copy program"] == [109, 1, 204, -1, 1001, 100, 1, 100,
                                                              1008, 100, 16, 101, 1006, 101, 0, 99]
+    # fmt: on
     assert len(str(solution.sample_results_1[0])) == 16
     assert solution.sample_results_1[1] == 1125899906842624
     assert solution.result_1 == 2457252183

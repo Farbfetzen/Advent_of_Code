@@ -10,7 +10,7 @@ LENGTH_TO_DIGIT = {
     4: (4,),
     5: (2, 3, 5),
     6: (0, 6, 9),
-    7: (8,)
+    7: (8,),
 }
 
 
@@ -81,8 +81,7 @@ class Solution2021Day08(Solution):
         candidates[3] = [c for c in candidates[3] if len(d1.intersection(c)) == 2]
 
         # The intersection of 0 and 1 must have length 2 and between 0 and 4 is must have length 3.
-        candidates[0] = [c for c in candidates[0]
-                         if len(d1.intersection(c)) == 2 and len(d4.intersection(c)) == 3]
+        candidates[0] = [c for c in candidates[0] if len(d1.intersection(c)) == 2 and len(d4.intersection(c)) == 3]
 
         assert all(len(c) == 1 for c in candidates)
         return {c[0]: i for i, c in enumerate(candidates)}

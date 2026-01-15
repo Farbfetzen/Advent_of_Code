@@ -25,8 +25,8 @@ class Solution2020Day21(Solution):
         ingredient_counter = collections.defaultdict(int)
         for line in data:
             i = line.index("(")
-            ingredients = set(line[:i - 1].split())
-            allergens = line[i + 10:-1].split(", ")
+            ingredients = set(line[: i - 1].split())
+            allergens = line[i + 10 : -1].split(", ")
             for allergen in allergens:
                 if allergen in allergen_ingredients:
                     allergen_ingredients[allergen].intersection_update(ingredients)
@@ -62,8 +62,9 @@ class Solution2020Day21(Solution):
         return ",".join(x[1] for x in result)
 
     @staticmethod
-    def discard_ingredients(allergen: str, allergen_ingredients: dict[str, set[str]], done: set[str],
-                            ingredients: set[str]) -> None:
+    def discard_ingredients(
+        allergen: str, allergen_ingredients: dict[str, set[str]], done: set[str], ingredients: set[str]
+    ) -> None:
         ingredient = next(iter(ingredients))
         if ingredient not in done:
             done.add(ingredient)

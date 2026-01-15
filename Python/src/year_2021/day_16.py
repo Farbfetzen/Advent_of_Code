@@ -33,8 +33,8 @@ class Solution2021Day16(Solution):
         return bin(int(data, 16))[2:].zfill(len(data) * 4)
 
     def decode(self, transmission: str, i: int) -> tuple[Packet, int]:
-        version = int(transmission[i:(i + 3)], 2)
-        type_id = int(transmission[(i + 3):(i + 6)], 2)
+        version = int(transmission[i : (i + 3)], 2)
+        type_id = int(transmission[(i + 3) : (i + 6)], 2)
         i += 6
         if type_id == 4:
             value, i = self.get_literal_value(transmission, i)
@@ -53,7 +53,7 @@ class Solution2021Day16(Solution):
         value = ""
         while True:
             last_group = transmission[i] == "0"
-            value += transmission[(i + 1):(i + 5)]
+            value += transmission[(i + 1) : (i + 5)]
             i += 5
             if last_group:
                 break
@@ -61,7 +61,7 @@ class Solution2021Day16(Solution):
 
     def get_sub_packets_by_length(self, transmission: str, i: int) -> tuple[list[Packet], int]:
         sub_packets = []
-        length_of_sub_packets = int(transmission[i:(i + 15)], 2)
+        length_of_sub_packets = int(transmission[i : (i + 15)], 2)
         i += 15
         length_used = 0
         while length_used < length_of_sub_packets:
@@ -73,7 +73,7 @@ class Solution2021Day16(Solution):
 
     def get_sub_packets_by_number(self, transmission: str, i: int) -> tuple[list[Packet], int]:
         sub_packets = []
-        number_of_sub_packets = int(transmission[i:(i + 11)], 2)
+        number_of_sub_packets = int(transmission[i : (i + 11)], 2)
         i += 11
         for _ in range(number_of_sub_packets):
             sub_packet, i = self.decode(transmission, i)

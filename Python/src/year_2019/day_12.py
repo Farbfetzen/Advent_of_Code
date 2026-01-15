@@ -68,7 +68,7 @@ class Solution2019Day12(Solution):
         xyz = (
             SimulationData(0, [d[0] for d in data], [0] * 4),
             SimulationData(0, [d[1] for d in data], [0] * 4),
-            SimulationData(0, [d[2] for d in data], [0] * 4)
+            SimulationData(0, [d[2] for d in data], [0] * 4),
         )
 
         i = 0

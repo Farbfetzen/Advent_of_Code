@@ -16,7 +16,7 @@ class Deck:
         self.instruction_map = {
             DEAL_INTO_NEW_STACK: self.deal_into_new_stack,
             CUT: self.cut,
-            DEAL_WITH_INCREMENT: self.deal_with_increment
+            DEAL_WITH_INCREMENT: self.deal_with_increment,
         }
 
     def shuffle(self, instructions: list[tuple[str, int | None]]) -> None:

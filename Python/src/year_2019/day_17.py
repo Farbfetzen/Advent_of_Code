@@ -115,18 +115,15 @@ class Solution2019Day17(Solution):
         self.result_2 = dust_amount
 
     def partition_path(
-            self,
-            remaining_path: tuple[str, ...],
-            main_routine: MainRoutine,
-            functions: Functions
+        self, remaining_path: tuple[str, ...], main_routine: MainRoutine, functions: Functions
     ) -> tuple[MainRoutine, Functions] | None:
         # I'm using tuples instead of strings because an instruction like "L10"
         # must be parsed as ("L", "10"), not ("L", "1", "0").
         if not remaining_path:
             return main_routine, functions
         for name, function in functions.items():
-            if function == remaining_path[:len(function)]:
-                result = self.partition_path(remaining_path[len(function):], main_routine + (name,), functions)
+            if function == remaining_path[: len(function)]:
+                result = self.partition_path(remaining_path[len(function) :], main_routine + (name,), functions)
                 if result is not None:
                     return result
         if len(functions) < 3:
@@ -134,10 +131,7 @@ class Solution2019Day17(Solution):
         return None
 
     def add_function(
-            self,
-            remaining_path: tuple[str, ...],
-            main_routine: MainRoutine,
-            functions: Functions
+        self, remaining_path: tuple[str, ...], main_routine: MainRoutine, functions: Functions
     ) -> tuple[MainRoutine, Functions] | None:
         name = "ABC"[len(functions)]
         for candidate_length in range(1, len(remaining_path) + 1):

@@ -118,6 +118,7 @@ def test_day_13() -> None:
     solution = solutions[2021][13]()
     solution.solve(load_inputs(2021, 13))
     assert solution.sample_results_1[0] == 17
+    # fmt: off
     expected_sample_2 = (
         "█████\n"
         "█   █\n"
@@ -125,6 +126,7 @@ def test_day_13() -> None:
         "█   █\n"
         "█████"
     )
+    # fmt: on
     assert solution.sample_results_2[0] == expected_sample_2
     assert solution.result_1 == 807
     expected_result_2 = (

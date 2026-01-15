@@ -26,7 +26,7 @@ class Solution2020Day19(Solution):
         for rule in raw_rules:
             i_str, v_str = rule.split(":")
             i = int(i_str)
-            v = v_str.strip().replace("\"", "").split("|")
+            v = v_str.strip().replace('"', "").split("|")
             if len(v) == 1 and v[0] in "ab":
                 rules[i] = v[0]
             else:
@@ -73,7 +73,7 @@ class Solution2020Day19(Solution):
 
         sum_valid = 0
         for m in messages:
-            words = [m[0 + i:word_len + i] for i in range(0, len(m), word_len)]
+            words = [m[0 + i : word_len + i] for i in range(0, len(m), word_len)]
             n_words = len(words)
 
             n_31 = 0
