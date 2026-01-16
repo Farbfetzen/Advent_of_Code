@@ -42,7 +42,7 @@ I recomment putting the variables into an `.env` file and sourcing that:
 
 ```dotenv
 export AOC_SESSION_COOKIE=123...
-export AOC_USER_AGENT="foo@example.com, github.com/Farbfetzen/Advent_of_Code"
+export AOC_USER_AGENT="foo@example.com, github.com/..."
 ```
 
 ## Running the scripts
