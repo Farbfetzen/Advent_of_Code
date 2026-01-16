@@ -5,14 +5,15 @@ I mainly use Python and sometimes also R or Java.
 See the language specific folders for the solutions.
 Remember that most participants get different input data so the results in the comments and unit tests will likely be different from yours.
 
-| Year | Stars |
-|------|------:|
-| 2018 |   8 ⭐ |
-| 2019 |  44 ⭐ |
-| 2020 |  50 ⭐ |
-| 2021 |  50 ⭐ |
-| 2022 |   8 ⭐ |
+## My stats
 
+| Year |  Stars ⭐ |
+|------|---------:|
+| 2018 |   8 / 50 |
+| 2019 |  44 / 50 |
+| 2020 |  50 / 50 |
+| 2021 |  50 / 50 |
+| 2022 |   8 / 50 |
 
 ## Project setup
 
