@@ -22,3 +22,7 @@ The R solutions have input paths relative to this directory.
 The Python project is configured such that the Python directory should be used as its working directory.
 The imports and paths are all relative to `./Python`.
 For more information see the [readme there](Python/README.md).
+
+The "input" directory contains only samples because the inputs are not tracked with git.
+This is because the maintainers of Advent of Code asked to not share the inputs (see <https://adventofcode.com/about>).
+And also because different users get different inputs.
