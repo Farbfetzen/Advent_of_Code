@@ -27,13 +27,24 @@ This project uses [black](https://github.com/psf/black) for Python code formatti
 
 ## Preparing for a day
 
-To be able to download the input data you need to have your session cookie stored in a file with the name `session_cookie.txt` in the root of this repository.
-You can get your current cookie from the website while being logged in.
-Remember that it expires after some time.
-
 Run `prepare.py` to download the input and generate the script and tests from templates for the current day.
 The optional arguments are `year` and `day` with the current year and day as default values.
 Run `prepare.py --all-inputs` to download all inputs you don't yet have.
+
+To be able to download the input data you need to have your session cookie stored as the `AOC_SESSION_COOKIE` environment variable .
+You can get your current cookie from the website while being logged in.
+Remember that it expires after some time.  
+You also need to provide contact information in the User-Agent header of every request, so the maintainers of Advent of Code can contact you about the requests.
+See [the automation rules](https://www.reddit.com/r/adventofcode/wiki/faqs/automation) in the subreddit and
+[this post](https://www.reddit.com/r/adventofcode/comments/1pa472d/reminder_please_throttle_your_aoc_traffic/) by Eric Wastl.
+To do this, set the environment variable `AOC_USER_AGENT` with your contact information, e.g. your email address.
+
+I recomment putting the variables into an `.env` file and sourcing that:
+
+```dotenv
+export AOC_SESSION_COOKIE=123...
+export AOC_USER_AGENT="foo@example.com, github.com/Farbfetzen/Advent_of_Code"
+```
 
 ## Running the scripts
 

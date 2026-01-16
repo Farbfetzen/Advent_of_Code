@@ -4,12 +4,18 @@
 The optional arguments are 'year' and 'day' with the current year and day as default values.
 Example: ./prepare.py 2020 7
 You can also run it with the argument --all-inputs to download all inputs you don't yet have.
+This script needs two environment variables to function:
+- AOC_SESSION_COOKIE: The session cookie for authentication.
+- AOC_USER_AGENT: Contact information where the advent of code maintainers can reach you.
+  See https://www.reddit.com/r/adventofcode/wiki/faqs/automation
 """
 
 import argparse
 import datetime
 import itertools
 import os
+import sys
+from dataclasses import dataclass
 
 import requests
 
@@ -61,16 +67,31 @@ URL = "https://adventofcode.com/{year}/day/{day}"
 THIS_PATH = os.path.dirname(os.path.realpath(__file__))
 SCRIPT_PATH = os.path.join("src", "year{year}", "day{day_padded}.py")
 TEST_PATH = os.path.join("test", "year{year}", "test_day{day_padded}.py")
-COOKIE_PATH = os.path.abspath(os.path.join(THIS_PATH, "../session_cookie.txt"))
+
+
+@dataclass
+class Env:
+    session_cookie: str = os.environ.get("AOC_SESSION_COOKIE")
+    user_agent: str = os.environ.get("AOC_USER_AGENT")
+
+    def __post_init__(self):
+        missing_keys = []
+        if not self.session_cookie:
+            missing_keys.append("AOC_SESSION_COOKIE")
+        if not self.user_agent:
+            missing_keys.append("AOC_USER_AGENT")
+        if missing_keys:
+            sys.exit(f'Missing environment variables: {", ".join(missing_keys)}')
 
 
 class Preparer:
 
-    def __init__(self, year: int, day: int):
+    def __init__(self, year: int, day: int, env: Env):
         self.year = str(year)
         self.day = str(day).zfill(2)
         self.url = f"https://adventofcode.com/{self.year}/day/{day}"
         self.input_year_dir = os.path.abspath(os.path.join(THIS_PATH, "../input", f"{self.year}"))
+        self.env = env
 
     def prepare_all(self) -> None:
         self.prepare_input()
@@ -91,14 +112,15 @@ class Preparer:
         elif self.check_file_exists(input_path, "input"):
             return True
 
-        # Remember that the session cookie expires after some time. You can get
-        # the current one from the website while being logged in.
-        with open(COOKIE_PATH) as file:
-            cookie = file.read().strip()
-
         input_url = self.url + "/input"
         print(f"Downloading input from {input_url}")
-        response = requests.get(input_url, cookies={"session": cookie}, timeout=5)
+        response = requests.get(
+            input_url,
+            headers={"user-agent": self.env.user_agent},
+            cookies={"session": self.env.session_cookie},
+            timeout=5,
+        )
+
         if response.ok:
             print("Writing input file.")
             with open(input_path, "w") as file:
@@ -170,7 +192,7 @@ def load_all_inputs() -> None:
     for year, day in year_day:
         if datetime.date(year, 12, day) > today:
             return
-        ok = Preparer(year, day).prepare_input()
+        ok = Preparer(year, day, Env()).prepare_input()
         if not ok:
             print(f"Something went wrong! {year=}, {day=}")
             return
@@ -185,7 +207,7 @@ def main() -> None:
         load_all_inputs()
     else:
         year, day = date_args.validate_args(args.year, args.day)
-        Preparer(year, day).prepare_all()
+        Preparer(year, day, Env()).prepare_all()
 
 
 main()

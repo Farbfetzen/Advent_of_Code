@@ -1,5 +1,4 @@
-# Cookie for automatically downloading the input
-session_cookie.txt
+.env
 
 # The creator of Advent of Code would like the users to not publish the inputs.
 # "If you're posting a code repository somewhere,
