@@ -13,6 +13,7 @@ import argparse
 import os
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 
 import requests
 
@@ -48,6 +49,7 @@ class Solution{year}Day{day}(Solution):
     def solve_2(data: str) -> int:
         return 0
 """
+
 TEST_TEMPLATE = """from src import solutions
 from src.util.inputs import load_inputs
 
@@ -60,6 +62,7 @@ def test_day_01() -> None:
     assert solution.result_1 == 0
     assert solution.result_2 == 0
 """
+
 INIT_PY_TEMPLATE = """from typing import Type
 
 from src.util.solution import Solution
@@ -70,10 +73,9 @@ solutions_{year}: dict[int, Type[Solution]] = {{
     1: Solution{year}Day{day},
 }}
 """
-URL = "https://adventofcode.com/{year}/day/{day}"
-THIS_PATH = os.path.dirname(os.path.realpath(__file__))
-SCRIPT_PATH = os.path.join("src", "year{year}", "day{day_padded}.py")
-TEST_PATH = os.path.join("test", "year{year}", "test_day{day_padded}.py")
+
+# The path of the directory where this script is located.
+THIS_DIR = Path(__file__).resolve().parent
 
 
 @dataclass
@@ -88,112 +90,7 @@ class Env:
         if not self.user_agent:
             missing_keys.append("AOC_USER_AGENT")
         if missing_keys:
-            sys.exit(f'Missing environment variables: {", ".join(missing_keys)}')
-
-
-class Preparer:
-
-    def __init__(self, year: int, day: int, env: Env):
-        self.year = str(year)
-        self.day = str(day).zfill(2)
-        self.url = f"https://adventofcode.com/{self.year}/day/{day}"
-        self.input_year_dir = os.path.abspath(os.path.join(THIS_PATH, "../input", f"{self.year}"))
-        self.env = env
-
-    def prepare_all(self) -> None:
-        self.prepare_input()
-        self.prepare_sample()
-        self.prepare_script()
-        self.prepare_test()
-
-        print("\nDone. Have fun!")
-        print(self.url, end="\n\n")
-
-    def prepare_input(self) -> bool:
-        """Download the input and write it to file.
-        Returns True on success and False on failure.
-        """
-        input_path = os.path.join(self.input_year_dir, f"{self.day}-input.txt")
-        if not os.path.exists(self.input_year_dir):
-            os.mkdir(self.input_year_dir)
-        elif self.check_file_exists(input_path, "input"):
-            return True
-
-        input_url = self.url + "/input"
-        print(f"Downloading input from {input_url}")
-        response = requests.get(
-            input_url,
-            headers={"user-agent": self.env.user_agent},
-            cookies={"session": self.env.session_cookie},
-            timeout=5,
-        )
-
-        if response.ok:
-            print("Writing input file.")
-            with open(input_path, "w") as file:
-                file.write(response.text)
-        else:
-            print("Error! Got status: ", response.status_code)
-            print(response.text)
-            if "log in" in response.text:
-                print("Maybe the session cookie expired?")
-            print("\nCreating empty file for you to paste the input manually.")
-            open(input_path, "w").close()
-        self.print_file_link(input_path)
-        return response.ok
-
-    def prepare_sample(self) -> None:
-        sample_path = os.path.join(self.input_year_dir, f"{self.day}-sample.txt")
-        if not os.path.exists(self.input_year_dir):
-            os.mkdir(self.input_year_dir)
-        elif self.check_file_exists(sample_path, "sample"):
-            return
-        print("Creating sample file.")
-        open(sample_path, "w").close()
-        self.print_file_link(sample_path)
-
-    def prepare_script(self) -> None:
-        year_path = os.path.join("src", f"year_{self.year}")
-        solution_path = os.path.join(year_path, f"day_{self.day}.py")
-        if not os.path.exists(year_path):
-            os.mkdir(year_path)
-        elif self.check_file_exists(solution_path, "solution"):
-            return
-        solution_template = SOLUTION_TEMPLATE.format(url=self.url, year=self.year, day=self.day)
-        print("Creating solution file.")
-        with open(solution_path, "w") as file:
-            file.write(solution_template)
-        self.print_file_link(solution_path)
-
-        init_py_path = os.path.join(year_path, "__init__.py")
-        if os.path.exists(init_py_path):
-            return
-        init_py_template = INIT_PY_TEMPLATE.format(year=self.year, day=self.day)
-        print(f"Creating __init__.py for the year {self.year}. Remember to import it in src/__init__.py.")
-        with open(init_py_path, "w") as file:
-            file.write(init_py_template)
-
-    def prepare_test(self) -> None:
-        test_path = os.path.join("test", f"test_{self.year}.py")
-        if self.check_file_exists(test_path, "test"):
-            return
-        test_template = TEST_TEMPLATE.format(year=self.year)
-        print("Creating test file.")
-        with open(test_path, "w") as file:
-            file.write(test_template)
-        self.print_file_link(test_path)
-
-    def check_file_exists(self, path: str, name: str) -> bool:
-        if os.path.exists(path):
-            print(f"Skipping {name} file generation because it already exists.")
-            self.print_file_link(path)
-            return True
-        return False
-
-    @staticmethod
-    def print_file_link(path: str) -> None:
-        # This link should be clickable in the console.
-        print(f"file://{os.path.abspath(path)}")
+            sys.exit(f'Missing environment variable{'s' if len(missing_keys) > 1 else ''}: {", ".join(missing_keys)}')
 
 
 def main() -> None:
@@ -201,7 +98,99 @@ def main() -> None:
     date_args.add_date_args(parser)
     args = parser.parse_args()
     year, day = date_args.validate_args(args.year, args.day)
-    Preparer(year, day, Env()).prepare_all()
+    prepare(str(year), str(day), Env())
 
 
-main()
+def prepare(year: str, day: str, env: Env) -> None:
+    puzzle_url = f"https://adventofcode.com/{year}/day/{day}"
+    day = day.zfill(2)
+    input_dir = THIS_DIR.parent / "input" / f"{year}"
+
+    prepare_input(input_dir, day, puzzle_url, env)
+    prepare_sample(input_dir, day)
+    prepare_solution(year, day, puzzle_url)
+    prepare_test(year)
+
+    print("\nDone. Have fun!")
+    print(puzzle_url, end="\n\n")
+
+
+def prepare_input(input_dir: Path, day: str, puzzle_url: str, env: Env) -> None:
+    """Download the input and save it in a text file."""
+    input_dir.mkdir(exist_ok=True)
+    input_file = input_dir / f"{day}-input.txt"
+    if input_file.exists():
+        print("Skipping input file because it already exists.")
+        print(input_file.as_uri())
+        return
+
+    input_url = puzzle_url + "/input"
+    print(f"Downloading input from {input_url}")
+    response = requests.get(
+        input_url,
+        headers={"user-agent": env.user_agent},
+        cookies={"session": env.session_cookie},
+        timeout=5,
+    )
+    if response.ok:
+        print("Writing input file.")
+        input_file.write_text(response.text)
+    else:
+        print("Error! Got status: ", response.status_code)
+        print(response.text)
+        if "log in" in response.text:
+            print("Maybe the session cookie expired?")
+        print("\nCreating empty file for you to paste the input manually.")
+        input_file.touch()
+    print(input_file.as_uri())
+
+
+def prepare_sample(input_dir: Path, day: str) -> None:
+    """Create an empty file for a sample input."""
+    input_dir.mkdir(exist_ok=True)
+    sample_file = input_dir / f"{day}-sample.txt"
+    if sample_file.exists():
+        print("Skipping sample file because it already exists.")
+        print(sample_file.as_uri())
+        return
+    print("Creating sample file.")
+    sample_file.touch()
+    print(sample_file.as_uri())
+
+
+def prepare_solution(year: str, day: str, puzzle_url: str) -> None:
+    """Create a file containing a solution template."""
+    year_dir = THIS_DIR / "src" / f"year_{year}"
+    solution_file = year_dir / f"day_{day}.py"
+    year_dir.mkdir(exist_ok=True)
+    if solution_file.exists():
+        print("Skipping solution file because it already exists.")
+        print(solution_file.as_uri())
+        return
+
+    print("Creating solution file.")
+    solution_file.write_text(SOLUTION_TEMPLATE.format(url=puzzle_url, year=year, day=day))
+    print(solution_file.as_uri())
+
+    init_py_file = year_dir / "__init__.py"
+    if init_py_file.exists():
+        return
+    parent_init_py_file = THIS_DIR / "src" / "__init__.py"
+    print(f"Creating __init__.py for {year}. Remember to add it to {parent_init_py_file.as_uri()}")
+    init_py_file.write_text(INIT_PY_TEMPLATE.format(year=year, day=day))
+
+
+def prepare_test(year: str) -> None:
+    """Create a file containing a test template."""
+    test_file = THIS_DIR / "test" / f"test_{year}.py"
+    if test_file.exists():
+        print("Skipping test file because it already exists.")
+        print(test_file.as_uri())
+        return
+    print("Creating test file.")
+    test_file.write_text(TEST_TEMPLATE.format(year=year))
+    print(test_file.as_uri())
+
+
+if __name__ == "__main__":
+    main()
