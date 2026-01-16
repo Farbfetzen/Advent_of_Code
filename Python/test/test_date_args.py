@@ -20,12 +20,12 @@ def mock_today(today: datetime.date, monkeypatch) -> None:
 
 def test_validate_args(monkeypatch) -> None:
     mock_today(datetime.date(2025, 12, 25), monkeypatch)
-    assert (2024, 1) == date_args.validate_args(2024, 1)
+    assert date_args.validate_args(2024, 1) == (2024, 1)
 
 
 def test_validate_args_none(monkeypatch) -> None:
     mock_today(datetime.date(2024, 12, 1), monkeypatch)
-    assert (2024, 1) == date_args.validate_args(None, None)
+    assert date_args.validate_args(None, None) == (2024, 1)
 
 
 def test_invalid_args() -> None:
