@@ -1,10 +1,10 @@
 # Cookie for automatically downloading the input
 session_cookie.txt
 
-# The creators of Advent of Code would like the users to not publish
-# the inputs. This is because they are concerned that someone could
-# reverse-engineer how they are randomly generated. Also, to my
-# knowledge the inputs are not licensed for redistribution.
+# The creator of Advent of Code would like the users to not publish the inputs.
+# "If you're posting a code repository somewhere,
+# please don't include parts of Advent of Code like the puzzle text or your inputs."
+# See https://adventofcode.com/2025/about
 *input.txt
 
 
