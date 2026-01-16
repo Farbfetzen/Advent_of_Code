@@ -29,7 +29,6 @@ This project uses [black](https://github.com/psf/black) for Python code formatti
 
 Run `prepare.py` to download the input and generate the script and tests from templates for the current day.
 The optional arguments are `year` and `day` with the current year and day as default values.
-Run `prepare.py --all-inputs` to download all inputs you don't yet have.
 
 To be able to download the input data you need to have your session cookie stored as the `AOC_SESSION_COOKIE` environment variable .
 You can get your current cookie from the website while being logged in.

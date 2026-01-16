@@ -3,7 +3,6 @@
 """Creates script and test templates and downloads the input for a given day.
 The optional arguments are 'year' and 'day' with the current year and day as default values.
 Example: ./prepare.py 2020 7
-You can also run it with the argument --all-inputs to download all inputs you don't yet have.
 This script needs two environment variables to function:
 - AOC_SESSION_COOKIE: The session cookie for authentication.
 - AOC_USER_AGENT: Contact information where the advent of code maintainers can reach you.
@@ -11,8 +10,6 @@ This script needs two environment variables to function:
 """
 
 import argparse
-import datetime
-import itertools
 import os
 import sys
 from dataclasses import dataclass
@@ -181,33 +178,12 @@ class Preparer:
         print(f"file://{os.path.abspath(path)}")
 
 
-def load_all_inputs() -> None:
-    print("Attempting to download the inputs of all challenges you don't already have. Are you sure? (y/N)")
-    decision = input("> ")
-    if not decision.lower().startswith("y"):
-        print("Aborting.")
-        return
-    today = datetime.date.today()
-    year_day = itertools.product(range(2015, today.year + 1), range(1, 26))
-    for year, day in year_day:
-        if datetime.date(year, 12, day) > today:
-            return
-        ok = Preparer(year, day, Env()).prepare_input()
-        if not ok:
-            print(f"Something went wrong! {year=}, {day=}")
-            return
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(allow_abbrev=False)
     date_args.add_date_args(parser)
-    parser.add_argument("--all-inputs", action="store_true")
     args = parser.parse_args()
-    if args.all_inputs:
-        load_all_inputs()
-    else:
-        year, day = date_args.validate_args(args.year, args.day)
-        Preparer(year, day, Env()).prepare_all()
+    year, day = date_args.validate_args(args.year, args.day)
+    Preparer(year, day, Env()).prepare_all()
 
 
 main()
