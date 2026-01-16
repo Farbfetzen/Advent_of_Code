@@ -60,6 +60,16 @@ def test_day_01() -> None:
     assert solution.result_1 == 0
     assert solution.result_2 == 0
 """
+INIT_PY_TEMPLATE = """from typing import Type
+
+from src.util.solution import Solution
+from src.year_{year}.day_{day} import Solution{year}Day{day}
+
+
+solutions_{year}: dict[int, Type[Solution]] = {{
+    1: Solution{year}Day{day},
+}}
+"""
 URL = "https://adventofcode.com/{year}/day/{day}"
 THIS_PATH = os.path.dirname(os.path.realpath(__file__))
 SCRIPT_PATH = os.path.join("src", "year{year}", "day{day_padded}.py")
@@ -154,6 +164,14 @@ class Preparer:
         with open(solution_path, "w") as file:
             file.write(solution_template)
         self.print_file_link(solution_path)
+
+        init_py_path = os.path.join(year_path, "__init__.py")
+        if os.path.exists(init_py_path):
+            return
+        init_py_template = INIT_PY_TEMPLATE.format(year=self.year, day=self.day)
+        print(f"Creating __init__.py for the year {self.year}. Remember to import it in src/__init__.py.")
+        with open(init_py_path, "w") as file:
+            file.write(init_py_template)
 
     def prepare_test(self) -> None:
         test_path = os.path.join("test", f"test_{self.year}.py")
