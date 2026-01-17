@@ -6,6 +6,7 @@ Make sure this is the working directory for running the scripts because all path
 
 I recommend [virtualenv](https://virtualenv.pypa.io) for creating and managing the virtual environment.
 The latest Python version with which the code was tested is 3.13.7.
+The following commands are all run from within this directory.
 
 ```shell
 virtualenv .venv -p python3.13
@@ -24,6 +25,7 @@ pip install -r requirements.txt
 ```
 
 This project uses [black](https://github.com/psf/black) for Python code formatting.
+Run `black .` to format all Python files.
 
 ## Preparing for a day
 
