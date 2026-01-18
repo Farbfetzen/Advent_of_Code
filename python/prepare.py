@@ -80,10 +80,10 @@ THIS_DIR = Path(__file__).resolve().parent
 
 @dataclass
 class Env:
-    session_cookie: str = os.environ.get("AOC_SESSION_COOKIE")
-    user_agent: str = os.environ.get("AOC_USER_AGENT")
+    session_cookie: str = os.environ.get("AOC_SESSION_COOKIE") or ""
+    user_agent: str = os.environ.get("AOC_USER_AGENT") or ""
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         missing_keys = []
         if not self.session_cookie:
             missing_keys.append("AOC_SESSION_COOKIE")

@@ -9,6 +9,7 @@ import pygame
 
 from src.util.inputs import Inputs
 from src.util.solution import Solution
+from typing import Literal
 
 
 class Solution2020Day12(Solution):
@@ -23,7 +24,7 @@ class Solution2020Day12(Solution):
         self.result_2 = self.navigate(instructions, 2)
 
     @staticmethod
-    def navigate(instructions: list[str], part=1):
+    def navigate(instructions: list[str], part: Literal[1, 2] = 1) -> int:
         position = pygame.Vector2(0, 0)
         # "direction_or_waypoint" is either the ship direction in part 1
         # or the waypoint position relative to the ship in part 2.

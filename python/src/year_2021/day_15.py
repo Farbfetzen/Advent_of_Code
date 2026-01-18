@@ -1,6 +1,6 @@
 # https://adventofcode.com/2021/day/15
 
-import queue
+from queue import PriorityQueue
 
 from src.util.inputs import Inputs
 from src.util.solution import Solution
@@ -29,9 +29,9 @@ class Solution2021Day15(Solution):
         """Pathfinding using A*"""
         start = (0, 0)
         destination = (len(cave_map[0]) - 1, len(cave_map) - 1)
-        frontier = queue.PriorityQueue()
+        frontier: PriorityQueue[tuple[int, tuple[int, int]]] = PriorityQueue()
         frontier.put((0, start))
-        came_from = {start: None}
+        came_from: dict[tuple[int, int], tuple[int, int] | None] = {start: None}
         risk_so_far = {start: 0}
         offsets = ((1, 0), (0, 1), (-1, 0), (0, -1))
         pos = start

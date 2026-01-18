@@ -1,7 +1,7 @@
 # https://adventofcode.com/2021/day/21
 
-import functools
 import itertools
+from functools import cache
 
 from src.util.inputs import Inputs
 from src.util.solution import Solution
@@ -42,7 +42,7 @@ class Solution2021Day21(Solution):
         scores = self.count_wins(start_1, start_2, 0, 0)
         return max(scores)
 
-    @functools.cache
+    @cache
     def count_wins(self, position_1: int, position_2: int, score_1: int, score_2: int) -> tuple[int, int]:
         wins_1 = 0
         wins_2 = 0

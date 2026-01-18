@@ -9,21 +9,21 @@ from src.util import date_args
 current_year = datetime.date.today().year
 
 
-def mock_today(today: datetime.date, monkeypatch) -> None:
-    class MyDatetime(datetime.date):
+def mock_today(today: datetime.date, monkeypatch: pytest.MonkeyPatch) -> None:
+    class MyDate(datetime.date):
         @classmethod
         def today(cls) -> Self:
-            return today
+            return cls(today.year, today.month, today.day)
 
-    monkeypatch.setattr(datetime, "date", MyDatetime)
+    monkeypatch.setattr("src.util.date_args.datetime.date", MyDate)
 
 
-def test_validate_args(monkeypatch) -> None:
+def test_validate_args(monkeypatch: pytest.MonkeyPatch) -> None:
     mock_today(datetime.date(2025, 12, 25), monkeypatch)
     assert date_args.validate_args(2024, 1) == (2024, 1)
 
 
-def test_validate_args_none(monkeypatch) -> None:
+def test_validate_args_none(monkeypatch: pytest.MonkeyPatch) -> None:
     mock_today(datetime.date(2024, 12, 1), monkeypatch)
     assert date_args.validate_args(None, None) == (2024, 1)
 
@@ -34,7 +34,7 @@ def test_invalid_args() -> None:
     assert str(exception.value) == "Error: Either specify both year and day or none of them."
 
 
-def test_date_in_future(monkeypatch) -> None:
+def test_date_in_future(monkeypatch: pytest.MonkeyPatch) -> None:
     mock_today(datetime.date(2021, 1, 1), monkeypatch)
     with pytest.raises(SystemExit) as exception:
         date_args.validate_args(2021, 1)
@@ -65,7 +65,7 @@ def test_valid_day() -> None:
 
 
 @pytest.mark.parametrize("day", [0, 26])
-def test_invalid_day(day) -> None:
+def test_invalid_day(day: int) -> None:
     with pytest.raises(SystemExit) as exception:
         date_args.validate_day(day)
     assert str(exception.value) == f"Error: Day {day} not in range [1, 25]."

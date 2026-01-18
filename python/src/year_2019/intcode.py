@@ -38,7 +38,7 @@ class IntcodeComputer:
             self.opcode_methods[self.opcode]()
         return self.output
 
-    def run_ascii(self, inputs: str = None) -> list[str | int]:
+    def run_ascii(self, inputs: str | None = None) -> list[str | int]:
         if inputs is None:
             int_output = self.run()
         else:
@@ -46,7 +46,7 @@ class IntcodeComputer:
                 inputs += "\n"
             int_inputs = (ord(s) for s in inputs)
             int_output = self.run(*int_inputs)
-        output = []
+        output: list[str | int] = []
         # Join consecutive strings but keep numbers outside the ascii range 0-255.
         word = []
         for x in int_output:
@@ -114,7 +114,7 @@ class IntcodeComputer:
         """
         instruction = str(self.memory[self.instruction_pointer]).zfill(5)
         self.opcode = instruction[-2:]
-        self.parameter_modes = tuple(instruction[-3::-1])
+        self.parameter_modes = (instruction[-3], instruction[-4], instruction[-5])
 
     def get_positions(self, n: int) -> list[int]:
         """Determine the positions of the values according to the parameters and parameter modes.

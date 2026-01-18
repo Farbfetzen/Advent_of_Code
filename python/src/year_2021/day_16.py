@@ -11,7 +11,7 @@ class Packet(NamedTuple):
     version: int
     type_id: int
     value: int
-    sub_packets: list
+    sub_packets: list["Packet"]
 
 
 class Solution2021Day16(Solution):
@@ -81,28 +81,26 @@ class Solution2021Day16(Solution):
         return sub_packets, i
 
     @staticmethod
-    def calculate_value(type_id: int, sub_packets):
-        value = 0
+    def calculate_value(type_id: int, sub_packets: list[Packet]) -> int:
         if type_id <= 3:
             values = (sub_packet.value for sub_packet in sub_packets)
             if type_id == 0:
-                value = sum(values)
+                return sum(values)
             elif type_id == 1:
-                value = prod(values)
+                return prod(values)
             elif type_id == 2:
-                value = min(values)
+                return min(values)
             elif type_id == 3:
-                value = max(values)
+                return max(values)
         else:
             sub_a, sub_b = sub_packets
             if type_id == 5:
-                value = sub_a.value > sub_b.value
+                return sub_a.value > sub_b.value
             elif type_id == 6:
-                value = sub_a.value < sub_b.value
+                return sub_a.value < sub_b.value
             elif type_id == 7:
-                value = sub_a.value == sub_b.value
-            value = int(value)
-        return value
+                return sub_a.value == sub_b.value
+        return 0
 
     def sum_versions(self, packet: Packet) -> int:
         total = packet.version

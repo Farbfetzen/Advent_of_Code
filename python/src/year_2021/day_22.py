@@ -1,6 +1,5 @@
 # https://adventofcode.com/2021/day/22
 import re
-from typing import Self
 
 from src.util.inputs import Inputs
 from src.util.solution import Solution
@@ -21,7 +20,7 @@ class Cuboid:
         volume = (self.x_max - self.x_min) * (self.y_max - self.y_min) * (self.z_max - self.z_min)
         return volume if self.is_on else -volume
 
-    def get_intersection(self, other: Self) -> Self | None:
+    def get_intersection(self, other: "Cuboid") -> "Cuboid | None":
         """If this cuboid intersects with other cuboid, returns a new cuboid that
         matches the space covered by both. Otherwise, returns None.
         """
@@ -88,8 +87,8 @@ class Solution2021Day22(Solution):
     def solve_2(self, cuboids: list[Cuboid]) -> int:
         return self.reboot_reactor(cuboids)
 
-    def reboot_reactor(self, cuboids: list[Cuboid]):
-        all_cuboids = []
+    def reboot_reactor(self, cuboids: list[Cuboid]) -> int:
+        all_cuboids: list[Cuboid] = []
         for cuboid in cuboids:
             intersections = self.check_intersections(cuboid, all_cuboids)
             all_cuboids.extend(intersections)

@@ -9,7 +9,7 @@ class BingoBoard:
 
     def __init__(self, numbers: str) -> None:
         self.numbers = [int(n) for n in numbers.replace("\n", " ").split()]
-        self.marked = set()
+        self.marked: set[int] = set()
 
     def mark(self, n: int) -> bool:
         if n in self.numbers:

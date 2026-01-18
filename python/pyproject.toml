@@ -1,2 +1,10 @@
 [tool.black]
 line-length = 120
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+# sympy doesn't have type hints, see https://github.com/sympy/sympy/issues/17945
+module = ['sympy.*']
+ignore_missing_imports = true

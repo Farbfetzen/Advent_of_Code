@@ -25,7 +25,7 @@ class IntVector3:
     def rotate_around_z(self) -> None:
         self.x, self.y, self.z = self.y, -self.x, self.z
 
-    def translate(self, translation_vector) -> None:
+    def translate(self, translation_vector: "IntVector3") -> None:
         self.x += translation_vector.x
         self.y += translation_vector.y
         self.z += translation_vector.z
@@ -36,14 +36,16 @@ class IntVector3:
     def __repr__(self) -> str:
         return f"({self.x}, {self.y}, {self.z})"
 
-    def __add__(self, other: Self) -> Self:
+    def __add__(self, other: Self) -> "IntVector3":
         return IntVector3(self.x + other.x, self.y + other.y, self.z + other.z)
 
-    def __sub__(self, other: Self) -> Self:
+    def __sub__(self, other: Self) -> "IntVector3":
         return IntVector3(self.x - other.x, self.y - other.y, self.z - other.z)
 
-    def __eq__(self, other: Self) -> bool:
-        return self.x == other.x and self.y == other.y and self.z == other.z
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, IntVector3):
+            return self.x == other.x and self.y == other.y and self.z == other.z
+        return NotImplemented
 
 
 class Scanner:
@@ -51,7 +53,7 @@ class Scanner:
     def __init__(self, beacon_positions: list[IntVector3]) -> None:
         self.beacon_positions = beacon_positions
         self.distances = {a.distance_to(b) for a, b in itertools.combinations(self.beacon_positions, 2)}
-        self.position = None
+        self.position = IntVector3(0, 0, 0)
 
     def generate_all_rotations(self) -> Iterator[None]:
         # (original orientation,
@@ -135,7 +137,7 @@ class Solution2021Day19(Solution):
                 position.translate(translation_vector)
 
     @staticmethod
-    def find_alignment(current_scanner: Scanner, fixed_scanner: Scanner) -> IntVector3 | None:
+    def find_alignment(current_scanner: Scanner, fixed_scanner: Scanner) -> IntVector3:
         for _ in current_scanner.generate_all_rotations():
             # Skip the first 11 beacons because only one matching anchor position is necessary.
             beacons = itertools.product(fixed_scanner.beacon_positions[11:], current_scanner.beacon_positions)

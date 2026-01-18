@@ -35,8 +35,8 @@ class Solution2019Day16(Solution):
             patterns.append(tuple(itertools.islice(pattern, length)))
         for _ in range(100):
             output = [0] * length
-            for i, pattern in enumerate(patterns):
-                n = sum(x * pattern[j] for j, x in enumerate(signal))
+            for i, pattern_ in enumerate(patterns):
+                n = sum(x * pattern_[j] for j, x in enumerate(signal))
                 output[i] = abs(n) % 10
             signal = output
         return "".join(str(x) for x in signal[:8])

@@ -12,7 +12,7 @@ class Solution2019Day15(Solution):
         super().__init__()
         self.origin = Vector2(0, 0)
         self.locations = {self.origin}
-        self.oxygen_system_position: Vector2 | None = None
+        self.oxygen_system_position = Vector2(0, 0)
         # For calculating the new positions: north, east, south, west.
         self.dx_dy = (Vector2(0, -1), Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0))
 
@@ -46,7 +46,7 @@ class Solution2019Day15(Solution):
                     self.oxygen_system_position = position
             direction_index %= 4
 
-    def flood_fill(self):
+    def flood_fill(self) -> None:
         """Run a flood fill starting from the oxygen system."""
         frontier = {self.oxygen_system_position}
         self.locations -= frontier

@@ -1,7 +1,6 @@
 # https://adventofcode.com/2019/day/11
 
 import collections
-import math
 from collections.abc import KeysView
 
 from src.util.inputs import Inputs
@@ -50,11 +49,11 @@ class Solution2019Day11(Solution):
     @staticmethod
     def get_min_max(coordinates: KeysView[Vector2]) -> tuple[int, int, int, int]:
         """Return the extreme coordinates of the painted panels."""
-        min_x = math.inf
-        max_x = -math.inf
-        min_y = math.inf
-        max_y = -math.inf
-        for position in coordinates:
+        iterator = iter(coordinates)
+        first = next(iterator)
+        min_x = max_x = first.x
+        min_y = max_y = first.y
+        for position in iterator:
             if position.x < min_x:
                 min_x = position.x
             elif position.x > max_x:

@@ -21,7 +21,7 @@ class SimulationData:
     original_positions: list[int] = field(init=False)
     original_velocities: list[int] = field(init=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.original_positions = self.positions.copy()
         self.original_velocities = self.velocities.copy()
 

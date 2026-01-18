@@ -70,9 +70,9 @@ class Solution2019Day18(Solution):
         all_paths = self.build_maze(maze)
         keys = [k for k in all_paths if k in string.ascii_lowercase]
         # info = (current location, collected keys): distance so far
-        info = {("@", frozenset()): 0}
+        info: dict[tuple[str, frozenset[str]], int] = {("@", frozenset()): 0}
         for _ in keys:
-            new_info = {}
+            new_info: dict[tuple[str, frozenset[str]], int] = {}
             for item in info:
                 current_position = item[0]
                 collected_keys = item[1]
@@ -102,9 +102,9 @@ class Solution2019Day18(Solution):
         keys = [k for k in all_paths if k in string.ascii_lowercase]
         # info is almost the same as in part 1 but now has the positions of
         # all four robots.
-        info = {(("1", "2", "3", "4"), frozenset()): 0}
+        info: dict[tuple[tuple[str, ...], frozenset[str]], int] = {(("1", "2", "3", "4"), frozenset()): 0}
         for _ in keys:
-            new_info = {}
+            new_info: dict[tuple[tuple[str, ...], frozenset[str]], int] = {}
             for item in info:
                 current_positions = item[0]
                 collected_keys = item[1]
@@ -123,24 +123,24 @@ class Solution2019Day18(Solution):
                         new_keys = frozenset({next_key}.union(collected_keys))
                         new_positions = list(current_positions)
                         new_positions[robot] = next_key
-                        new_positions = tuple(new_positions)
-                        if (new_positions, new_keys) not in new_info or new_distance < new_info[
-                            (new_positions, new_keys)
+                        new_positions_tuple = tuple(new_positions)
+                        if (new_positions_tuple, new_keys) not in new_info or new_distance < new_info[
+                            (new_positions_tuple, new_keys)
                         ]:
-                            new_info[(new_positions, new_keys)] = new_distance
+                            new_info[(new_positions_tuple, new_keys)] = new_distance
             info = new_info
         return min(info.values())
 
     @staticmethod
     def update_maze(maze: list[str]) -> list[str]:
-        maze = [list(row) for row in maze]
+        mutable_maze = [list(row) for row in maze]
         for y, row in enumerate(maze):
             for x, symbol in enumerate(row):
                 if symbol == "@":
                     for dx, dy in [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)]:
-                        maze[y + dy][x + dx] = "#"
-                    maze[y - 1][x - 1] = "1"
-                    maze[y - 1][x + 1] = "2"
-                    maze[y + 1][x - 1] = "3"
-                    maze[y + 1][x + 1] = "4"
-        return ["".join(row) for row in maze]
+                        mutable_maze[y + dy][x + dx] = "#"
+                    mutable_maze[y - 1][x - 1] = "1"
+                    mutable_maze[y - 1][x + 1] = "2"
+                    mutable_maze[y + 1][x - 1] = "3"
+                    mutable_maze[y + 1][x + 1] = "4"
+        return ["".join(row) for row in mutable_maze]

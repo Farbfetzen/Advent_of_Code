@@ -27,11 +27,12 @@ class Solution2020Day18(Solution):
             parsed_data.append(tokens)
         return parsed_data
 
-    def evaluate(self, expressions: list[int | str], i=0) -> tuple[int, int]:
+    def evaluate(self, expressions: list[int | str], i: int = 0) -> tuple[int, int]:
         left = expressions[i]
         if left == "(":
             left, i = self.evaluate(expressions, i + 1)
-        next_i = None
+        assert isinstance(left, int)
+        next_i: int | None = None
         while i < len(expressions) - 1:
             operator = expressions[i + 1]
             if operator == ")":
@@ -39,6 +40,7 @@ class Solution2020Day18(Solution):
             right = expressions[i + 2]
             if right == "(":
                 right, next_i = self.evaluate(expressions, i + 3)
+            assert isinstance(right, int)
             if operator == "+":
                 left += right
             elif operator == "*":
@@ -63,7 +65,7 @@ class Solution2020Day18(Solution):
 
             # look left of the "+"
             for j, char in reversed(list(enumerate(line[:i]))):
-                level += parentheses_levels.get(char, 0)
+                level += parentheses_levels.get(char, 0)  # type: ignore[arg-type]
                 if level == 0:
                     line = line[:j] + ["("] + line[j:]
                     i += 1
@@ -71,7 +73,7 @@ class Solution2020Day18(Solution):
 
             # look right of the "+"
             for j, char in enumerate(line[i + 1 :], i + 1):
-                level += parentheses_levels.get(char, 0)
+                level += parentheses_levels.get(char, 0)  # type: ignore[arg-type]
                 if level == 0:
                     line = line[: j + 1] + [")"] + line[j + 1 :]
                     i += 1

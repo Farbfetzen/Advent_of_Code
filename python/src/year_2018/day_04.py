@@ -24,7 +24,7 @@ class Solution2018Day04(Solution):
         return sorted(data.splitlines())
 
     @staticmethod
-    def analyze_sleep_patterns(data: list[str]):
+    def analyze_sleep_patterns(data: list[str]) -> dict[str, list[int]]:
         sleep_patterns: dict[str, list[int]] = {}
         guard = ""
         sleep_start = -1

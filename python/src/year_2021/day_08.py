@@ -26,7 +26,7 @@ class Solution2021Day08(Solution):
         self.result_2 = self.solve_2(patterns, outputs)
 
     @staticmethod
-    def prepare(data: str) -> tuple[list[list[frozenset]], list[list[frozenset]]]:
+    def prepare(data: str) -> tuple[list[list[frozenset[str]]], list[list[frozenset[str]]]]:
         all_patterns = []
         all_outputs = []
         for line in data.splitlines():
@@ -36,7 +36,7 @@ class Solution2021Day08(Solution):
         return all_patterns, all_outputs
 
     @staticmethod
-    def solve_1(all_outputs: list[list[frozenset]]) -> int:
+    def solve_1(all_outputs: list[list[frozenset[str]]]) -> int:
         unique_lengths = {2, 3, 4, 7}
         result = 0
         for outputs in all_outputs:
@@ -45,7 +45,7 @@ class Solution2021Day08(Solution):
                     result += 1
         return result
 
-    def solve_2(self, all_patterns: list[list[frozenset]], all_outputs: list[list[frozenset]]) -> int:
+    def solve_2(self, all_patterns: list[list[frozenset[str]]], all_outputs: list[list[frozenset[str]]]) -> int:
         result = 0
         for patterns, outputs in zip(all_patterns, all_outputs):
             pattern_to_numbers = self.determine_mapping(patterns)
@@ -54,8 +54,8 @@ class Solution2021Day08(Solution):
         return result
 
     @staticmethod
-    def determine_mapping(patterns: list[frozenset]) -> dict[frozenset, int]:
-        candidates: list[list[frozenset]] = [[] for _ in range(10)]
+    def determine_mapping(patterns: list[frozenset[str]]) -> dict[frozenset[str], int]:
+        candidates: list[list[frozenset[str]]] = [[] for _ in range(10)]
         for pattern in patterns:
             for digit in LENGTH_TO_DIGIT[len(pattern)]:
                 candidates[digit].append(pattern)

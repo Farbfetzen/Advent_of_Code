@@ -22,12 +22,12 @@ class Solution2021Day10(Solution):
         self.result_1, self.result_2 = self.get_scores(prepared_input)
 
     @staticmethod
-    def get_scores(data) -> tuple[int, int]:
+    def get_scores(data: list[str]) -> tuple[int, int]:
         part_1_score = 0
         part_2_scores = []
         for line in data:
             autocomplete_score = 0
-            stack = []
+            stack: list[str] = []
             for character in line:
                 if character in PAIRS:
                     opening = stack.pop()
@@ -42,5 +42,5 @@ class Solution2021Day10(Solution):
                 while stack:
                     autocomplete_score = autocomplete_score * 5 + VALUES[stack.pop()]
                 part_2_scores.append(autocomplete_score)
-        part_2_score = median(part_2_scores)
+        part_2_score = int(median(part_2_scores))
         return part_1_score, part_2_score

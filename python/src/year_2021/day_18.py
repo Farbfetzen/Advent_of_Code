@@ -3,7 +3,7 @@
 import copy
 import itertools
 from math import ceil, floor
-from typing import Self
+from typing import no_type_check, Self
 
 from src.util.inputs import Inputs
 from src.util.solution import Solution
@@ -28,6 +28,7 @@ class SnailfishNumber:
     @property
     def magnitude(self) -> int:
         if self.value is None:
+            assert self.left and self.right
             return 3 * self.left.magnitude + 2 * self.right.magnitude
         return self.value
 
@@ -68,15 +69,17 @@ class Solution2021Day18(Solution):
                 current.right = SnailfishNumber(parent=current)
                 current = current.left
             elif char == "]":
+                assert current.parent
                 current = current.parent
             elif char == ",":
+                assert current.parent and current.parent.right
                 current = current.parent.right
             else:
                 # The rest are single digits.
                 current.value = int(char)
         return root
 
-    def add(self, left, right) -> SnailfishNumber:
+    def add(self, left: SnailfishNumber, right: SnailfishNumber) -> SnailfishNumber:
         left = copy.deepcopy(left)
         right = copy.deepcopy(right)
         number = SnailfishNumber(left=left, right=right)
@@ -94,25 +97,29 @@ class Solution2021Day18(Solution):
                     break
         return number
 
-    def find_explosion_candidate(self, number: SnailfishNumber, depth=0) -> SnailfishNumber | None:
+    def find_explosion_candidate(self, number: SnailfishNumber, depth: int = 0) -> SnailfishNumber | None:
         if number.value is None:
             if depth == 4:
                 return number
             depth += 1
+            assert number.left and number.right
             return self.find_explosion_candidate(number.left, depth) or self.find_explosion_candidate(
                 number.right, depth
             )
         return None
 
-    def find_split_candidate(self, number: SnailfishNumber, depth=0) -> SnailfishNumber | None:
+    def find_split_candidate(self, number: SnailfishNumber, depth: int = 0) -> SnailfishNumber | None:
         assert number is not None
         if number.value is None:
             depth += 1
+            assert number.left and number.right
             return self.find_split_candidate(number.left, depth) or self.find_split_candidate(number.right, depth)
         if number.value >= 10:
             return number
         return None
 
+    # Ignore types in this method to avoid lots of annoying asserts.
+    @no_type_check
     @staticmethod
     def explode(number: SnailfishNumber) -> None:
         # left side:
@@ -145,6 +152,7 @@ class Solution2021Day18(Solution):
 
     @staticmethod
     def split(number: SnailfishNumber) -> None:
+        assert number.value
         half = number.value / 2
         number.left = SnailfishNumber(value=floor(half), parent=number)
         number.right = SnailfishNumber(value=ceil(half), parent=number)

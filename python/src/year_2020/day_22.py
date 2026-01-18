@@ -41,7 +41,7 @@ class Solution2020Day22(Solution):
                 if len(decks[0]) == 0:
                     return self.calculate_score(decks[1])
 
-    def solve_2(self, decks: list[deque[int]], return_index=False) -> int:  # noqa:S3776
+    def solve_2(self, decks: list[deque[int]], return_index: bool = False) -> int:  # noqa:S3776
         cache = set()
         winner_game = None
         while winner_game is None:

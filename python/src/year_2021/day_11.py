@@ -12,7 +12,7 @@ OFFSETS.remove((0, 0))
 
 class Octopuses:
 
-    def __init__(self, energy_levels) -> None:
+    def __init__(self, energy_levels: list[list[int]]) -> None:
         self.energy_levels = energy_levels
         self.flashes_after_100_steps = 0
         self.steps = 0
@@ -22,7 +22,7 @@ class Octopuses:
         for x, y in itertools.product(range(10), repeat=2):
             self.energy_levels[y][x] += 1
 
-    def affect_neighbors(self, x, y) -> None:
+    def affect_neighbors(self, x: int, y: int) -> None:
         for dx, dy in OFFSETS:
             nx = x + dx
             ny = y + dy

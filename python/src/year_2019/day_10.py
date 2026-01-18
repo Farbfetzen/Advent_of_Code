@@ -42,8 +42,8 @@ class Solution2019Day10(Solution):
         return most_unique_slopes, best_position
 
     @staticmethod
-    def get_unique_slopes(asteroid: Position, asteroid_map: list[Position]) -> dict:
-        unique_slopes = {}
+    def get_unique_slopes(asteroid: Position, asteroid_map: list[Position]) -> dict[Position, list[Position]]:
+        unique_slopes: dict[Position, list[Position]] = {}
         for other in asteroid_map:
             if other == asteroid:
                 continue

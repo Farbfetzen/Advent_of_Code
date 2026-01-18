@@ -31,12 +31,12 @@ class Solution2018Day03(Solution):
         return claims
 
     def solve_both(self, data: list[str]) -> tuple[int, int]:
-        all_coordinates = {}
-        all_coordinates_list = []
-        id_ = None
+        all_coordinates: dict[int, list[str]] = {}
+        all_coordinates_list: list[str] = []
+        id_ = 0
         for claim in self.get_claims(data):
             id_, left, top, width, height = claim
-            claim_xy = []
+            claim_xy: list[str] = []
             for x in range(left + 1, left + width + 1):
                 for y in range(top + 1, top + height + 1):
                     claim_xy.append(str(x) + " " + str(y))
@@ -49,7 +49,7 @@ class Solution2018Day03(Solution):
             del counter_2[1]
 
         unique = {k for k, v in counter_1.items() if v == 1}
-        for id_, claim in all_coordinates.items():
-            if set(claim).issubset(unique):
+        for id_, claim_xy in all_coordinates.items():
+            if set(claim_xy).issubset(unique):
                 break
         return sum(counter_2.values()), id_

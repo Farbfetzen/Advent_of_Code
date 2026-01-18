@@ -26,9 +26,9 @@ class Solution(ABC):
         return "\n\n".join(s for s in (samples_1, samples_2, samples_other, part_1, part_2) if s)
 
     @staticmethod
-    def format_result(heading: str, results: int | str | list) -> str | None:
+    def format_result(heading: str, results: int | str | list[int | str]) -> str:
         if results or results == 0:
             if isinstance(results, list):
                 return heading + ":\n" + ", ".join(map(str, results))
             return heading + ":\n" + str(results)
-        return None
+        return ""

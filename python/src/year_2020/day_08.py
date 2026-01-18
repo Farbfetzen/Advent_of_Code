@@ -23,7 +23,7 @@ class HandheldGameConsole:
     def jmp(self, n: int) -> None:
         self.pointer += n
 
-    def nop(self, _) -> None:
+    def nop(self, _: int) -> None:
         self.pointer += 1
 
     def check_pointer(self) -> None:

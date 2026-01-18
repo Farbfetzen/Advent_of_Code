@@ -1,6 +1,7 @@
 # https://adventofcode.com/2020/day/21
 
-import collections
+from collections import defaultdict
+from typing import DefaultDict
 
 from src.util.inputs import Inputs
 from src.util.solution import Solution
@@ -21,8 +22,8 @@ class Solution2020Day21(Solution):
 
     @staticmethod
     def solve_1(data: list[str]) -> tuple[int, dict[str, set[str]]]:
-        allergen_ingredients = {}
-        ingredient_counter = collections.defaultdict(int)
+        allergen_ingredients: dict[str, set[str]] = {}
+        ingredient_counter: DefaultDict[str, int] = defaultdict(int)
         for line in data:
             i = line.index("(")
             ingredients = set(line[: i - 1].split())
@@ -44,8 +45,8 @@ class Solution2020Day21(Solution):
         for v in allergen_ingredients.values():
             allergen_candidates.update(v)
 
-        sum_ = sum(ingredient_counter[ingredient] for ingredient in without_allergens)
-        return sum_, allergen_ingredients
+        sum_ingredients = sum(ingredient_counter[ingredient] for ingredient in without_allergens)
+        return sum_ingredients, allergen_ingredients
 
     def solve_2(self, allergen_ingredients: dict[str, set[str]]) -> str:
         finished = False

@@ -1,5 +1,8 @@
+from typing import cast
+
 from src import solutions
 from src.util.inputs import load_inputs
+from src.year_2020.day_13 import Solution2020Day13
 
 
 def test_day_01() -> None:
@@ -111,7 +114,7 @@ def test_day_12() -> None:
 
 
 def test_day_13() -> None:
-    solution = solutions[2020][13]()
+    solution = cast(Solution2020Day13, solutions[2020][13]())
     inputs = load_inputs(2020, 13)
     solution.solve(inputs)
     assert solution.sample_results_1[0] == 295

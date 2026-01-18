@@ -23,8 +23,16 @@ class Solution2020Day17(Solution):
         # print(self.run_reactor(prepared_input, 5))  # 10632 (takes about a minute)
 
     @staticmethod
-    def check_neighbors(position, old_state, new_state, directions, candidates=None) -> None:
-        neighbor_positions = {tuple(map(operator.add, position, direction)) for direction in directions}
+    def check_neighbors(
+        position: tuple[int, ...],
+        old_state: set[tuple[int, ...]],
+        new_state: set[tuple[int, ...]],
+        directions: list[tuple[int, ...]],
+        candidates: set[tuple[int, ...]] | None = None,
+    ) -> None:
+        neighbor_positions: set[tuple[int, ...]] = {
+            tuple(map(operator.add, position, direction)) for direction in directions
+        }
         n_neighbors = len(neighbor_positions & old_state)
         active = position in old_state
         if active and n_neighbors in {2, 3} or not active and n_neighbors == 3:
@@ -33,7 +41,7 @@ class Solution2020Day17(Solution):
             candidates.update(neighbor_positions)
 
     def run_reactor(self, input_list: list[str], n_dim: int) -> int:
-        reactor_state = set()
+        reactor_state: set[tuple[int, ...]] = set()
         extra_coordinates = [0] * (n_dim - 2)
         for y, row in enumerate(input_list):
             for x, char in enumerate(row):
@@ -41,12 +49,12 @@ class Solution2020Day17(Solution):
                     position = tuple([x, y] + extra_coordinates)
                     reactor_state.add(position)
 
-        directions = list(itertools.product((-1, 0, 1), repeat=n_dim))
+        directions: list[tuple[int, ...]] = list(itertools.product((-1, 0, 1), repeat=n_dim))
         directions.remove(tuple([0] * n_dim))
 
         for _ in range(6):
-            new_state = set()
-            candidates = set()
+            new_state: set[tuple[int, ...]] = set()
+            candidates: set[tuple[int, ...]] = set()
             for position in reactor_state:
                 self.check_neighbors(position, reactor_state, new_state, directions, candidates)
             # Check the neighbors of the active cells:

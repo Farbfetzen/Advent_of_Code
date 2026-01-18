@@ -1,7 +1,8 @@
 # https://adventofcode.com/2021/day/12
 
-import collections
-import functools
+from collections import defaultdict
+from functools import cache
+from typing import DefaultDict
 
 from src.util.inputs import Inputs
 from src.util.solution import Solution
@@ -20,8 +21,8 @@ class Solution2021Day12(Solution):
         self.result_2 = self.solve_2(prepared_input)
 
     @staticmethod
-    def prepare(data: str) -> collections.defaultdict[str, list]:
-        cave_map = collections.defaultdict(list)
+    def prepare(data: str) -> DefaultDict[str, list[str]]:
+        cave_map: DefaultDict[str, list[str]] = defaultdict(list)
         for line in data.splitlines():
             a, b = line.split("-")
             cave_map[a].append(b)
@@ -29,9 +30,9 @@ class Solution2021Day12(Solution):
         return cave_map
 
     @staticmethod
-    def count_paths(cave_map: collections.defaultdict[str, list], single_small_twice: bool) -> int:
+    def count_paths(cave_map: DefaultDict[str, list[str]], single_small_twice: bool) -> int:
         # Use functools.cache to eliminate unnecessary recursive calls.
-        @functools.cache
+        @cache
         def count_next_paths(origin: str, seen: frozenset[str], twice: bool) -> int:
             if origin.islower():
                 seen = seen.union({origin})
@@ -47,8 +48,8 @@ class Solution2021Day12(Solution):
 
         return count_next_paths("start", frozenset(), single_small_twice)
 
-    def solve_1(self, cave_map: collections.defaultdict[str, list]) -> int:
+    def solve_1(self, cave_map: DefaultDict[str, list[str]]) -> int:
         return self.count_paths(cave_map, False)
 
-    def solve_2(self, cave_map: collections.defaultdict[str, list]) -> int:
+    def solve_2(self, cave_map: DefaultDict[str, list[str]]) -> int:
         return self.count_paths(cave_map, True)

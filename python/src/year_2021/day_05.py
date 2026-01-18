@@ -45,13 +45,12 @@ class Solution2021Day05(Solution):
 
     def count_overlaps(self, lines: Iterable[Line]) -> int:
         positions = (self.get_positions(line) for line in lines)
-        positions = itertools.chain.from_iterable(positions)
-        counter = collections.Counter(positions)
+        positions_chain = itertools.chain.from_iterable(positions)
+        counter = collections.Counter(positions_chain)
         return sum(count > 1 for key, count in counter.items())
 
     def solve_1(self, lines: list[Line]) -> int:
-        lines = (line for line in lines if line.start.x == line.end.x or line.start.y == line.end.y)
-        return self.count_overlaps(lines)
+        return self.count_overlaps(line for line in lines if line.start.x == line.end.x or line.start.y == line.end.y)
 
     def solve_2(self, lines: list[Line]) -> int:
         return self.count_overlaps(lines)

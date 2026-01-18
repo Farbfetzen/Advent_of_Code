@@ -1,6 +1,8 @@
+from typing import cast
+
 from src import solutions
 from src.util.inputs import load_inputs
-from src.year_2019 import Solution2019Day04
+from src.year_2019.day_04 import Solution2019Day04
 
 
 def test_day_01() -> None:
@@ -36,7 +38,7 @@ def test_day_03() -> None:
 
 
 def test_day_04() -> None:
-    solution: Solution2019Day04 = solutions[2019][4]()
+    solution = cast(Solution2019Day04, solutions[2019][4]())
     assert solution.check_increasing_digits("111111")
     assert solution.check_adjacent_pairs("111111")
     assert not solution.check_increasing_digits("223450")

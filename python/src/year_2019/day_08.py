@@ -27,8 +27,9 @@ class Solution2019Day08(Solution):
     @staticmethod
     def solve_1(layers: numpy.ndarray) -> int:
         fewest_0_layer = layers[numpy.count_nonzero(layers, 1).argmax(), :]
-        # noinspection PyUnresolvedReferences
-        return (fewest_0_layer == 1).sum() * (fewest_0_layer == 2).sum()
+        count_1: int = (fewest_0_layer == 1).sum()
+        count_2: int = (fewest_0_layer == 2).sum()
+        return count_1 * count_2
 
     @staticmethod
     def to_image(layers: numpy.ndarray, width: int, height: int) -> numpy.ndarray:

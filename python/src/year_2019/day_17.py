@@ -33,6 +33,7 @@ class Solution2019Day17(Solution):
         # See the bottom of this script.
         # print(scaffold_view)
 
+        assert isinstance(scaffold_view, str)
         for y, line in enumerate(scaffold_view.split("\n")):
             for x, char in enumerate(line):
                 if char == "#":
@@ -93,7 +94,7 @@ class Solution2019Day17(Solution):
         if result is None:
             raise ResultExpectedError("No valid path compression found.")
         main_routine, functions = result
-        main_routine = ",".join(main_routine)
+        main_routine_str = ",".join(main_routine)
         a = ",".join(functions["A"])
         b = ",".join(functions["B"])
         c = ",".join(functions["C"])
@@ -102,7 +103,7 @@ class Solution2019Day17(Solution):
         robot.memory[0] = 2
         _output = robot.run_ascii()[0]
         # print(_output)  # prints the map and then "Main:"
-        _output = robot.run_ascii(main_routine)[0]
+        _output = robot.run_ascii(main_routine_str)[0]
         # print(_output)  # prints "Function A:"
         _output = robot.run_ascii(a)[0]
         # print(_output)  # prints "Function B:"

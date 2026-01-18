@@ -12,18 +12,18 @@ from src.util.solution import Solution
 
 class Tile:
 
-    def __init__(self, data) -> None:
-        data = data.splitlines()
-        self.id = int(data[0][5:-1])
-        self.content = numpy.array([list(line) for line in data[1:]])
+    def __init__(self, data: str) -> None:
+        lines = data.splitlines()
+        self.id = int(lines[0][5:-1])
+        self.content = numpy.array([list(line) for line in lines[1:]])
         self.borders = {self.top, self.bottom, self.left, self.right}
         self.rotate(2)
         self.borders.update((self.top, self.bottom, self.left, self.right))
-        self.shared_borders = set()
-        self.neighbors = set()
+        self.shared_borders: set[str] = set()
+        self.neighbors: set[Tile] = set()
         self.n_neighbors = 0
 
-    def rotate(self, n=1) -> None:
+    def rotate(self, n: int = 1) -> None:
         self.content = numpy.rot90(self.content, n)
 
     def flip(self) -> None:

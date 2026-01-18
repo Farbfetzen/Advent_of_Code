@@ -14,12 +14,12 @@ def validate_args(year: int | None, day: int | None) -> tuple[int, int]:
     Returns the current date if none of them are provided.
     """
     today = datetime.date.today()
+    if (year is None) != (day is None):
+        sys.exit("Error: Either specify both year and day or none of them.")
+    if year is None:
+        year = today.year
     if day is None:
-        if year is None:
-            year = today.year
-            day = today.day
-        else:
-            sys.exit("Error: Either specify both year and day or none of them.")
+        day = today.day
     _validate_date(year, day, today)
     validate_year(year, today)
     validate_day(day)

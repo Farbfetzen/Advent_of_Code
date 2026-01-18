@@ -19,7 +19,7 @@ class Solution2021Day03(Solution):
     def count_bits(numbers: list[str]) -> list[int]:
         return [sum(int(b) for b in bits) for bits in zip(*numbers)]
 
-    def get_rating(self, numbers: list[str], search_most_common=True):
+    def get_rating(self, numbers: list[str], search_most_common: bool = True) -> int:
         numbers = numbers.copy()
         i = 0
         while len(numbers) > 1:
@@ -27,8 +27,7 @@ class Solution2021Day03(Solution):
             desired_bit = counts[i] < len(numbers) / 2
             if search_most_common:
                 desired_bit = not desired_bit
-            desired_bit = str(int(desired_bit))
-            numbers = [n for n in numbers if n[i] == desired_bit]
+            numbers = [n for n in numbers if n[i] == str(int(desired_bit))]
             i += 1
         return int(numbers[0], 2)
 

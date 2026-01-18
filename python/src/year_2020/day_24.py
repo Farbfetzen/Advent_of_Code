@@ -53,7 +53,7 @@ class Solution2020Day24(Solution):
 
     @staticmethod
     def check_neighbors(
-        position: complex, old_state: set[complex], new_state: set[complex], candidates: set[complex] = None
+        position: complex, old_state: set[complex], new_state: set[complex], candidates: set[complex] | None = None
     ) -> None:
         neighbor_positions = {position + direction for direction in DIRECTIONS.values()}
         n_neighbors = len(neighbor_positions & old_state)

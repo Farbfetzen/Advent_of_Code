@@ -37,14 +37,14 @@ class Solution2020Day11(Solution):
                     n_occupied = neighbor_counter(seats, x, y)
                     self.update_seat(new_seats, seat, n_occupied, x, y)
             if numpy.array_equal(seats, new_seats):
-                return (new_seats == "#").sum()
+                return int((new_seats == "#").sum())
             seats = new_seats
 
     @staticmethod
     def count_neighbors_1(seats: numpy.ndarray, x: int, y: int) -> int:
         height, width = seats.shape
         neighborhood = seats[max(y - 1, 0) : min(y + 2, height), max(x - 1, 0) : min(x + 2, width)]
-        return (neighborhood == "#").sum()
+        return int((neighborhood == "#").sum())
 
     @staticmethod
     def count_neighbors_2(seats: numpy.ndarray, x: int, y: int) -> int:
@@ -52,15 +52,15 @@ class Solution2020Day11(Solution):
         directions = ((1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1))
         n_occupied = 0
         for dx, dy in directions:
-            x_ = x + dx
-            y_ = y + dy
-            while 0 <= x_ < width and 0 <= y_ < height:
-                neighbor = seats[y_, x_]
+            neighbor_x = x + dx
+            neighbor_y = y + dy
+            while 0 <= neighbor_x < width and 0 <= neighbor_y < height:
+                neighbor = seats[neighbor_y, neighbor_x]
                 if neighbor != ".":
                     n_occupied += neighbor == "#"
                     break
-                x_ += dx
-                y_ += dy
+                neighbor_x += dx
+                neighbor_y += dy
         return n_occupied
 
     @staticmethod

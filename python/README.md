@@ -27,6 +27,9 @@ pip install -r requirements.txt
 This project uses [black](https://github.com/psf/black) for Python code formatting.
 Run `black .` to format all Python files.
 
+Types are checked with [mypy](https://github.com/python/mypy).
+Run `mypy .` to check all Python files.
+
 ## Preparing for a day
 
 Run `prepare.py` to download the input and generate the script and tests from templates for the current day.

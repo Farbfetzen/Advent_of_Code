@@ -24,7 +24,7 @@ class Solution2021Day09(Solution):
         return heightmap, low_points
 
     @staticmethod
-    def get_neighbors(x, y, max_x, max_y) -> list[Point2]:
+    def get_neighbors(x: int, y: int, max_x: int, max_y: int) -> list[Point2]:
         neighbors = []
         if x > 0:
             neighbors.append(Point2(x - 1, y))
@@ -37,7 +37,7 @@ class Solution2021Day09(Solution):
         return neighbors
 
     def get_low_points(self, heightmap: tuple[tuple[int, ...], ...]) -> list[Point2]:
-        low_points = []
+        low_points: list[Point2] = []
         max_x = len(heightmap[0]) - 1
         max_y = len(heightmap) - 1
         for y, row in enumerate(heightmap):
@@ -47,7 +47,7 @@ class Solution2021Day09(Solution):
                     low_points.append(Point2(x, y))
         return low_points
 
-    def flood_fill(self, heightmap, origin, max_x, max_y) -> int:
+    def flood_fill(self, heightmap: tuple[tuple[int, ...], ...], origin: Point2, max_x: int, max_y: int) -> int:
         neighbors = [origin]
         basin_members = {origin}
         while neighbors:
@@ -61,10 +61,10 @@ class Solution2021Day09(Solution):
         return len(basin_members)
 
     @staticmethod
-    def solve_1(heightmap, low_points) -> int:
+    def solve_1(heightmap: tuple[tuple[int, ...], ...], low_points: list[Point2]) -> int:
         return sum(heightmap[lp.y][lp.x] + 1 for lp in low_points)
 
-    def solve_2(self, heightmap, low_points) -> int:
+    def solve_2(self, heightmap: tuple[tuple[int, ...], ...], low_points: list[Point2]) -> int:
         max_x = len(heightmap[0]) - 1
         max_y = len(heightmap) - 1
         basin_sizes = [self.flood_fill(heightmap, lp, max_x, max_y) for lp in low_points]

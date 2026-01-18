@@ -33,7 +33,9 @@ class Solution2020Day19(Solution):
                 rules[i] = [[int(x) for x in v.split()] for v in v]
         return rules, messages
 
-    def resolve_rules(self, rules: dict[int, str | list[list[int]]], cache: dict, i=0):
+    def resolve_rules(
+        self, rules: dict[int, str | list[list[int]]], cache: dict[int, str | list[str]], i: int = 0
+    ) -> str | list[str]:
         # Recursive search with memoization.
         if i in cache:
             return cache[i]
@@ -41,7 +43,7 @@ class Solution2020Day19(Solution):
         if isinstance(rule, str):
             cache[i] = rule
             return rule
-        out = []
+        out: list[str] = []
         # I call "option" the part of a rule that is delimited by a "|".
         # Most rules have two options.
         for option in rule:
@@ -62,9 +64,10 @@ class Solution2020Day19(Solution):
         # 11: 42 31 | 42 11 31
         rules[11] = [[42, 31], [42, 11, 31]]
 
-        rule_cache = {}  # share the cache for both searches
-        r_31 = set(self.resolve_rules(rules, rule_cache, 31))
-        r_42 = set(self.resolve_rules(rules, rule_cache, 42))
+        # shared cache for both searches
+        shared_cache: dict[int, str | list[str]] = {}
+        r_31 = set(self.resolve_rules(rules, shared_cache, 31))
+        r_42 = set(self.resolve_rules(rules, shared_cache, 42))
         len_31 = {len(x) for x in r_31}
         len_42 = {len(x) for x in r_42}
         len_both = len_31 | len_42

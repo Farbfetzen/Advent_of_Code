@@ -48,13 +48,13 @@ class Solution2020Day07(Solution):
     def solve_2(self, rules: dict[str, list[Bag]]) -> int:
         return self.count_contents(rules, "shiny gold")
 
-    def search_shiny_gold(self, rules, key) -> bool:
+    def search_shiny_gold(self, rules: dict[str, list[Bag]], key: str) -> bool:
         for bag in rules[key]:
             if bag.type == "shiny gold" or bag.type != NO_OTHER and self.search_shiny_gold(rules, bag.type):
                 return True
         return False
 
-    def count_contents(self, rules, key) -> int:
+    def count_contents(self, rules: dict[str, list[Bag]], key: str) -> int:
         n = 0
         for bag in rules[key]:
             n += bag.n

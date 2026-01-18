@@ -29,4 +29,5 @@ class Solution2019Day21(Solution):
         # print(_words)  # prints "Input instructions:"
         _words, damage = droid.run_ascii(script)
         # print(_words)  # prints "Walking..." in part 1 and "Running..." in part 2.
+        assert isinstance(damage, int)
         return damage

@@ -22,9 +22,9 @@ class Solution2021Day20(Solution):
 
     @staticmethod
     def prepare(data: str) -> tuple[list[int], list[list[int]]]:
-        algorithm_, image_ = data.split("\n\n")
-        algorithm = [int(char == "#") for char in algorithm_]
-        image = [[int(char == "#") for char in line] for line in image_.splitlines()]
+        algorithm_str, image_str = data.split("\n\n")
+        algorithm = [int(char == "#") for char in algorithm_str]
+        image = [[int(char == "#") for char in line] for line in image_str.splitlines()]
         return algorithm, image
 
     def solve_1(self, algorithm: list[int], image: list[list[int]]) -> int:

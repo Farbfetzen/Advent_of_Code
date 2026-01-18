@@ -1,5 +1,7 @@
 # https://adventofcode.com/2020/day/13
 
+from typing import cast
+
 from sympy.ntheory.modular import crt
 
 from src.util.exceptions import ResultExpectedError
@@ -45,7 +47,8 @@ class Solution2020Day13(Solution):
             if char != "x":
                 bus_ids.append(int(char))
                 offsets.append(-i)
-        return crt(bus_ids, offsets)[0]
+        # Cast the result because sympy doesn't have type hints, see https://github.com/sympy/sympy/issues/17945
+        return cast(int, crt(bus_ids, offsets)[0])
 
     @staticmethod
     def solve_2_without_crt(bus_info: list[str]) -> int:

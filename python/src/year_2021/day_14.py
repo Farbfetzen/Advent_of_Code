@@ -1,7 +1,7 @@
 # https://adventofcode.com/2021/day/14
 
-import collections
-import functools
+from collections import Counter
+from functools import cache
 
 from src.util.inputs import Inputs
 from src.util.solution import Solution
@@ -25,25 +25,25 @@ class Solution2021Day14(Solution):
         return template, rules_dict
 
     @staticmethod
-    def polymerize(template: str, rules: dict[str, str], max_steps: int) -> collections.Counter:
-        @functools.cache
-        def count(pair: str, step: int) -> collections.Counter:
+    def polymerize(template: str, rules: dict[str, str], max_steps: int) -> Counter[str]:
+        @cache
+        def count(pair: str, step: int) -> Counter[str]:
             if step == max_steps or pair not in rules:
-                return collections.Counter()
+                return Counter()
             step += 1
             new_element = rules[pair]
-            new_counter = collections.Counter(new_element)
+            new_counter = Counter(new_element)
             new_counter.update(count(pair[0] + new_element, step))
             new_counter.update(count(new_element + pair[1], step))
             return new_counter
 
-        counter = collections.Counter(template)
+        counter = Counter(template)
         for left, right in zip(template, template[1:]):
             counter.update(count(left + right, 0))
         return counter
 
     @staticmethod
-    def get_difference(counter: collections.Counter) -> int:
+    def get_difference(counter: Counter[str]) -> int:
         sorted_by_frequency = counter.most_common()
         return sorted_by_frequency[0][1] - sorted_by_frequency[-1][1]
 

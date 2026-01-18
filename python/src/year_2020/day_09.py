@@ -33,15 +33,15 @@ class Solution2020Day09(Solution):
         for i in range(len(numbers)):
             for j in range(i + 2, len(numbers)):
                 numbers_slice = numbers[i:j]
-                sum_ = sum(numbers_slice)
-                if sum_ == target:
+                slice_sum = sum(numbers_slice)
+                if slice_sum == target:
                     return min(numbers_slice) + max(numbers_slice)
-                if sum_ > target:
+                if slice_sum > target:
                     break
         raise ResultExpectedError
 
     @staticmethod
-    def valid(preamble, n) -> bool:
+    def valid(preamble: list[int], n: int) -> bool:
         for i, a in enumerate(preamble[:-1]):
             for b in preamble[(i + 1) :]:
                 if a + b == n:
