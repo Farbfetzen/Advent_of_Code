@@ -7,6 +7,11 @@
 *input.txt
 
 
+# Gradle
+/jvm/build/
+.gradle/
+
+
 # IntelliJ
 *.iml
 .idea/
