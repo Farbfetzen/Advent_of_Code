@@ -24,12 +24,22 @@ For example, `input/2022/03-input.txt` for the third day of 2022.
 The input directory contains only samples because the inputs are not tracked with git.
 This is because the maintainers of Advent of Code asked to not share the inputs (see <https://adventofcode.com/about>).
 And also because different users get different inputs.
-Just copy your own from the website and paste it into a file named like described above.
+Simply copy your own from the website and paste it into a file named as described above.
 
 ### Solutions
 
-- R: The R solutions have input paths relative to this directory, so you can open RStudio here.
-- Python: The Python project is configured such that the python directory should be used as its working directory.
-  The imports and paths are all relative to there.
-  But the IDE should be opened here in the project root.
-  See [the readme](python/README.md) for more information.
+#### Java
+
+The Java project is configured such that the java directory must be used as its working directory because the imports and paths are all relative to there.
+But the IDE should be opened here in the project root so it can access all files easily.
+See [the readme](java/README.md) for information about how to run the solutions.
+
+#### Python
+
+The Python project is configured such that the python directory must be used as its working directory because the imports and paths are all relative to there.
+But the IDE should be opened here in the project root so it can access all files easily.
+See [the readme](python/README.md) for more information.
+
+#### R
+
+The R solutions have input paths relative to this directory, so you can open RStudio here.
