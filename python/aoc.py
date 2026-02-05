@@ -4,19 +4,20 @@ import argparse
 import sys
 
 from src import solutions
-from src.util import date_args
 from src.util.inputs import load_inputs
 
 
 parser = argparse.ArgumentParser()
-date_args.add_date_args(parser)
+parser.add_argument("year", type=int)
+parser.add_argument("day", type=int)
 args = parser.parse_args()
-year, day = date_args.validate_args(args.year, args.day)
+year = args.year
+day = args.day
 
 try:
     solution = solutions[year][day]()
 except KeyError:
-    sys.exit(f"Error: No solution exists for {year=}, {day=}. Did you forget to add it to src/year_{year}/__init__.py?")
+    sys.exit(f"Error: No solution found for {year=}, {day=}.")
 
 inputs = load_inputs(year, day)
 solution.solve(inputs)

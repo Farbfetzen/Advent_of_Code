@@ -16,11 +16,10 @@ import argparse
 
 import pytest
 
-from src.util import date_args
-
 
 parser = argparse.ArgumentParser()
-date_args.add_date_args(parser)
+parser.add_argument("year", type=int, nargs="?")
+parser.add_argument("day", type=int, nargs="?")
 args = parser.parse_args()
 year = args.year
 day = args.day
@@ -29,9 +28,7 @@ day = args.day
 # Single days are not run in parallel because setup fixtures are module scoped.
 # Multiple workers would just waste time in this case.
 if year:
-    date_args.validate_year(year)
     if day:
-        date_args.validate_day(day)
         pytest.main([f"test/test_{year}.py::test_day_{day:02}"])
     else:
         pytest.main(["-n", "auto", f"test/test_{year}.py"])

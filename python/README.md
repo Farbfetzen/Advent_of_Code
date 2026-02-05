@@ -32,10 +32,10 @@ Run `mypy .` to check all Python files.
 
 ## Preparing for a day
 
-Run `prepare.py` to download the input and generate the script and tests from templates for the current day.
-The optional arguments are `year` and `day` with the current year and day as default values.
+Run `./prepare.py <year> <day>` to download the input and generate the script and tests from templates for the given year and day.
+For example, `./prepare.py 2025 7` prepares advent of code for 2025&#8209;12&#8209;07.
 
-To be able to download the input data you need to have your session cookie stored as the `AOC_SESSION_COOKIE` environment variable .
+To be able to download the input data you need to have your session cookie stored as the `AOC_SESSION_COOKIE` environment variable.
 You can get your current cookie from the website while being logged in.
 Remember that it expires after some time.  
 You also need to provide contact information in the User-Agent header of every request, so the maintainers of Advent of Code can contact you about the requests.
@@ -52,12 +52,12 @@ export AOC_USER_AGENT="foo@example.com, github.com/..."
 
 ## Running the scripts
 
-Run `aoc.py` to run the script for the current day. Use the arguments `year` and `day` to specify a different date.
-For example, `./aoc.py 2021 10` runs Advent of Code 2021-12-10.
+Run `./aoc.py <year> <day>` to run the solution for the given year and day.
+For example, `./aoc.py 2021 10` runs Advent of Code 2021&#8209;12&#8209;10.
 
 ## Testing
 
-You can run `test.py` to run all tests in the `test` directory.
+You can run `./test.py` to run all tests in the `test` directory.
 Use the optional arguments `year` and `day` to run only one year or only one day from that year.
 The tests are run in parallel on all available cpu cores using [pytest-xdist](https://pytest-xdist.readthedocs.io) if more than one day is tested.
 Of course, you can also run the tests using pytest directly, see [how-to-invoke-pytest](https://docs.pytest.org/en/stable/how-to/usage.html#how-to-invoke-pytest).

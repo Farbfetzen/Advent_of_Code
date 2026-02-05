@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """Creates script and test templates and downloads the input for a given day.
-The optional arguments are 'year' and 'day' with the current year and day as default values.
+The required positional arguments are 'year' and 'day'.
 Example: ./prepare.py 2020 7
 This script needs two environment variables to function:
 - AOC_SESSION_COOKIE: The session cookie for authentication.
@@ -10,14 +10,13 @@ This script needs two environment variables to function:
 """
 
 import argparse
+import datetime
 import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 import requests
-
-from src.util import date_args
 
 
 SOLUTION_TEMPLATE = """# {url}
@@ -95,10 +94,16 @@ class Env:
 
 def main() -> None:
     parser = argparse.ArgumentParser(allow_abbrev=False)
-    date_args.add_date_args(parser)
+    parser.add_argument("year", type=int)
+    parser.add_argument("day", type=int)
     args = parser.parse_args()
-    year, day = date_args.validate_args(args.year, args.day)
-    prepare(str(year), str(day), Env())
+    year = args.year
+    day = args.day
+    current_year = datetime.date.today().year
+    if 2015 <= year <= current_year and 1 <= day <= 25:
+        prepare(str(year), str(day), Env())
+    else:
+        sys.exit("Error: Invalid year or day.")
 
 
 def prepare(year: str, day: str, env: Env) -> None:
@@ -136,12 +141,7 @@ def prepare_input(input_dir: Path, day: str, puzzle_url: str, env: Env) -> None:
         print("Writing input file.")
         input_file.write_text(response.text)
     else:
-        print("Error! Got status: ", response.status_code)
-        print(response.text)
-        if "log in" in response.text:
-            print("Maybe the session cookie expired?")
-        print("\nCreating empty file for you to paste the input manually.")
-        input_file.touch()
+        sys.exit(f"Error!\nResponse status: {response.status_code}\nResponse text: {response.text}")
     print(input_file.as_uri())
 
 
