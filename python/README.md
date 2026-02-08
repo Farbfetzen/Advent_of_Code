@@ -1,4 +1,4 @@
-# Python solutions for Advent of Code
+# Python Solutions for Advent of Code
 
 Make sure this is the working directory for running the scripts because all paths and imports are relative to here.
 
@@ -30,7 +30,7 @@ Run `black .` to format all Python files.
 Types are checked with [mypy](https://github.com/python/mypy).
 Run `mypy .` to check all Python files.
 
-## Preparing for a day
+## Preparing for a Day
 
 Run `./prepare.py <year> <day>` to download the input and generate the script and tests from templates for the given year and day.
 For example, `./prepare.py 2025 7` prepares advent of code for 2025&#8209;12&#8209;07.
@@ -50,7 +50,7 @@ export AOC_SESSION_COOKIE=123...
 export AOC_USER_AGENT="foo@example.com, github.com/..."
 ```
 
-## Running the scripts
+## Running the Scripts
 
 Run `./aoc.py <year> <day>` to run the solution for the given year and day.
 For example, `./aoc.py 2021 10` runs Advent of Code 2021&#8209;12&#8209;10.

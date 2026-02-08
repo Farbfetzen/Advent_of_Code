@@ -1,10 +1,10 @@
-# My Advent of Code solutions
+# My Advent of Code Solutions
 
 [Advent of Code](https://adventofcode.com) is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language you like.
 See the language specific folders for the solutions.
 Remember that most participants get different input data so the results in the comments and unit tests will likely be different from yours.
 
-## My stats
+## My Stars
 
 | Year |  Stars ⭐ |
 |------|---------:|
@@ -14,7 +14,7 @@ Remember that most participants get different input data so the results in the c
 | 2021 |  50 / 50 |
 | 2022 |   8 / 50 |
 
-## Project setup
+## Project Setup
 
 ### Inputs
 
