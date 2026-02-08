@@ -1,6 +1,5 @@
-import os
-import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 
 
 @dataclass
@@ -10,23 +9,11 @@ class Inputs:
 
 
 def load_inputs(year: int, day: int) -> Inputs:
-    # This way of resolving the path makes it easier to run the tests from the ide.
-    this_path = os.path.dirname(os.path.realpath(__file__))
-    year_directory = os.path.abspath(f"{this_path}/../../../input/{year}")
+    year_dir = Path(__file__).resolve().parents[3] / "input" / str(year)
     day_padded = str(day).zfill(2)
-    filenames = [name for name in os.listdir(year_directory) if name.startswith(day_padded)]
-    input_filename = f"{day_padded}-input.txt"
-    if input_filename not in filenames:
-        sys.exit(f'File "{input_filename}" not in input directory!')
-
     inputs = Inputs()
-    for filename in sorted(filenames):
-        with open(f"{year_directory}/{filename}") as file:
-            content = file.read().rstrip()
-        if filename == input_filename:
-            inputs.input = content
-        elif filename.startswith(f"{day_padded}-sample"):
-            inputs.samples.append(content)
-        else:
-            sys.exit(f'Unknown input file "{filename}".')
+    inputs.input = (year_dir / f"{day_padded}-input.txt").read_text().rstrip()
+    sample_files = sorted(year_dir.glob(f"{day_padded}-sample*.txt"))
+    for file in sample_files:
+        inputs.samples.append(file.read_text().rstrip())
     return inputs
