@@ -13,7 +13,7 @@ Remember that most participants get different input data so the results in the c
 | 2020 | 50 / 50 |
 | 2021 | 50 / 50 |
 | 2022 |  8 / 50 |
-| 2023 |  2 / 50 |
+| 2023 |  4 / 50 |
 
 ## Project Setup
 
