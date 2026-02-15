@@ -30,4 +30,14 @@ class Solution2023Tests {
         assertThat(results.getPart1()).isEqualTo("2727");
         assertThat(results.getPart2()).isEqualTo("56580");
     }
+
+    @Test
+    void testDay03() throws IOException {
+        final var inputs = Inputs.fromFile(2023, 3);
+        final var results = new Solution2023Day03().solve(inputs);
+        assertThat(results.getPart1Samples()).singleElement().isEqualTo("4361");
+        assertThat(results.getPart2Samples()).singleElement().isEqualTo("467835");
+        assertThat(results.getPart1()).isEqualTo("530495");
+        assertThat(results.getPart2()).isEqualTo("80253814");
+    }
 }
